@@ -4,13 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人の dotfiles 管理リポジトリ。現在は Neovim の設定のみを管理している。
+個人の dotfiles 管理リポジトリ。Neovim と WezTerm の設定を管理している。
 
 ## セットアップ
 
 ```bash
 git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
+ln -sf ~/dotfiles/.config/wezterm ~/.config/wezterm
 ```
 
 プラグインは Neovim 初回起動時に lazy.nvim が自動インストールする。
@@ -31,3 +32,9 @@ ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
 - プラグインを追加・変更する場合は `lua/plugins/` に個別ファイルとして配置する（lazy.nvim が自動で読み込む）
 - `lazy-lock.json` は lazy.nvim が自動管理するため、手動編集しない
 - キーマップの名前空間: `Leader+f` = Telescope, `Leader+e/o` = Neo-tree, `Leader+g` = Git 操作
+
+## WezTerm 設定
+
+`.config/wezterm/` 以下の構成:
+
+- `wezterm.lua` — メイン設定ファイル（ウィンドウサイズ、フォントサイズ、カラースキームなど）
