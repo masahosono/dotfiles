@@ -46,7 +46,7 @@ alias c='claude'
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 # 秘密情報の読み込み
-ZSHSECRET="${0:A:h}/.zshsecret"
+ZSHSECRET="$(dirname "$(readlink ~/.zshrc || echo ~/.zshrc)")/.zshsecret"
 [[ -f "$ZSHSECRET" ]] && source "$ZSHSECRET"
 
 # Kiro CLI post block. Keep at the bottom of this file.
