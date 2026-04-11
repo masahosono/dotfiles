@@ -10,15 +10,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
-ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
-ln -sf ~/dotfiles/.config/wezterm ~/.config/wezterm
+ln -sf ~/dotfiles/nvim ~/.config/nvim
+ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ```
 
 プラグインは Neovim 初回起動時に lazy.nvim が自動インストールする。
 
 ## Neovim 設定のアーキテクチャ
 
-`.config/nvim/` 以下の構成:
+`nvim/` 以下の構成:
 
 - `init.lua` — エントリポイント。Leader キー(Space)の設定、lazy.nvim のブートストラップ、`lua/config/` と `lua/plugins/` の読み込み
 - `lua/config/options.lua` — エディタ設定(2スペースインデント、スマートケース検索、macOS クリップボード連携など)
@@ -35,6 +35,6 @@ ln -sf ~/dotfiles/.config/wezterm ~/.config/wezterm
 
 ## WezTerm 設定
 
-`.config/wezterm/` 以下の構成:
+`wezterm/` 以下の構成:
 
 - `wezterm.lua` — メイン設定ファイル（ウィンドウサイズ、フォントサイズ、カラースキームなど）
