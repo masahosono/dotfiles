@@ -17,6 +17,10 @@ config.initial_rows = 28
 config.window_background_opacity = 0.88
 config.macos_window_background_blur = 25
 config.native_macos_fullscreen_mode = true
+config.inactive_pane_hsb = {
+  saturation = 0.9,
+  brightness = 0.4,
+}
 
 -- ============================================================
 -- フォント
