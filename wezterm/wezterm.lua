@@ -3,6 +3,11 @@ local config = wezterm.config_builder()
 local act = wezterm.action
 
 -- ============================================================
+-- 一般
+-- ============================================================
+config.default_cwd = wezterm.home_dir
+
+-- ============================================================
 -- ウィンドウ
 -- ============================================================
 config.initial_cols = 120
@@ -30,9 +35,11 @@ config.color_scheme = 'GruvboxDarkHard'
 -- キーバインド
 -- ============================================================
 config.keys = {
+  -- Cmd+t: 新しいタブをホームディレクトリで開く
+  { key = 't', mods = 'SUPER', action = act.SpawnCommandInNewTab { cwd = wezterm.home_dir } },
   -- Cmd+d: 右に分割, Cmd+Shift+d: 下に分割
-  { key = 'd', mods = 'SUPER', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-  { key = 'd', mods = 'SUPER|SHIFT', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+  { key = 'd', mods = 'SUPER', action = act.SplitHorizontal { cwd = wezterm.home_dir } },
+  { key = 'd', mods = 'SUPER|SHIFT', action = act.SplitVertical { cwd = wezterm.home_dir } },
   -- Cmd+[ / Cmd+]: ペイン間移動
   { key = '[', mods = 'SUPER', action = act.ActivatePaneDirection 'Prev' },
   { key = ']', mods = 'SUPER', action = act.ActivatePaneDirection 'Next' },
