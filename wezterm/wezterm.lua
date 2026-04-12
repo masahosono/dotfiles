@@ -6,14 +6,16 @@ local act = wezterm.action
 -- 一般
 -- ============================================================
 config.default_cwd = wezterm.home_dir
+config.window_close_confirmation = 'NeverPrompt'
+config.scrollback_lines = 100000
 
 -- ============================================================
 -- ウィンドウ
 -- ============================================================
 config.initial_cols = 120
 config.initial_rows = 28
-config.window_background_opacity = 0.85
-config.macos_window_background_blur = 20
+config.window_background_opacity = 0.88
+config.macos_window_background_blur = 25
 config.native_macos_fullscreen_mode = true
 
 -- ============================================================
@@ -44,6 +46,8 @@ config.keys = {
   -- Cmd+[ / Cmd+]: ペイン間移動
   { key = '[', mods = 'SUPER', action = act.ActivatePaneDirection 'Prev' },
   { key = ']', mods = 'SUPER', action = act.ActivatePaneDirection 'Next' },
+  -- Cmd+w: 確認なしでペインを閉じる
+  { key = 'w', mods = 'SUPER', action = act.CloseCurrentPane { confirm = false } },
   -- Cmd+Enter: 全画面切り替え
   { key = 'Enter', mods = 'SUPER', action = act.ToggleFullScreen },
 }
@@ -51,6 +55,8 @@ config.keys = {
 -- ============================================================
 -- タブ表示
 -- ============================================================
+config.show_new_tab_button_in_tab_bar = false
+config.show_close_tab_button_in_tabs = false
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
   local background = '#5c6d74'
   local foreground = '#FFFFFF'
