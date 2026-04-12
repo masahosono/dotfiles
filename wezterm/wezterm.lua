@@ -12,8 +12,8 @@ config.scrollback_lines = 100000
 -- ============================================================
 -- ウィンドウ
 -- ============================================================
-config.initial_cols = 120
-config.initial_rows = 28
+config.initial_cols = 240
+config.initial_rows = 56
 config.window_background_opacity = 0.88
 config.macos_window_background_blur = 25
 config.native_macos_fullscreen_mode = true
@@ -29,7 +29,7 @@ config.font = wezterm.font_with_fallback {
   'Menlo',
   'ヒラギノ角ゴシック',
 }
-config.font_size = 12
+config.font_size = 14
 config.use_ime = true
 config.macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL'
 
