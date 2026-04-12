@@ -25,6 +25,7 @@ config.font = wezterm.font_with_fallback {
 }
 config.font_size = 12
 config.use_ime = true
+config.macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL'
 
 -- ============================================================
 -- 配色
