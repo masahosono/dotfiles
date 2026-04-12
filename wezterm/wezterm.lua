@@ -57,22 +57,52 @@ config.keys = {
 -- ============================================================
 config.show_new_tab_button_in_tab_bar = false
 config.show_close_tab_button_in_tabs = false
-wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
-  local background = '#5c6d74'
-  local foreground = '#FFFFFF'
+config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = false
+config.tab_max_width = 32
 
+local TAB_BAR_BG = '#1d2021'
+local ACTIVE_BG = '#ae8b2d'
+local ACTIVE_FG = '#1d2021'
+local INACTIVE_BG = '#3c3836'
+local INACTIVE_FG = '#a89984'
+local HOVER_BG = '#504945'
+local HOVER_FG = '#ebdbb2'
+
+local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
+local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
+
+wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
+  local bg = INACTIVE_BG
+  local fg = INACTIVE_FG
   if tab.is_active then
-    background = '#ae8b2d'
-    foreground = '#FFFFFF'
+    bg = ACTIVE_BG
+    fg = ACTIVE_FG
+  elseif hover then
+    bg = HOVER_BG
+    fg = HOVER_FG
   end
 
-  local title = '   ' .. wezterm.truncate_right(tab.active_pane.title, max_width - 1) .. '   '
+  local index = tab.tab_index + 1
+  local title = tab.active_pane.title
+  local label = ' ' .. index .. ': ' .. wezterm.truncate_right(title, max_width - 6) .. ' '
 
   return {
-    { Background = { Color = background } },
-    { Foreground = { Color = foreground } },
-    { Text = title },
+    { Background = { Color = TAB_BAR_BG } },
+    { Foreground = { Color = bg } },
+    { Text = SOLID_LEFT_ARROW },
+    { Background = { Color = bg } },
+    { Foreground = { Color = fg } },
+    { Text = label },
+    { Background = { Color = TAB_BAR_BG } },
+    { Foreground = { Color = bg } },
+    { Text = SOLID_RIGHT_ARROW },
   }
 end)
 
+config.colors = {
+  tab_bar = {
+    background = TAB_BAR_BG,
+  },
+}
 return config
