@@ -88,7 +88,17 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
   end
 
   local index = tab.tab_index + 1
-  local title = tab.active_pane.title
+  local cwd_uri = tab.active_pane.current_working_dir
+  local title
+  if cwd_uri then
+    local path = cwd_uri.file_path or ''
+    title = path:match('([^/]+)/?$') or path
+    if title == wezterm.home_dir:match('([^/]+)/?$') then
+      title = '~'
+    end
+  else
+    title = tab.active_pane.title
+  end
   local label = ' ' .. index .. ': ' .. wezterm.truncate_right(title, max_width - 6) .. ' '
 
   return {
