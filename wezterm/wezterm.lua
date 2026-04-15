@@ -12,10 +12,10 @@ config.scrollback_lines = 100000
 -- ============================================================
 -- ウィンドウ
 -- ============================================================
-config.initial_cols = 240
-config.initial_rows = 56
-config.window_background_opacity = 0.88
-config.macos_window_background_blur = 25
+config.initial_cols = 180
+config.initial_rows = 42
+config.window_background_opacity = 0.80
+config.macos_window_background_blur = 15
 config.native_macos_fullscreen_mode = true
 config.inactive_pane_hsb = {
   saturation = 0.9,
@@ -29,7 +29,7 @@ config.font = wezterm.font_with_fallback {
   'Menlo',
   'ヒラギノ角ゴシック',
 }
-config.font_size = 14
+config.font_size = 12
 config.use_ime = true
 config.macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL'
 
@@ -44,9 +44,9 @@ config.color_scheme = 'GruvboxDarkHard'
 config.keys = {
   -- Cmd+t: 新しいタブをホームディレクトリで開く
   { key = 't', mods = 'SUPER', action = act.SpawnCommandInNewTab { cwd = wezterm.home_dir } },
-  -- Cmd+d: 右に分割, Cmd+Shift+d: 下に分割
-  { key = 'd', mods = 'SUPER', action = act.SplitHorizontal { cwd = wezterm.home_dir } },
-  { key = 'd', mods = 'SUPER|SHIFT', action = act.SplitVertical { cwd = wezterm.home_dir } },
+  -- Cmd+d: 右に分割, Cmd+Shift+d: 下に分割 (カレントディレクトリを引き継ぐ)
+  { key = 'd', mods = 'SUPER', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+  { key = 'd', mods = 'SUPER|SHIFT', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
   -- Cmd+[ / Cmd+]: ペイン間移動
   { key = '[', mods = 'SUPER', action = act.ActivatePaneDirection 'Prev' },
   { key = ']', mods = 'SUPER', action = act.ActivatePaneDirection 'Next' },
@@ -65,7 +65,7 @@ config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = false
 config.tab_max_width = 32
 
-local TAB_BAR_BG = '#1d2021'
+local TAB_BAR_BG = '#0a0f1f'
 local ACTIVE_BG = '#ae8b2d'
 local ACTIVE_FG = '#1d2021'
 local INACTIVE_BG = '#3c3836'
@@ -115,6 +115,7 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
 end)
 
 config.colors = {
+  background = '#0f1629',
   tab_bar = {
     background = TAB_BAR_BG,
   },
