@@ -6,8 +6,16 @@ local act = wezterm.action
 -- 一般
 -- ============================================================
 config.default_cwd = wezterm.home_dir
-config.window_close_confirmation = 'NeverPrompt'
+config.window_close_confirmation = 'AlwaysPrompt'
 config.scrollback_lines = 100000
+
+-- ============================================================
+-- レンダラ
+-- ============================================================
+-- macOS のスリープ復帰時に NSOpenGLContext 経由でクラッシュする既知の問題を
+-- 回避するため Metal(WebGpu)バックエンドを使用する
+config.front_end = 'WebGpu'
+config.webgpu_power_preference = 'LowPower'
 
 -- ============================================================
 -- ウィンドウ
