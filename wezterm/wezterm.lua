@@ -62,6 +62,8 @@ config.keys = {
   { key = 'w', mods = 'SUPER', action = act.CloseCurrentPane { confirm = false } },
   -- Cmd+Enter: 全画面切り替え
   { key = 'Enter', mods = 'SUPER', action = act.ToggleFullScreen },
+  -- Cmd+k: 画面とスクロールバックをクリア
+  { key = 'k', mods = 'SUPER', action = act.ClearScrollback 'ScrollbackAndViewport' },
 }
 
 -- ============================================================
