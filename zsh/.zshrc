@@ -41,6 +41,7 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-clou
 
 # エイリアス
 alias c='claude'
+alias cl='clear'
 
 # Kiro シェル統合
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
