@@ -126,6 +126,15 @@ end)
 
 config.colors = {
   background = '#0f1629',
+  -- Gruvbox の yellow は緑寄りで green と判別しづらいため orange に差し替える
+  ansi = {
+    '#1d2021', '#cc241d', '#98971a', '#fe8019',
+    '#458588', '#b16286', '#689d6a', '#a89984',
+  },
+  brights = {
+    '#928374', '#fb4934', '#b8bb26', '#fe8019',
+    '#83a598', '#d3869b', '#8ec07c', '#ebdbb2',
+  },
   tab_bar = {
     background = TAB_BAR_BG,
   },
