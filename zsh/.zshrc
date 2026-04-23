@@ -1,6 +1,3 @@
-# Kiro CLI pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
-
 # 補完
 autoload -Uz compinit
 compinit
@@ -43,12 +40,9 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-clou
 alias c='claude'
 alias cl='clear'
 
-# Kiro シェル統合
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+# inshellisense（コマンド仕様ベースのインライン補完）
+[[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
 
 # 秘密情報の読み込み
 ZSHSECRET="$(dirname "$(readlink ~/.zshrc || echo ~/.zshrc)")/.zshsecret"
 [[ -f "$ZSHSECRET" ]] && source "$ZSHSECRET"
-
-# Kiro CLI post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
