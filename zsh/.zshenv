@@ -9,6 +9,8 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 # Volta
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+# 親プロセスから継承されてVolta pinが無視されるのを防ぐ
+unset _VOLTA_TOOL_RECURSION
 
 # Slack
 export PATH="$HOME/slack/bin:$PATH"
