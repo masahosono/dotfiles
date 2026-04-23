@@ -58,6 +58,9 @@ config.keys = {
   -- Cmd+[ / Cmd+]: ペイン間移動
   { key = '[', mods = 'SUPER', action = act.ActivatePaneDirection 'Prev' },
   { key = ']', mods = 'SUPER', action = act.ActivatePaneDirection 'Next' },
+  -- Cmd+Shift+[ / Cmd+Shift+]: 現在のタブを左/右に移動
+  { key = '[', mods = 'SUPER|SHIFT', action = act.MoveTabRelative(-1) },
+  { key = ']', mods = 'SUPER|SHIFT', action = act.MoveTabRelative(1) },
   -- Cmd+w: 確認なしでペインを閉じる
   { key = 'w', mods = 'SUPER', action = act.CloseCurrentPane { confirm = false } },
   -- Cmd+Enter: 全画面切り替え
