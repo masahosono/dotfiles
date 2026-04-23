@@ -4,7 +4,7 @@ compinit
 
 # プロンプト
 PROMPT='%F{245}%*%f %B%F{cyan}%~%f%b ${vcs_info_msg_0_}
-%B%F{green}>%f%b '
+%B%F{green}❯%f%b '
 
 # シェルオプション
 setopt auto_cd
