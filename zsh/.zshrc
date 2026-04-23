@@ -54,6 +54,7 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-clou
 # エイリアス
 alias c='claude'
 alias cl='clear'
+alias n='nvim'
 
 # inshellisense（コマンド仕様ベースのインライン補完）
 [[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
