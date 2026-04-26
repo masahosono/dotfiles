@@ -7,6 +7,7 @@
 - **Neovim** (`nvim/`) — lazy.nvim + gruvbox + telescope + neo-tree
 - **WezTerm** (`wezterm/`) — ターミナルエミュレータ設定
 - **zsh** (`zsh/`) — シェル設定（環境変数、プロンプト、エイリアス等）
+- **inshellisense** (`inshellisense/`) — シェル補完ツールの設定
 
 ## セットアップ
 
@@ -17,6 +18,7 @@ git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 # シンボリックリンクを作成
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
+ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
 ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
 
