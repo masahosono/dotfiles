@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人の dotfiles 管理リポジトリ。Neovim、WezTerm、zsh の設定を管理している。
+個人の dotfiles 管理リポジトリ。Neovim、WezTerm、zsh、inshellisense の設定を管理している。
 
 ## セットアップ
 
@@ -12,6 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
+ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
 ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
 # 秘密情報がある場合は zsh/.zshsecret を作成して記述
@@ -54,3 +55,9 @@ ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
 `wezterm/` 以下の構成:
 
 - `wezterm.lua` — メイン設定ファイル（ウィンドウサイズ、フォントサイズ、カラースキームなど）
+
+## inshellisense 設定
+
+`inshellisense/` 以下の構成:
+
+- `rc.toml` — inshellisense の設定ファイル（エイリアス利用、Nerd Font、補完候補数など）
