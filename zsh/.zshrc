@@ -27,7 +27,7 @@ zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr "%F{yellow}[!]"
 zstyle ':vcs_info:git:*' unstagedstr "%F{red}[+]"
 
-# 変更状態に応じてブランチ名の色を切り替える
+# 変更状態に応じてブランチ名の色を切り替え、GitHub リモートがある場合はリンクにする
 +vi-git-color() {
   local color
   if [[ -n ${hook_com[unstaged]} ]]; then
@@ -37,7 +37,25 @@ zstyle ':vcs_info:git:*' unstagedstr "%F{red}[+]"
   else
     color='green'
   fi
-  hook_com[branch]="%F{${color}} %B${hook_com[branch]}%b%f"
+
+  local branch="${hook_com[branch]}"
+  local url="" remote_url repo_path
+  remote_url=$(command git config --get remote.origin.url 2>/dev/null)
+  if [[ "$remote_url" == git@github.com:* ]]; then
+    repo_path="${remote_url#git@github.com:}"
+  elif [[ "$remote_url" == https://github.com/* ]]; then
+    repo_path="${remote_url#https://github.com/}"
+  fi
+  repo_path="${repo_path%.git}"
+  [[ -n "$repo_path" ]] && url="https://github.com/${repo_path}/tree/${branch}"
+
+  if [[ -n "$url" ]]; then
+    local link_start=$'\e]8;;'"${url}"$'\e\\'
+    local link_end=$'\e]8;;\e\\'
+    hook_com[branch]="%F{${color}} %{${link_start}%}%B${branch}%b%{${link_end}%}%f"
+  else
+    hook_com[branch]="%F{${color}} %B${branch}%b%f"
+  fi
 }
 zstyle ':vcs_info:git*+set-message:*' hooks git-color
 
