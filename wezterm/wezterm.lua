@@ -67,6 +67,8 @@ config.keys = {
   { key = 'Enter', mods = 'SUPER', action = act.ToggleFullScreen },
   -- Cmd+k: 画面とスクロールバックをクリア
   { key = 'k', mods = 'SUPER', action = act.ClearScrollback 'ScrollbackAndViewport' },
+  -- Cmd+y: コピーモード(yank)に入る
+  { key = 'y', mods = 'SUPER', action = act.ActivateCopyMode },
 }
 
 -- ============================================================
