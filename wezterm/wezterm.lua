@@ -81,7 +81,7 @@ config.tab_bar_at_bottom = false
 config.tab_max_width = 32
 
 local TAB_BAR_BG = '#0a0f1f'
-local ACTIVE_BG = '#ae8b2d'
+local ACTIVE_BG = '#fe8019'
 local ACTIVE_FG = '#1d2021'
 local INACTIVE_BG = '#3c3836'
 local INACTIVE_FG = '#a89984'
