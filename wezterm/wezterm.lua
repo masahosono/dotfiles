@@ -88,8 +88,8 @@ local INACTIVE_FG = '#a89984'
 local HOVER_BG = '#504945'
 local HOVER_FG = '#ebdbb2'
 
-local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
-local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
+local TAB_LEFT_EDGE = utf8.char(0xe0b6)
+local TAB_RIGHT_EDGE = utf8.char(0xe0b4)
 
 wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
   local bg = INACTIVE_BG
@@ -119,13 +119,13 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
   return {
     { Background = { Color = TAB_BAR_BG } },
     { Foreground = { Color = bg } },
-    { Text = SOLID_LEFT_ARROW },
+    { Text = TAB_LEFT_EDGE },
     { Background = { Color = bg } },
     { Foreground = { Color = fg } },
     { Text = label },
     { Background = { Color = TAB_BAR_BG } },
     { Foreground = { Color = bg } },
-    { Text = SOLID_RIGHT_ARROW },
+    { Text = TAB_RIGHT_EDGE },
   }
 end)
 
