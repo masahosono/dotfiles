@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人の dotfiles 管理リポジトリ。Neovim、WezTerm、zsh、inshellisense の設定を管理している。
+個人の dotfiles 管理リポジトリ。Neovim、WezTerm、zsh、inshellisense、Claude Code の設定を管理している。
 
 ## セットアップ
 
@@ -17,6 +17,9 @@ ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
 # .zshenv は環境依存のため git 管理外。例ファイルからコピーして利用する
 cp ~/dotfiles/zsh/.zshenv.example ~/dotfiles/zsh/.zshenv
 ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
+# Claude Code 設定
+mkdir -p ~/.claude
+ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
 # 秘密情報がある場合は zsh/.zshsecret を作成して記述
 ```
 
@@ -64,3 +67,11 @@ ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
 `inshellisense/` 以下の構成:
 
 - `rc.toml` — inshellisense の設定ファイル（エイリアス利用、Nerd Font、補完候補数など）
+
+## Claude Code 設定
+
+`claude/` 以下の構成:
+
+- `statusline.sh` — Claude Code のステータスライン用シェルスクリプト。`~/.claude/settings.json` の `statusLine.command` から `~/.claude/statusline.sh` 経由で参照される
+
+`~/.claude` 配下にはセッション履歴やキャッシュなど自動生成されるファイルが多いため、ディレクトリごとリンクせず、管理対象のファイル単位でシンボリックリンクを張る方針。
