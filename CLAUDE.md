@@ -13,8 +13,10 @@ git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
-ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
 ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
+# .zshenv は環境依存のため git 管理外。例ファイルからコピーして利用する
+cp ~/dotfiles/zsh/.zshenv.example ~/dotfiles/zsh/.zshenv
+ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
 # 秘密情報がある場合は zsh/.zshsecret を作成して記述
 ```
 
@@ -41,7 +43,8 @@ ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
 
 `zsh/` 以下の構成:
 
-- `.zshenv` — 環境変数・PATH の設定（すべてのシェルで読み込まれる）
+- `.zshenv` — 環境変数・PATH の設定（すべてのシェルで読み込まれる、環境依存のため `.gitignore` で除外）
+- `.zshenv.example` — `.zshenv` のテンプレート。新環境ではこれをコピーして利用する
 - `.zshrc` — 対話シェル用設定（プロンプト、補完、キーバインド、シェルオプション、エイリアス）
 - `.zshsecret` — 秘密情報（`.gitignore` で除外、Git 管理外）
 ### 秘密情報の管理
