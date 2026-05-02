@@ -23,7 +23,7 @@ opt.cursorline = true
 opt.scrolloff = 8
 opt.sidescrolloff = 8
 opt.wrap = false
-opt.shortmess:append("I")
+opt.shortmess:append("I") -- 起動時のイントロ画面を非表示
 
 -- ファイル
 opt.swapfile = false
