@@ -8,6 +8,7 @@
 - **WezTerm** (`wezterm/`) — ターミナルエミュレータ設定
 - **zsh** (`zsh/`) — シェル設定（環境変数、プロンプト、エイリアス等）
 - **inshellisense** (`inshellisense/`) — シェル補完ツールの設定
+- **Claude Code** (`claude/`) — Claude Code 関連の設定スクリプト
 
 ## セットアップ
 
@@ -21,6 +22,10 @@ ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
 ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
+
+# Claude Code 設定（~/.claude が存在しない場合は先に作成）
+mkdir -p ~/.claude
+ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
 
 # 秘密情報がある場合は zsh/.zshsecret を作成して記述
 ```
