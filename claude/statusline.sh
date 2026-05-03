@@ -18,7 +18,7 @@ BAR="${FILL// /█}${PAD// /░}"
 
 # Git
 BRANCH=""
-git rev-parse --git-dir > /dev/null 2>&1 && BRANCH=" | 🌿 $(git branch --show-current 2>/dev/null)"
+git rev-parse --git-dir > /dev/null 2>&1 && BRANCH=" | $(git branch --show-current 2>/dev/null)"
 
 # Cost
 COST_FMT=$(printf '$%.2f' "$COST")
@@ -40,13 +40,13 @@ if [ -n "$FIVE_H_PCT" ]; then
       RESET_H=$((DIFF / 3600))
       RESET_M=$(((DIFF % 3600) / 60))
       if [ "$RESET_H" -gt 0 ]; then
-        RESET_STR=" (リセット: ${RESET_H}h ${RESET_M}m後)"
+        RESET_STR=" (${RESET_H}h ${RESET_M}m)"
       else
-        RESET_STR=" (リセット: ${RESET_M}m後)"
+        RESET_STR=" (${RESET_M}m)"
       fi
     fi
   fi
-  RATE_LIMIT_STR="⏳ 5h: ${FIVE_H_PCT_INT}%${RESET_STR}"
+  RATE_LIMIT_STR="5h: ${FIVE_H_PCT_INT}%${RESET_STR}"
   if [ -n "$SEVEN_D_PCT" ]; then
     SEVEN_D_PCT_INT=$(printf '%.0f' "$SEVEN_D_PCT")
     SEVEN_D_RESET_STR=""
@@ -57,11 +57,11 @@ if [ -n "$FIVE_H_PCT" ]; then
         RESET7_H=$(((DIFF7 % 86400) / 3600))
         RESET7_M=$(((DIFF7 % 3600) / 60))
         if [ "$RESET7_D" -gt 0 ]; then
-          SEVEN_D_RESET_STR=" (リセット: ${RESET7_D}d ${RESET7_H}h後)"
+          SEVEN_D_RESET_STR=" (${RESET7_D}d ${RESET7_H}h)"
         elif [ "$RESET7_H" -gt 0 ]; then
-          SEVEN_D_RESET_STR=" (リセット: ${RESET7_H}h ${RESET7_M}m後)"
+          SEVEN_D_RESET_STR=" (${RESET7_H}h ${RESET7_M}m)"
         else
-          SEVEN_D_RESET_STR=" (リセット: ${RESET7_M}m後)"
+          SEVEN_D_RESET_STR=" (${RESET7_M}m)"
         fi
       fi
     fi
@@ -80,7 +80,7 @@ fi
 # Prompt
 printf '%b\n' "${CYAN}[$MODEL]${RESET} 📁 ${DIR_LINK}$BRANCH"
 if [ -n "$RATE_LIMIT_STR" ]; then
-  echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% | 💸 ${YELLOW}${COST_FMT}${RESET} | $RATE_LIMIT_STR"
+  echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET} | $RATE_LIMIT_STR"
 else
-  echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% | 💸 ${YELLOW}${COST_FMT}${RESET}"
+  echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET}"
 fi
