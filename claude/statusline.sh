@@ -18,8 +18,8 @@ printf -v FILL "%${FILLED}s"; printf -v PAD "%${EMPTY}s"
 BAR="${FILL// /█}${PAD// /░}"
 
 # Git
-BRANCH=""
-git rev-parse --git-dir > /dev/null 2>&1 && BRANCH=" ${SEP} $(git branch --show-current 2>/dev/null)"
+BRANCH_NAME=""
+git rev-parse --git-dir > /dev/null 2>&1 && BRANCH_NAME=$(git branch --show-current 2>/dev/null)
 
 # Cost
 COST_FMT=$(printf '$%.2f' "$COST")
@@ -70,12 +70,21 @@ if [ -n "$FIVE_H_PCT" ]; then
   fi
 fi
 
-# GitHub リポジトリへのクリック可能なリンク (OSC 8)
+# GitHub リポジトリ・ブランチへのクリック可能なリンク (OSC 8)
 REMOTE=$(git remote get-url origin 2>/dev/null | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')
 if [ -n "$REMOTE" ]; then
   DIR_LINK="\e]8;;${REMOTE}\a${DIR##*/}\e]8;;\a"
 else
   DIR_LINK="${DIR##*/}"
+fi
+
+BRANCH=""
+if [ -n "$BRANCH_NAME" ]; then
+  if [ -n "$REMOTE" ]; then
+    BRANCH=" ${SEP} \e]8;;${REMOTE}/tree/${BRANCH_NAME}\a${BRANCH_NAME}\e]8;;\a"
+  else
+    BRANCH=" ${SEP} ${BRANCH_NAME}"
+  fi
 fi
 
 # Prompt
