@@ -5,7 +5,8 @@ MODEL=$(echo "$input" | jq -r '.model.display_name')
 DIR=$(echo "$input" | jq -r '.workspace.current_dir')
 COST=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
-CYAN='\033[36m'; GREEN='\033[32m'; YELLOW='\033[33m'; RED='\033[31m'; RESET='\033[0m'
+CYAN='\033[36m'; GREEN='\033[32m'; YELLOW='\033[33m'; RED='\033[31m'; DIM='\033[2m'; RESET='\033[0m'
+SEP="${DIM}·${RESET}"
 
 # コンテキスト使用状況に基づいてバーの色を選択します
 if [ "$PCT" -ge 90 ]; then BAR_COLOR="$RED"
@@ -18,7 +19,7 @@ BAR="${FILL// /█}${PAD// /░}"
 
 # Git
 BRANCH=""
-git rev-parse --git-dir > /dev/null 2>&1 && BRANCH=" | $(git branch --show-current 2>/dev/null)"
+git rev-parse --git-dir > /dev/null 2>&1 && BRANCH=" ${SEP} $(git branch --show-current 2>/dev/null)"
 
 # Cost
 COST_FMT=$(printf '$%.2f' "$COST")
@@ -65,7 +66,7 @@ if [ -n "$FIVE_H_PCT" ]; then
         fi
       fi
     fi
-    RATE_LIMIT_STR="${RATE_LIMIT_STR} | 7d: ${SEVEN_D_PCT_INT}%${SEVEN_D_RESET_STR}"
+    RATE_LIMIT_STR="${RATE_LIMIT_STR} ${SEP} 7d: ${SEVEN_D_PCT_INT}%${SEVEN_D_RESET_STR}"
   fi
 fi
 
@@ -78,9 +79,9 @@ else
 fi
 
 # Prompt
-printf '%b\n' "${CYAN}[$MODEL]${RESET} 📁 ${DIR_LINK}$BRANCH"
+printf '%b\n' "${CYAN}[$MODEL]${RESET} ${SEP} ${DIR_LINK}$BRANCH"
 if [ -n "$RATE_LIMIT_STR" ]; then
-  echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET} | $RATE_LIMIT_STR"
+  echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% ${SEP} ${YELLOW}${COST_FMT}${RESET} ${SEP} $RATE_LIMIT_STR"
 else
-  echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET}"
+  echo -e "${BAR_COLOR}${BAR}${RESET} ${PCT}% ${SEP} ${YELLOW}${COST_FMT}${RESET}"
 fi
