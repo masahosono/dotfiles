@@ -101,7 +101,6 @@ HEADER="${HEADER} ${SEP} 📁 ${DIR_LINK}"
 if [ "$ADDED" -gt 0 ] || [ "$REMOVED" -gt 0 ]; then
   HEADER="${HEADER} ${SEP} ${DIFF_FMT}"
 fi
-HEADER="${HEADER} ${SEP} 🪙 ${YELLOW}${COST_FMT}${RESET}"
 
 printf '%b\n' "$HEADER"
 
@@ -109,7 +108,7 @@ printf '%b\n' "$HEADER"
 CTX_BAR=$(bar 15 "$CTX_PCT" "$(color_for_pct "$CTX_PCT")")
 EFFORT_LABEL=""
 [ -n "$EFFORT" ] && EFFORT_LABEL=" ${DIM}[${EFFORT}]${RESET}"
-printf '%b\n' "${DIM}Context:${RESET} ${CTX_BAR} ${DIM}[${CTX_PCT}%]${RESET}${EFFORT_LABEL}"
+printf '%b\n' "${DIM}Context:${RESET} ${CTX_BAR} ${DIM}[${CTX_PCT}%]${RESET}${EFFORT_LABEL} ${SEP} ${YELLOW}${COST_FMT}${RESET}"
 
 # === 3行目: Session (5h レートリミット) ===
 if [ -n "$FIVE_H_PCT" ]; then
