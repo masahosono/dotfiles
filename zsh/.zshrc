@@ -75,7 +75,16 @@ alias cl='clear'
 alias n='nvim'
 
 # inshellisense（コマンド仕様ベースのインライン補完）
-[[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
+# 本家 init.zsh は `is -s zsh ; exit` と書かれており is が失敗しても外側シェルが落ちる。
+# `&& exit` 版で自前展開し、is が起動できない時はそのまま通常プロンプトに落ちるようにする。
+if command -v is >/dev/null 2>&1 \
+   && [[ -z "${ISTERM}" && $- = *i* && $- != *c* && -z "${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
+  if [[ -o login ]]; then
+    is -s zsh --login && exit
+  else
+    is -s zsh && exit
+  fi
+fi
 
 # 秘密情報の読み込み
 ZSHSECRET="$(dirname "$(readlink ~/.zshrc || echo ~/.zshrc)")/.zshsecret"
