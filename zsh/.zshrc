@@ -74,9 +74,13 @@ alias c='claude'
 alias cl='clear'
 alias n='nvim'
 
-# inshellisense（コマンド仕様ベースのインライン補完）
-[[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
-
 # 秘密情報の読み込み
 ZSHSECRET="$(dirname "$(readlink ~/.zshrc || echo ~/.zshrc)")/.zshsecret"
 [[ -f "$ZSHSECRET" ]] && source "$ZSHSECRET"
+
+eval "$(~/.local/bin/mise activate zsh)"
+
+# inshellisense（コマンド仕様ベースのインライン補完）
+if command -v is > /dev/null 2>&1; then
+  eval "$(is init zsh)"
+fi
