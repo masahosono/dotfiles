@@ -1,12 +1,14 @@
 # dotfiles
 
+![dotfiles](assets/hero.png)
+
 個人の設定ファイル管理用リポジトリ
 
 ## 含まれる設定
 
 - **Neovim** (`nvim/`) — lazy.nvim + gruvbox + telescope + neo-tree
 - **WezTerm** (`wezterm/`) — ターミナルエミュレータ設定
-- **zsh** (`zsh/`) — シェル設定（環境変数、プロンプト、エイリアス等）
+- **zsh** (`zsh/`) — プロンプト表示部分のみ（`prompt.zsh`）。`~/.zshrc` 本体は環境ごとに各自作成し、本ファイルを source する
 - **inshellisense** (`inshellisense/`) — シェル補完ツールの設定
 - **Claude Code** (`claude/`) — Claude Code 関連の設定スクリプト
 
@@ -16,16 +18,16 @@
 # リポジトリをクローン
 git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 
-# シンボリックリンクを作成
+# シンボリックリンクを作成（zsh はリンクしない）
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
-ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
-ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
+
+# ~/.zshrc は環境ごとに各自作成し、末尾あたりで以下を追記する
+#   source ~/dotfiles/zsh/prompt.zsh
+# 補完・キーバインド・エイリアス・PATH などの環境依存設定は各自の ~/.zshrc に書く
 
 # Claude Code 設定（~/.claude が存在しない場合は先に作成）
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
-
-# 秘密情報がある場合は zsh/.zshsecret を作成して記述
 ```
