@@ -19,6 +19,8 @@ SAVEHIST=100000
 # キーバインド
 bindkey "^P" history-beginning-search-backward
 bindkey "^N" history-beginning-search-forward
+# Ctrl+L の clear-screen を無効化
+bindkey -r "^L"
 
 # Git ブランチ表示
 autoload -Uz vcs_info
