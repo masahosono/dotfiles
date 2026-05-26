@@ -1,6 +1,6 @@
-# dotfiles
+![dotfiles](assets/dotfiles.png)
 
-![dotfiles](assets/hero.png)
+# dotfiles
 
 個人の設定ファイル管理用リポジトリ
 
