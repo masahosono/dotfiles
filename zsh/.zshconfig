@@ -1,0 +1,22 @@
+# 補完
+autoload -Uz compinit
+compinit
+
+# シェルオプション
+setopt auto_cd
+setopt auto_pushd
+setopt correct
+
+# ヒストリー
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+
+# キーバインド
+bindkey "^P" history-beginning-search-backward
+bindkey "^N" history-beginning-search-forward
+# Ctrl+L の clear-screen を無効化
+bindkey -r "^L"
+
+# TIMEFMT
+TIMEFMT=$'\n\n========================\nProgram : %J\nCPU     : %P\nuser    : %*Us\nsystem  : %*Ss\ntotal   : %*Es\n========================\n'

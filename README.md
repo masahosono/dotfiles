@@ -8,7 +8,7 @@
 
 - **Neovim** (`nvim/`) — lazy.nvim + gruvbox + telescope + neo-tree
 - **WezTerm** (`wezterm/`) — ターミナルエミュレータ設定
-- **zsh** (`zsh/`) — プロンプト表示部分のみ（`prompt.zsh`）。`~/.zshrc` 本体は環境ごとに各自作成し、本ファイルを source する
+- **zsh** (`zsh/`) — 汎用設定 (`.zshconfig`) とプロンプト表示 (`.zshprompt`) のみ。`~/.zshrc` 本体は環境ごとに各自作成し、これらを source する
 - **inshellisense** (`inshellisense/`) — シェル補完ツールの設定
 - **Claude Code** (`claude/`) — Claude Code 関連の設定スクリプト
 
@@ -18,14 +18,17 @@
 # リポジトリをクローン
 git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 
-# シンボリックリンクを作成（zsh はリンクしない）
+# シンボリックリンクを作成
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
+ln -sf ~/dotfiles/zsh/.zshconfig ~/.zshconfig
+ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt
 
-# ~/.zshrc は環境ごとに各自作成し、末尾あたりで以下を追記する
-#   source ~/dotfiles/zsh/prompt.zsh
-# 補完・キーバインド・エイリアス・PATH などの環境依存設定は各自の ~/.zshrc に書く
+# ~/.zshrc は環境ごとに各自作成し、末尾あたりで以下を追記する：
+#   [[ -f ~/.zshconfig ]] && source ~/.zshconfig
+#   [[ -f ~/.zshprompt ]] && source ~/.zshprompt
+# PATH・エイリアス等の環境依存設定は各自の ~/.zshrc に書く
 
 # Claude Code 設定（~/.claude が存在しない場合は先に作成）
 mkdir -p ~/.claude
