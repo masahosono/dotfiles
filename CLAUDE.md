@@ -18,8 +18,11 @@ ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt
 # ~/.zshrc は環境ごとに各自作成し、上記2ファイルを source する
 # PATH・エイリアス等の環境依存設定は ~/.zshrc に直接書く
 # Claude Code 設定
-mkdir -p ~/.claude
+mkdir -p ~/.claude/output-styles
 ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
+ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
+ln -sf ~/dotfiles/claude/output-styles/kurisu.md ~/.claude/output-styles/kurisu.md
 ```
 
 プラグインは Neovim 初回起動時に lazy.nvim が自動インストールする。
@@ -73,6 +76,9 @@ PATH 設定、エイリアスその他の環境依存設定は各自の `~/.zshr
 
 `claude/` 以下の構成:
 
-- `statusline.sh` — Claude Code のステータスライン用シェルスクリプト。`~/.claude/settings.json` の `statusLine.command` から `~/.claude/statusline.sh` 経由で参照される
+- `settings.json` — Claude Code のグローバル設定（permissions / model / hooks / statusLine 等）
+- `statusline.sh` — ステータスライン用シェルスクリプト。`settings.json` の `statusLine.command` から参照される
+- `notify.sh` — 通知用シェルスクリプト。`settings.json` の `hooks.Notification` / `hooks.Stop` から参照される
+- `output-styles/kurisu.md` — カスタム output style（牧瀬紅莉栖口調）
 
 `~/.claude` 配下にはセッション履歴やキャッシュなど自動生成されるファイルが多いため、ディレクトリごとリンクせず、管理対象のファイル単位でシンボリックリンクを張る方針。

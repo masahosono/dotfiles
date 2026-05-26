@@ -31,6 +31,9 @@ ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt
 # PATH・エイリアス等の環境依存設定は各自の ~/.zshrc に書く
 
 # Claude Code 設定（~/.claude が存在しない場合は先に作成）
-mkdir -p ~/.claude
+mkdir -p ~/.claude/output-styles
 ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
+ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
+ln -sf ~/dotfiles/claude/output-styles/kurisu.md ~/.claude/output-styles/kurisu.md
 ```
