@@ -43,28 +43,3 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-color
 zstyle ':vcs_info:*' formats "%F{250}on%f %b%c%u"
 zstyle ':vcs_info:*' actionformats '[%b|%a]'
 precmd () { vcs_info }
-<<<<<<< HEAD:zsh/.zshprompt
-=======
-
-# TIMEFMT
-TIMEFMT=$'\n\n========================\nProgram : %J\nCPU     : %P\nuser    : %*Us\nsystem  : %*Ss\ntotal   : %*Es\n========================\n'
-
-# Google Cloud SDK completion
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
-
-# エイリアス
-alias c='claude'
-alias cl='clear'
-alias n='nvim'
-
-# 秘密情報の読み込み
-ZSHSECRET="$(dirname "$(readlink ~/.zshrc || echo ~/.zshrc)")/.zshsecret"
-[[ -f "$ZSHSECRET" ]] && source "$ZSHSECRET"
-
-eval "$(~/.local/bin/mise activate zsh)"
-
-# inshellisense（コマンド仕様ベースのインライン補完）
-if command -v is > /dev/null 2>&1; then
-  eval "$(is init zsh)"
-fi
->>>>>>> 0f4f3aad7742eeeac8ed79bc7b2208c54c46e5a5:zsh/.zshrc
