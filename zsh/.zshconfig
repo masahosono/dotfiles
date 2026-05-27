@@ -36,3 +36,8 @@ bindkey -r "^L"
 
 # TIMEFMT
 TIMEFMT=$'\n\n========================\nProgram : %J\nCPU     : %P\nuser    : %*Us\nsystem  : %*Ss\ntotal   : %*Es\n========================\n'
+
+# 作業ディレクトリを端末へ通知 (OSC 7)
+autoload -Uz add-zsh-hook
+__osc7_cwd() { printf '\e]7;file://%s%s\e\\' "$HOST" "${PWD// /%20}" }
+add-zsh-hook precmd __osc7_cwd

@@ -91,6 +91,18 @@ local HOVER_FG = '#ebdbb2'
 local TAB_LEFT_EDGE = utf8.char(0xe0b6)
 local TAB_RIGHT_EDGE = utf8.char(0xe0b4)
 
+-- cwd(Url オブジェクト or file:// 文字列)からディレクトリ名を取り出す。
+-- cwd はシェルが OSC 7 で通知するもの(zsh/.zshconfig 参照)。
+local function cwd_dir_name(cwd)
+  if not cwd then return nil end
+  local path = type(cwd) == 'string' and cwd or cwd.file_path
+  if not path then return nil end
+  path = path:gsub('^file://[^/]*', '') -- 文字列形式なら file://host を除去
+  path = path:gsub('/+$', '')           -- 末尾スラッシュを除去
+  if path == '' or path == wezterm.home_dir then return '~' end
+  return path:match('([^/]+)$') or path
+end
+
 wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
   local bg = INACTIVE_BG
   local fg = INACTIVE_FG
@@ -103,17 +115,7 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
   end
 
   local index = tab.tab_index + 1
-  local cwd_uri = tab.active_pane.current_working_dir
-  local title
-  if cwd_uri then
-    local path = cwd_uri.file_path or ''
-    title = path:match('([^/]+)/?$') or path
-    if title == wezterm.home_dir:match('([^/]+)/?$') then
-      title = '~'
-    end
-  else
-    title = tab.active_pane.title
-  end
+  local title = cwd_dir_name(tab.active_pane.current_working_dir) or tab.active_pane.title
   local label = ' ' .. index .. ': ' .. wezterm.truncate_right(title, max_width - 6) .. ' '
 
   return {
