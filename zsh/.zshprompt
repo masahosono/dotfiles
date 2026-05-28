@@ -33,9 +33,9 @@ zstyle ':vcs_info:git:*' unstagedstr "%F{red}[+]"
   if [[ -n "$url" ]]; then
     local link_start=$'\e]8;;'"${url}"$'\e\\'
     local link_end=$'\e]8;;\e\\'
-    hook_com[branch]="%F{${color}} %{${link_start}%}%B${branch}%b%{${link_end}%}%f"
+    hook_com[branch]="%F{${color}}%{${link_start}%}%B${branch}%b%{${link_end}%}%f"
   else
-    hook_com[branch]="%F{${color}} %B${branch}%b%f"
+    hook_com[branch]="%F{${color}}%B${branch}%b%f"
   fi
 }
 zstyle ':vcs_info:git*+set-message:*' hooks git-color
