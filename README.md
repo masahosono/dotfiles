@@ -37,3 +37,7 @@ ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
 ln -sf ~/dotfiles/claude/output-styles/kurisu.md ~/.claude/output-styles/kurisu.md
 ```
+
+## ライセンス
+
+[MIT License](LICENSE)
