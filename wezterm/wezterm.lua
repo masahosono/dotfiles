@@ -42,6 +42,15 @@ config.use_ime = true
 config.macos_forward_to_ime_modifier_mask = 'SHIFT|CTRL'
 
 -- ============================================================
+-- カーソル
+-- ============================================================
+-- 点滅ブロック。点滅周期(ms)。フェード演出は WebGpu バックエンドで有効
+config.default_cursor_style = 'BlinkingBlock'
+config.cursor_blink_rate = 600
+config.cursor_blink_ease_in = 'EaseOut'
+config.cursor_blink_ease_out = 'EaseOut'
+
+-- ============================================================
 -- 配色
 -- ============================================================
 config.color_scheme = 'GruvboxDarkHard'
