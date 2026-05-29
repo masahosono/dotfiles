@@ -57,11 +57,12 @@
     "command": "~/.claude/statusline.sh"
   },
   "enabledPlugins": {},
+  "effortLevel": "xhigh",
   "tui": "default",
-  "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
   "voice": {
     "enabled": true,
     "mode": "hold"
-  }
+  },
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }
