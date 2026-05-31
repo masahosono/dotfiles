@@ -1,5 +1,6 @@
 {
   "permissions": {
+    "defaultMode": "auto",
     "allow": [
       "Bash(grep '\\\\.ts$')",
       "Bash(npm run *)",
@@ -36,7 +37,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/notify.sh notification"
+            "command": "~/.claude/notify.sh notification",
+            "async": true
           }
         ]
       }
@@ -46,7 +48,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/notify.sh stop"
+            "command": "~/.claude/notify.sh stop",
+            "async": true
           }
         ]
       }
@@ -56,13 +59,16 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
-  "enabledPlugins": {},
+  "language": "Japanese",
   "effortLevel": "xhigh",
-  "tui": "default",
   "voice": {
     "enabled": true,
     "mode": "hold"
   },
+  "theme": "dark-daltonized",
+  "agentPushNotifEnabled": true,
+  "voiceEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "enabledPlugins": {},
+  "tui": "default"
 }
