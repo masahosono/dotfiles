@@ -29,7 +29,6 @@
       "type": "registry",
     },
   },
-  "base_keymap": "VSCode",
   "ui_font_size": 16,
   "buffer_font_size": 15,
   "theme": {
@@ -47,7 +46,6 @@
   "project_panel": {
     "dock": "left",
   },
-  // WezTerm 側 (wezterm/wezterm.lua の config.colors) と ANSI 16色・背景を揃える
   "experimental.theme_overrides": {
     "terminal.background": "#0f1629",
     "terminal.ansi.black": "#1d2021",
