@@ -41,7 +41,6 @@
     "file_icons": true,
     "git_status": true,
   },
-  "buffer_font_fallbacks": ["Noto Sans JP"],
   "buffer_font_weight": 400,
   "buffer_line_height": "comfortable",
   "show_whitespaces": "all",
