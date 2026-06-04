@@ -8,7 +8,7 @@
 
 - **Neovim** (`nvim/`) — lazy.nvim + gruvbox + telescope + neo-tree
 - **WezTerm** (`wezterm/`) — ターミナルエミュレータ設定
-- **Zed** (`zed/`) — Zed エディタの `settings.json`
+- **Zed** (`zed/`) — Zed エディタの `settings.json` / `keymap.json`
 - **zsh** (`zsh/`) — 汎用設定 (`.zshconfig`) とプロンプト表示 (`.zshprompt`) のみ。`~/.zshrc` 本体は環境ごとに各自作成し、これらを source する
 - **inshellisense** (`inshellisense/`) — シェル補完ツールの設定
 - **Claude Code** (`claude/`) — Claude Code 関連の設定スクリプト
@@ -27,6 +27,7 @@ ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 # Zed 設定（~/.config/zed が存在しない場合は先に作成）
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
+ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
 
 ln -sf ~/dotfiles/zsh/.zshconfig ~/.zshconfig
 ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt

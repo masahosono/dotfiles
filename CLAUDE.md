@@ -15,6 +15,7 @@ ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
+ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
 ln -sf ~/dotfiles/zsh/.zshconfig ~/.zshconfig
 ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt
 # ~/.zshrc は環境ごとに各自作成し、上記2ファイルを source する
@@ -72,9 +73,10 @@ PATH 設定、エイリアスその他の環境依存設定は各自の `~/.zshr
 
 `zed/` 以下の構成:
 
-- `settings.json` — Zed エディタの設定ファイル（テーマ、フォント、キーマップ、ターミナル、エージェント等）
+- `settings.json` — Zed エディタの設定ファイル（テーマ、フォント、ターミナル、エージェント等）
+- `keymap.json` — キーバインド定義
 
-`~/.config/zed` 配下には `prompts/`（内部 DB）など自動生成されるファイルがあるため、ディレクトリごとリンクせず `settings.json` 単体でシンボリックリンクを張る方針。
+`~/.config/zed` 配下には `prompts/`（内部 DB）など自動生成されるファイルがあるため、ディレクトリごとリンクせず管理対象のファイル単位でシンボリックリンクを張る方針。
 
 ## inshellisense 設定
 
