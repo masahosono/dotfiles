@@ -31,6 +31,14 @@
       "cmd-2": "git_panel::Toggle",
     },
   },
+  // macOS のシステムウィンドウタブ切り替え。
+  // settings.json の use_system_window_tabs: true と対で機能する。
+  {
+    "bindings": {
+      "cmd-`": "window::ShowNextWindowTab",
+      "cmd-shift-`": "window::ShowPreviousWindowTab",
+    },
+  },
   // ターミナル内での分割とペイン移動
   // - cmd+d         : 右に分割
   // - cmd+shift+d   : 下に分割
