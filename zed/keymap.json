@@ -6,16 +6,23 @@
 // To see the default key bindings run `zed: open default keymap`
 // from the command palette.
 [
+  // Cursor のキーマップに合わせたパネル切り替え
   {
     "context": "Workspace",
     "bindings": {
-      // "shift shift": "file_finder::Toggle"
+      "cmd-i": "agent::ToggleFocus",
+      "cmd-1": "project_panel::ToggleFocus",
+      "cmd-2": "git_panel::ToggleFocus",
+      "cmd-3": "workspace::ToggleBottomDock",
+      "cmd-4": "workspace::ToggleRightDock",
+      "cmd-5": "workspace::ToggleLeftDock",
     },
   },
+  // ターミナル内での分割（Cursor の cmd+d 相当）
   {
-    "context": "Editor && vim_mode == insert",
+    "context": "Terminal",
     "bindings": {
-      // "j k": "vim::NormalBefore"
+      "cmd-d": "pane::SplitRight",
     },
   },
 ]
