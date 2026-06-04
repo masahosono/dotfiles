@@ -1,0 +1,54 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Material Icon Theme",
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "session": {
+    "trust_all_worktrees": true,
+  },
+  "terminal": {
+    "max_scroll_history_lines": 1000000,
+    "dock": "right",
+  },
+  "use_system_window_tabs": true,
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry",
+    },
+  },
+  "base_keymap": "VSCode",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "dark",
+    "light": "Ayu Light",
+    "dark": "Ayu Dark",
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+  },
+  "buffer_font_fallbacks": ["Noto Sans JP"],
+  "buffer_font_weight": 400,
+  "buffer_line_height": "comfortable",
+  "show_whitespaces": "all",
+  "project_panel": {
+    "dock": "left",
+  },
+  "terminal_panel": {
+    "dock": "right",
+  },
+}

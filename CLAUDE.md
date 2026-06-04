@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人の dotfiles 管理リポジトリ。Neovim、WezTerm、zsh、inshellisense、Claude Code の設定を管理している。
+個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Zed、zsh、inshellisense、Claude Code の設定を管理している。
 
 ## セットアップ
 
@@ -13,6 +13,8 @@ git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
+mkdir -p ~/.config/zed
+ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
 ln -sf ~/dotfiles/zsh/.zshconfig ~/.zshconfig
 ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt
 # ~/.zshrc は環境ごとに各自作成し、上記2ファイルを source する
@@ -65,6 +67,14 @@ PATH 設定、エイリアスその他の環境依存設定は各自の `~/.zshr
 `wezterm/` 以下の構成:
 
 - `wezterm.lua` — メイン設定ファイル（ウィンドウサイズ、フォントサイズ、カラースキームなど）
+
+## Zed 設定
+
+`zed/` 以下の構成:
+
+- `settings.json` — Zed エディタの設定ファイル（テーマ、フォント、キーマップ、ターミナル、エージェント等）
+
+`~/.config/zed` 配下には `prompts/`（内部 DB）など自動生成されるファイルがあるため、ディレクトリごとリンクせず `settings.json` 単体でシンボリックリンクを張る方針。
 
 ## inshellisense 設定
 
