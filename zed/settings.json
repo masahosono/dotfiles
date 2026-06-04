@@ -7,56 +7,91 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "icon_theme": {
-    "mode": "dark",
-    "light": "Zed (Default)",
-    "dark": "Material Icon Theme",
-  },
-  "telemetry": {
-    "diagnostics": false,
-    "metrics": false,
-  },
-  "session": {
-    "trust_all_worktrees": true,
-  },
-  "terminal": {
-    "max_scroll_history_lines": 1000000,
-    "dock": "right",
-  },
-  "use_system_window_tabs": true,
-  "agent_servers": {
-    "claude-acp": {
-      "type": "registry",
-    },
-  },
-  "ui_font_size": 16,
-  "buffer_font_size": 15,
+  // ===== 外観 (テーマ・アイコン) =====
+  // エディタのカラーテーマ。OS のダーク/ライトモードに追従
   "theme": {
     "mode": "dark",
     "light": "Ayu Light",
     "dark": "Ayu Dark",
   },
+  // ファイルツリー等で使うアイコンテーマ
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Material Icon Theme",
+  },
+
+  // ===== フォント =====
+  // UI 全体のフォントサイズ (サイドバー・コマンドパレット等)
+  "ui_font_size": 16,
+  // エディタ本文のフォントサイズ
+  "buffer_font_size": 15,
+  // エディタ本文のフォントウェイト (400 = Regular)
+  "buffer_font_weight": 400,
+  // エディタの行間 (standard / comfortable / custom)
+  "buffer_line_height": "comfortable",
+
+  // ===== エディタ表示 =====
+  // 空白文字 (スペース・タブ) を常時可視化
+  "show_whitespaces": "all",
+  // タブにファイルアイコンと Git ステータスを表示
   "tabs": {
     "file_icons": true,
     "git_status": true,
   },
-  "buffer_font_weight": 400,
-  "buffer_line_height": "comfortable",
-  "show_whitespaces": "all",
+
+  // ===== ウィンドウ =====
+  // macOS のシステムウィンドウタブを使用 (cmd-` で切り替え可能)
+  "use_system_window_tabs": true,
+
+  // ===== パネル配置 =====
+  // プロジェクトツリーは左
   "project_panel": {
     "dock": "left",
   },
+  // Git パネルも左に集約
   "git_panel": {
     "dock": "left",
   },
+  // AI エージェントパネルは右
   "agent": {
     "dock": "right",
   },
+  // ターミナルも右に配置してエージェントと並べる
+  "terminal": {
+    "max_scroll_history_lines": 1000000,
+    "dock": "right",
+  },
+
+  // ===== Git =====
+  // 行ごとのインラインブレーム表示
   "git": {
     "inline_blame": {
       "enabled": true,
     },
   },
+
+  // ===== AI エージェント =====
+  // Claude Code を ACP (Agent Client Protocol) 経由で利用
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry",
+    },
+  },
+
+  // ===== プライバシー・セッション =====
+  // テレメトリ送信を無効化
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  // すべての worktree を自動信頼 (プロンプト省略)
+  "session": {
+    "trust_all_worktrees": true,
+  },
+
+  // ===== ターミナル配色 (Gruvbox 系) =====
+  // ANSI カラーをターミナル背景込みで上書き
   "experimental.theme_overrides": {
     "terminal.background": "#0f1629",
     "terminal.ansi.black": "#1d2021",
