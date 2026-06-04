@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Zed、zsh、inshellisense、Claude Code の設定を管理している。
+個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Zed、Cursor、zsh、inshellisense、Claude Code の設定を管理している。
 
 ## セットアップ
 
@@ -16,6 +16,9 @@ ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
 ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
+# Cursor (macOS。パスにスペースが含まれるため必ずクオートする)
+ln -sf ~/dotfiles/cursor/settings.json "$HOME/Library/Application Support/Cursor/User/settings.json"
+ln -sf ~/dotfiles/cursor/keybindings.json "$HOME/Library/Application Support/Cursor/User/keybindings.json"
 ln -sf ~/dotfiles/zsh/.zshconfig ~/.zshconfig
 ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt
 # ~/.zshrc は環境ごとに各自作成し、上記2ファイルを source する
@@ -77,6 +80,19 @@ PATH 設定、エイリアスその他の環境依存設定は各自の `~/.zshr
 - `keymap.json` — キーバインド定義
 
 `~/.config/zed` 配下には `prompts/`（内部 DB）など自動生成されるファイルがあるため、ディレクトリごとリンクせず管理対象のファイル単位でシンボリックリンクを張る方針。
+
+## Cursor 設定
+
+`cursor/` 以下の構成:
+
+- `settings.json` — Cursor のユーザー設定（テーマ、ターミナル、Cursor 固有のフラグ等）。VS Code フォークのため JSONC
+- `keybindings.json` — キーバインド定義（VS Code 互換）
+
+`~/Library/Application Support/Cursor/User/` 配下には `globalStorage/`・`History/`・`workspaceStorage/`・`snapshots/` などセッション履歴やキャッシュが含まれるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針。
+
+`~/.cursor/mcp.json` には API キーが含まれる可能性があるため dotfiles 管理対象外。拡張機能本体（`~/.cursor/extensions/`）もマシン依存・バイナリ込みで肥大化するため管理しない。
+
+macOS 限定パス。Linux なら `~/.config/Cursor/User/`、Windows なら `%APPDATA%\Cursor\User\` に差し替える必要がある。
 
 ## inshellisense 設定
 

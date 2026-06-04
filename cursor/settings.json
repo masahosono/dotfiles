@@ -1,0 +1,16 @@
+{
+    "window.commandCenter": true,
+    "window.nativeTabs": true,
+    "workbench.colorTheme": "Monokai",
+    "workbench.colorCustomizations": {
+      "tab.activeBorder": "#0cf388", // 下部ボーダー
+      "tab.activeBackground": "#0cf38820", // 背景色（薄く）
+      "tab.inactiveForeground": "#ffffff80" // 非アクティブタブを半透明に
+    },
+    "terminal.integrated.scrollback": 1000000,
+    "cursor.general.disableHttp2": true,
+    "cursor.general.disableHttp1SSE": true,
+    "diffEditor.renderSideBySide": false,
+    "claudeCode.preferredLocation": "panel",
+    "window.autoDetectColorScheme": false
+}
