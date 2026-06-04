@@ -23,31 +23,163 @@
 
   // ===== フォント =====
   // UI 全体のフォントサイズ (サイドバー・コマンドパレット等)
-  "ui_font_size": 16,
+  "ui_font_size": 15,
   // エディタ本文のフォントサイズ
-  "buffer_font_size": 14,
+  "buffer_font_size": 12,
   // エディタ本文のフォントウェイト (400 = Regular)
   "buffer_font_weight": 400,
   // エディタの行間 (standard / comfortable / custom)
   "buffer_line_height": "comfortable",
+  // フォントファミリーを固定したい場合は下記を有効化 (インストール済みフォント名)
+  // "ui_font_family": ".SystemUIFont",
+  // "buffer_font_family": ".ZedMono",
+  // リガチャ (calt) を有効化
+  "buffer_font_features": {
+    "calt": true,
+  },
 
   // ===== エディタ表示 =====
   // 空白文字 (スペース・タブ) を常時可視化
   "show_whitespaces": "all",
+  // カーソル行のハイライト範囲 (none / gutter / line / all)
+  "current_line_highlight": "all",
+  // 選択中のテキストと同一の箇所をハイライト
+  "selection_highlight": true,
+  // 未使用コード (dead code) を薄く表示する不透明度 (0.0〜1.0)
+  "unnecessary_code_fade": 0.4,
+  // 折り返しガイド (縦ライン) を指定桁に表示
+  "show_wrap_guides": true,
+  "wrap_guides": [80, 100],
+
+  // ----- カーソル -----
+  // カーソル形状 (bar / block / underline / hollow)
+  "cursor_shape": "bar",
+  // カーソルの点滅
+  "cursor_blink": true,
+  // 入力中はマウスカーソルを隠す (never / on_typing / on_typing_and_action)
+  "hide_mouse": "on_typing",
+
+  // ----- インデントガイド -----
+  // インデントの縦ガイド線
+  "indent_guides": {
+    "enabled": true,
+    "line_width": 1,
+    "active_line_width": 2,
+    // ネストの深さに応じて色を変える (disabled / fixed / indent_aware)
+    "coloring": "indent_aware",
+    "background_coloring": "disabled",
+  },
+
+  // ----- ガター (行番号の列) -----
+  "gutter": {
+    "line_numbers": true,
+    // テスト等の実行ボタン
+    "runnables": true,
+    // コード折りたたみハンドル
+    "folds": true,
+    // 行番号欄の最小桁数 (狭めて余白を節約)
+    "min_line_number_digits": 3,
+  },
+
+  // ----- スクロールバー -----
+  "scrollbar": {
+    // 表示条件 (auto / system / always / never)
+    "show": "auto",
+    "cursors": true,
+    "git_diff": true,
+    "search_results": true,
+    "selected_text": true,
+    "selected_symbol": true,
+    // 診断マーカーの表示レベル (none / error / warning / information / all)
+    "diagnostics": "all",
+  },
+
+  // ----- ミニマップ -----
+  "minimap": {
+    // 表示条件 (auto / always / never)
+    "show": "auto",
+    // つまみの表示 (always / hover)
+    "thumb": "hover",
+    "thumb_border": "left_open",
+  },
+
+  // ===== タブ =====
   // タブにファイルアイコンと Git ステータスを表示
   "tabs": {
     "file_icons": true,
     "git_status": true,
+    // 閉じるボタンの表示 (hover / always / hidden)
+    "show_close_button": "hover",
+    // 閉じるボタンの位置 (left / right)
+    "close_position": "right",
+    // タブ上の診断表示 (off / errors / all)
+    "show_diagnostics": "errors",
   },
+  // タブバー本体の表示制御
+  "tab_bar": {
+    "show": true,
+    // 戻る/進むのナビゲーションボタン
+    "show_nav_history_buttons": true,
+    // 右端の各種ボタン
+    "show_tab_bar_buttons": true,
+  },
+
+  // ===== タイトルバー =====
+  "title_bar": {
+    "show_branch_name": true,
+    "show_branch_status_icon": true,
+    "show_project_items": true,
+    // オンボーディング用バナーは非表示
+    "show_onboarding_banner": false,
+    "show_user_picture": true,
+    "show_menus": true,
+  },
+
+  // ===== ツールバー・パンくず・ステータスバー =====
+  // エディタ上部のツールバー
+  "toolbar": {
+    // パンくず (ファイルパス・シンボル階層)
+    "breadcrumbs": true,
+    "quick_actions": true,
+    "selections_menu": true,
+    "agent_review": true,
+  },
+  // 下部ステータスバーのボタン類
+  "status_bar": {
+    "active_language_button": true,
+    "cursor_position_button": true,
+    "line_endings_button": true,
+    "active_encoding_button": true,
+  },
+  // 行・桁インジケータの表示形式 (short / long)
+  "line_indicator_format": "long",
 
   // ===== ウィンドウ =====
   // macOS のシステムウィンドウタブを使用 (cmd-` で切り替え可能)
   "use_system_window_tabs": true,
+  // 非アクティブなペインの強調 (境界線と不透明度)
+  "active_pane_modifiers": {
+    "border_size": 1.0,
+    "inactive_opacity": 0.9,
+  },
 
   // ===== パネル配置 =====
   // プロジェクトツリーは左
   "project_panel": {
     "dock": "left",
+    // エントリの行間 (comfortable / standard)
+    "entry_spacing": "comfortable",
+    "indent_size": 16,
+    "folder_icons": true,
+    "git_status": true,
+    // 開いているファイルを自動的にツリー上で展開・選択
+    "auto_reveal_entries": true,
+    // 単独の子しか持たないディレクトリを折りたたんで表示
+    "auto_fold_dirs": true,
+    // フォルダ名を太字に
+    "bold_folder_labels": true,
+    // スクロール時に親フォルダを上部に固定
+    "sticky_scroll": true,
   },
   // Git パネルも左に集約
   "git_panel": {
