@@ -207,6 +207,9 @@
   // Claude Code を ACP (Agent Client Protocol) 経由で利用
   "agent_servers": {
     "claude-acp": {
+      "default_config_options": {
+        "model": "claude-opus-4-8",
+      },
       "type": "registry",
     },
   },
