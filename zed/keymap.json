@@ -13,9 +13,22 @@
   {
     "context": "Workspace",
     "bindings": {
-      "cmd-1": "workspace::ToggleLeftDock",
+      "cmd-1": "project_panel::Toggle",
       "cmd-2": "git_panel::Toggle",
       "cmd-3": "terminal_panel::Toggle",
+      "cmd-4": "agent::Toggle",
+    },
+  },
+  // git panel フォーカス時の cmd-1 / cmd-2 上書き。
+  // デフォルトでは GitPanel コンテキストで Changes/History タブ切替に
+  // 取られてしまうため再定義する。
+  // - cmd-1: project panel に切り替え
+  // - cmd-2: git panel を閉じる
+  {
+    "context": "GitPanel",
+    "bindings": {
+      "cmd-1": "project_panel::Toggle",
+      "cmd-2": "git_panel::Toggle",
     },
   },
   // ターミナル内での分割とペイン移動

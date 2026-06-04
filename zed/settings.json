@@ -46,6 +46,17 @@
   "project_panel": {
     "dock": "left",
   },
+  "git_panel": {
+    "dock": "left",
+  },
+  "agent": {
+    "dock": "right",
+  },
+  "git": {
+    "inline_blame": {
+      "enabled": true,
+    },
+  },
   "experimental.theme_overrides": {
     "terminal.background": "#0f1629",
     "terminal.ansi.black": "#1d2021",
