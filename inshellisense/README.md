@@ -46,16 +46,16 @@ export default {
 
 | スペック | 生成元 | 生成スクリプト |
 |---|---|---|
-| `claude` | <https://code.claude.com/docs/en/cli-reference.md> | `scripts/gen-claude-spec.mjs` |
+| `claude` | <https://code.claude.com/docs/en/cli-reference.md> | `scripts/gen-claude-spec.js` |
 
 #### 再生成手順（`claude` の例）
 
 ```bash
 # 公式ドキュメントを取りに行って specs/claude.js を上書きする
-node ~/dotfiles/inshellisense/scripts/gen-claude-spec.mjs
+node ~/dotfiles/inshellisense/scripts/gen-claude-spec.js
 
 # オフライン / 別の md を入力にしたい場合
-node ~/dotfiles/inshellisense/scripts/gen-claude-spec.mjs --input ./cli-reference.md
+node ~/dotfiles/inshellisense/scripts/gen-claude-spec.js --input ./cli-reference.md
 ```
 
 生成スクリプトはマークダウンの2つのテーブル（`## CLI commands` と `## CLI flags`）をパースし、`subcommands` / `options` を組み立てる。値を取るフラグかどうかは Example 列のヒューリスティック（直後のトークンが非フラグなら値ありとみなす、ただし `"query"` プレースホルダだけは positional 扱い）で判定している。
