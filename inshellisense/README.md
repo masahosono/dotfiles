@@ -6,6 +6,7 @@
 
 - `rc.toml` — inshellisense の設定（エイリアス利用・Nerd Font・補完候補数）。`~/.config/inshellisense/rc.toml` にシンボリックリンクする
 - `specs/` — 同梱されていないコマンドの補完を追加するためのローカルスペック置き場（[Fig autocomplete spec 形式](https://fig.io/docs)）。`~/.fig/autocomplete/build` にシンボリックリンクする
+- `scripts/` — スペック生成ユーティリティ（ドキュメントから自動生成するもの）
 
 ## ローカルスペック（既定外コマンドの補完追加）
 
@@ -38,6 +39,28 @@ export default {
 ```
 
 動的補完（コマンド実行結果に応じた候補）は `generators` を使う。詳しくは [Fig autocomplete のドキュメント](https://fig.io/docs/getting-started/first-spec) を参照。
+
+### ドキュメントから自動生成しているスペック
+
+`scripts/` に置いた生成スクリプトで、公式ドキュメント（マークダウン）からスペックを生成しているコマンドがある。ドキュメントが更新されたら都度叩いて再生成する想定で、自動化（cron / CI）は組んでいない。
+
+| スペック | 生成元 | 生成スクリプト |
+|---|---|---|
+| `claude` | <https://code.claude.com/docs/en/cli-reference.md> | `scripts/gen-claude-spec.mjs` |
+
+#### 再生成手順（`claude` の例）
+
+```bash
+# 公式ドキュメントを取りに行って specs/claude.js を上書きする
+node ~/dotfiles/inshellisense/scripts/gen-claude-spec.mjs
+
+# オフライン / 別の md を入力にしたい場合
+node ~/dotfiles/inshellisense/scripts/gen-claude-spec.mjs --input ./cli-reference.md
+```
+
+生成スクリプトはマークダウンの2つのテーブル（`## CLI commands` と `## CLI flags`）をパースし、`subcommands` / `options` を組み立てる。値を取るフラグかどうかは Example 列のヒューリスティック（直後のトークンが非フラグなら値ありとみなす、ただし `"query"` プレースホルダだけは positional 扱い）で判定している。
+
+`specs/claude.js` 先頭にコメントで生成元 URL と注意書きを入れているので、手で編集せず再生成すること。ドキュメントの章構造（テーブル位置）が変わるとスクリプトが落ちるので、その場合は生成スクリプトの方を修正する。
 
 ### なぜ `~/.fig/autocomplete/build` か
 
