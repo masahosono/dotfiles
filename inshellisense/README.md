@@ -5,6 +5,45 @@
 ## ファイル
 
 - `rc.toml` — inshellisense の設定（エイリアス利用・Nerd Font・補完候補数）。`~/.config/inshellisense/rc.toml` にシンボリックリンクする
+- `specs/` — 同梱されていないコマンドの補完を追加するためのローカルスペック置き場（[Fig autocomplete spec 形式](https://fig.io/docs)）。`~/.fig/autocomplete/build` にシンボリックリンクする
+
+## ローカルスペック（既定外コマンドの補完追加）
+
+inshellisense は、起動時に `~/.fig/autocomplete/build/index.js` を自動でローカルスペックとして読み込む仕様になっている（[`src/utils/config.ts`](https://github.com/microsoft/inshellisense/blob/main/src/utils/config.ts) の `globalConfig.specs` を参照）。そこへ dotfiles 配下の `specs/` をリンクすることで、`rc.toml` を一切触らずにスペックを dotfiles で管理できる。
+
+### スペックの追加手順
+
+1. `specs/<コマンド名>.js` を作る（[Fig spec 形式](https://fig.io/docs) の ESM）
+2. `specs/index.js` の `default` 配列に `<コマンド名>` を追記
+3. 新しいシェルを開けば反映される（既存セッションでは `is specs list` で確認可）
+
+サンプルとして `hello-is` スペックが入っている。動作確認後に削除するか、自分用のスペックに置き換える。
+
+### スペックの書き方の最小例
+
+```js
+// specs/mytool.js
+export default {
+  name: "mytool",
+  description: "短い説明",
+  subcommands: [
+    { name: "build", description: "ビルドする" },
+  ],
+  options: [
+    { name: ["-v", "--verbose"], description: "詳細ログ" },
+    { name: "--output", description: "出力先",
+      args: { name: "path", template: "filepaths" } },
+  ],
+};
+```
+
+動的補完（コマンド実行結果に応じた候補）は `generators` を使う。詳しくは [Fig autocomplete のドキュメント](https://fig.io/docs/getting-started/first-spec) を参照。
+
+### なぜ `~/.fig/autocomplete/build` か
+
+- inshellisense は当該パスを設定不要でデフォルトのスペックパスに加えるため、`rc.toml` に `specs.path` を書く必要がない
+- `rc.toml` の `specs.path` は絶対パスしか受け付けず（`~` も `$HOME` も展開されない）、dotfiles の可搬性が崩れるため避けたい
+- リンクで参照させれば、リポジトリ実体は `~/dotfiles/inshellisense/specs/` のまま git 管理できる
 
 ## シェル起動時の自動起動
 
@@ -71,5 +110,12 @@ fi
 ## セットアップ
 
 ```bash
+# 設定（rc.toml）を ~/.config/inshellisense として参照させる
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
+
+# ローカルスペックを inshellisense のデフォルト読込パスへリンクする
+mkdir -p ~/.fig/autocomplete
+ln -sf ~/dotfiles/inshellisense/specs ~/.fig/autocomplete/build
 ```
+
+セットアップ後、新しいシェルを開いて `is specs list | tr ',' '\n' | grep hello-is` で `hello-is` が出ればローカルスペックの読み込みは成功。
