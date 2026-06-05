@@ -166,10 +166,11 @@
   // ===== パネル配置 =====
   // プロジェクトツリーは左
   "project_panel": {
+    "default_width": 240.0,
     "dock": "left",
     // エントリの行間 (comfortable / standard)
     "entry_spacing": "comfortable",
-    "indent_size": 16,
+    "indent_size": 10.0,
     "folder_icons": true,
     "git_status": true,
     // 開いているファイルを自動的にツリー上で展開・選択
