@@ -149,7 +149,7 @@
     "active_language_button": true,
     "cursor_position_button": true,
     "line_endings_button": true,
-    "active_encoding_button": true,
+    "active_encoding_button": "enabled",
   },
   // 行・桁インジケータの表示形式 (short / long)
   "line_indicator_format": "long",
