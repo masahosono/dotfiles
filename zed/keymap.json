@@ -17,6 +17,7 @@
       "cmd-2": "git_panel::Toggle",
       "cmd-3": "terminal_panel::Toggle",
       "cmd-4": "agent::Toggle",
+      "cmd-5": "multi_workspace::ToggleWorkspaceSidebar",
     },
   },
   // git panel フォーカス時の cmd-1 / cmd-2 上書き。

@@ -189,6 +189,8 @@
   // AI エージェントパネルは右
   "agent": {
     "dock": "right",
+    // スレッド履歴サイドバー (cmd-alt-j) も右側に表示
+    "sidebar_side": "right",
   },
   // ターミナルも右に配置してエージェントと並べる
   "terminal": {
