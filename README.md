@@ -45,8 +45,6 @@ ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
 ln -sf ~/dotfiles/claude/output-styles/amadeus.md ~/.claude/output-styles/amadeus.md
 ```
 
-Claude Code の `settings.json` は本体が自動で書き換えるため、運用上の注意がある。詳細は [`claude/README.md`](claude/README.md) を参照。
-
 ## ライセンス
 
 [MIT License](LICENSE)
