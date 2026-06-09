@@ -28,7 +28,7 @@ mkdir -p ~/.claude/output-styles
 ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
-ln -sf ~/dotfiles/claude/output-styles/kurisu.md ~/.claude/output-styles/kurisu.md
+ln -sf ~/dotfiles/claude/output-styles/amadeus.md ~/.claude/output-styles/amadeus.md
 ln -sf ~/dotfiles/claude/output-styles/rockman-exe.md ~/.claude/output-styles/rockman-exe.md
 ```
 
@@ -108,7 +108,7 @@ macOS 限定パス。Linux なら `~/.config/Cursor/User/`、Windows なら `%AP
 - `settings.json` — Claude Code のグローバル設定（permissions / model / hooks / statusLine 等）
 - `statusline.sh` — ステータスライン用シェルスクリプト。`settings.json` の `statusLine.command` から参照される
 - `notify.sh` — 通知用シェルスクリプト。`settings.json` の `hooks.Notification` / `hooks.Stop` から参照される
-- `output-styles/kurisu.md` — カスタム output style（牧瀬紅莉栖口調）
+- `output-styles/amadeus.md` — カスタム output style（アマデウス／AI 牧瀬紅莉栖口調）
 - `output-styles/rockman-exe.md` — カスタム output style（ロックマン.EXE 口調）
 
 `~/.claude` 配下にはセッション履歴やキャッシュなど自動生成されるファイルが多いため、ディレクトリごとリンクせず、管理対象のファイル単位でシンボリックリンクを張る方針。
