@@ -40,6 +40,13 @@
       "cmd-~": "window::ShowPreviousWindowTab",
     },
   },
+  // cmd-q による誤操作での強制終了を防ぐため無効化する。
+  // 終了したいときはメニューバーから Zed → Quit Zed を選ぶ。
+  {
+    "bindings": {
+      "cmd-q": null,
+    },
+  },
   // ターミナル内での分割・タブ・ペイン移動
   // - cmd+t         : 新規ターミナルタブを追加
   // - cmd+d         : 右に分割
