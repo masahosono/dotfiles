@@ -37,7 +37,7 @@
   {
     "bindings": {
       "cmd-`": "window::ShowNextWindowTab",
-      "cmd-shift-`": "window::ShowPreviousWindowTab",
+      "cmd-~": "window::ShowPreviousWindowTab",
     },
   },
   // ターミナル内での分割・タブ・ペイン移動
