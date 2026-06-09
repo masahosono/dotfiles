@@ -35,9 +35,9 @@
   // フォントファミリーを固定したい場合は下記を有効化 (インストール済みフォント名)
   // "ui_font_family": ".SystemUIFont",
   // "buffer_font_family": ".ZedMono",
-  // リガチャ (calt) を有効化
+  // リガチャ (calt) を無効化。=== や != などが合字でつながって見えるのを防ぐ
   "buffer_font_features": {
-    "calt": true,
+    "calt": false,
   },
 
   // ===== エディタ表示 =====
