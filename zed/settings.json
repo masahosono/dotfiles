@@ -10,7 +10,7 @@
   // ===== 外観 (テーマ・アイコン) =====
   // エディタのカラーテーマ。OS のダーク/ライトモードに追従
   // dark: "Terafox - blurred" は nvim-nightfox 拡張に同梱
-  //   https://zed.dev/extensions/nvim-nightfox
+  //   https://github.com/cange/nightfox.zed
   "theme": {
     "mode": "dark",
     "light": "Ayu Light",
