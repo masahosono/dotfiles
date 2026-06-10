@@ -30,6 +30,7 @@ ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
 ln -sf ~/dotfiles/claude/output-styles/amadeus.md ~/.claude/output-styles/amadeus.md
 ln -sf ~/dotfiles/claude/output-styles/rockman-exe.md ~/.claude/output-styles/rockman-exe.md
+ln -sf ~/dotfiles/claude/output-styles/fable-sato.md ~/.claude/output-styles/fable-sato.md
 ```
 
 プラグインは Neovim 初回起動時に lazy.nvim が自動インストールする。
@@ -110,5 +111,6 @@ macOS 限定パス。Linux なら `~/.config/Cursor/User/`、Windows なら `%AP
 - `notify.sh` — 通知用シェルスクリプト。`settings.json` の `hooks.Notification` / `hooks.Stop` から参照される
 - `output-styles/amadeus.md` — カスタム output style（アマデウス／AI 牧瀬紅莉栖口調）
 - `output-styles/rockman-exe.md` — カスタム output style（ロックマン.EXE 口調）
+- `output-styles/fable-sato.md` — カスタム output style（ザ・ファブル／佐藤明口調）
 
 `~/.claude` 配下にはセッション履歴やキャッシュなど自動生成されるファイルが多いため、ディレクトリごとリンクせず、管理対象のファイル単位でシンボリックリンクを張る方針。
