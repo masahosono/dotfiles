@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "Bash(grep '\\\\.ts$')",
       "Bash(npm run *)",
@@ -28,10 +27,13 @@
       "Bash(git blame:*)",
       "Bash(git branch:*)",
       "Bash(git remote:*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
-  "model": "opus",
-  "outputStyle": "Rockman.EXE",
+  "model": "claude-fable-5[1m]",
+  "env": {
+    "CLAUDE_CODE_NO_FLICKER": "1"
+  },
   "hooks": {
     "Notification": [
       {
@@ -60,16 +62,17 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
+  "enabledPlugins": {},
+  "outputStyle": "Rockman.EXE",
   "language": "Japanese",
   "effortLevel": "xhigh",
+  "tui": "default",
   "voice": {
     "enabled": true,
     "mode": "hold"
   },
   "theme": "dark-daltonized",
   "agentPushNotifEnabled": true,
-  "voiceEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "enabledPlugins": {},
-  "tui": "default"
+  "voiceEnabled": true
 }
