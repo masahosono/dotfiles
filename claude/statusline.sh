@@ -111,6 +111,8 @@ EFFORT_LABEL=""
 printf '%b\n' "${DIM}Context:${RESET} ${CTX_BAR} ${DIM}[${CTX_PCT}%]${RESET}${EFFORT_LABEL} ${SEP} ${YELLOW}${COST_FMT}${RESET}"
 
 # === 3行目: Session (5h レートリミット) ===
+# rate_limits は最初のレスポンス後にしか届かないため、未取得でも
+# プレースホルダー行を出して statusline の高さを一定に保つ
 if [ -n "$FIVE_H_PCT" ]; then
   S_PCT=$(printf '%.0f' "$FIVE_H_PCT")
   S_BAR=$(bar 15 "$S_PCT" "$(color_for_pct "$S_PCT")")
@@ -125,6 +127,8 @@ if [ -n "$FIVE_H_PCT" ]; then
     fi
   fi
   printf '%b\n' "${DIM}Session:${RESET} ${S_BAR} ${DIM}[${S_PCT}%]${RESET}${S_REMAIN}"
+else
+  printf '%b\n' "${DIM}Session:${RESET} $(bar 15 0 "$DIM") ${DIM}[--%]${RESET}"
 fi
 
 # === 4行目: Weekly (7d レートリミット) ===
@@ -143,9 +147,14 @@ if [ -n "$SEVEN_D_PCT" ]; then
     fi
   fi
   printf '%b\n' "${DIM}Weekly: ${RESET} ${W_BAR} ${DIM}[${W_PCT}%]${RESET}${W_REMAIN}"
+else
+  printf '%b\n' "${DIM}Weekly: ${RESET} $(bar 15 0 "$DIM") ${DIM}[--%]${RESET}"
 fi
 
 # === 5行目: パーミッションモード ===
+# MODE が取れない場合も空行を出して高さを揃える
 if [ -n "$MODE" ]; then
   printf '%b\n' "${DIM}▶▶ ${MODE} ${DIM}(shift+tab to cycle)${RESET}"
+else
+  printf '\n'
 fi
