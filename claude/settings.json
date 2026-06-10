@@ -31,9 +31,6 @@
     "defaultMode": "auto"
   },
   "model": "claude-fable-5[1m]",
-  "env": {
-    "CLAUDE_CODE_NO_FLICKER": "1"
-  },
   "hooks": {
     "Notification": [
       {
