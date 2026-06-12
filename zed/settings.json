@@ -214,6 +214,13 @@
   "terminal": {
     "max_scroll_history_lines": 1000000,
     "dock": "right",
+    "env": {
+      // Claude Code は TERM_PROGRAM の allowlist (iTerm/WezTerm/vscode 等) で
+      // OSC 8 ハイパーリンク対応を判定し、Zed は非対応扱いで statusline の
+      // リンクが剥がされる。強制的に有効化する
+      // https://github.com/anthropics/claude-code/issues/26356
+      "FORCE_HYPERLINK": "1",
+    },
   },
 
   // ===== Git =====
