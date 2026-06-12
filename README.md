@@ -43,6 +43,10 @@ ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
 ln -sf ~/dotfiles/claude/output-styles/amadeus.md ~/.claude/output-styles/amadeus.md
+ln -sf ~/dotfiles/claude/output-styles/rockman-exe.md ~/.claude/output-styles/rockman-exe.md
+ln -sf ~/dotfiles/claude/output-styles/fable-sato.md ~/.claude/output-styles/fable-sato.md
+mkdir -p ~/.claude/skills
+ln -sf ~/dotfiles/claude/skills/output-style ~/.claude/skills/output-style
 ```
 
 ## ライセンス
