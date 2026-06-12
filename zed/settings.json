@@ -279,6 +279,13 @@
     // まだ差が弱ければ #2d4f56 まで明るくするとアクティブなファイルタブと揃う
     "title_bar.background": "#1d3337",
 
+    // ----- multibuffer のファイルヘッダー -----
+    // Terafox - blurred は editor.subheader.background 未定義のため
+    // デフォルトの暗いグレーにフォールバックし、ファイル境界が背景に溶ける。
+    // アクティブタブ (#2d4f56) よりさらに明るい不透明ティールにして
+    // ファイル境界を強調する
+    "editor.subheader.background": "#4d7882",
+
     // ----- エージェントパネル (ACP) の選択ハイライト -----
     // Markdown 描画はテキストの上に選択ハイライトを重ね塗りするため、
     // テーマの element.selection_background (#293e40, 不透明) だと文字が隠れる。
