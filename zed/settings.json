@@ -298,10 +298,10 @@
     // (italic 等の属性はテーマ側のデフォルトを維持するため color のみ上書き)
     "syntax": {
       "comment": {
-        "color": "#b8c4c4",
+        "color": "#94a4a4",
       },
       "comment.doc": {
-        "color": "#b8c4c4",
+        "color": "#94a4a4",
       },
     },
 
