@@ -292,6 +292,19 @@
     // エディタ本体の選択色 players[0].selection (#7aa4a136) に合わせて透過させる
     "element.selection_background": "#7aa4a140",
 
+    // ----- コメントの視認性向上 -----
+    // Terafox - blurred のコメントは暗いティールグレーで本文に沈みがち。
+    // 白寄りのライトグレーで一段持ち上げて読みやすくする
+    // (italic 等の属性はテーマ側のデフォルトを維持するため color のみ上書き)
+    "syntax": {
+      "comment": {
+        "color": "#b8c4c4",
+      },
+      "comment.doc": {
+        "color": "#b8c4c4",
+      },
+    },
+
     // ----- 検索ハイライト -----
     // Terafox - blurred のデフォルトはエディタ背景に近いグレーで埋もれる。
     // 暗いティール背景に映える暖色 (テーマの bright_yellow 系) を半透明で重ねて
