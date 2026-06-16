@@ -292,6 +292,12 @@
     // エディタ本体の選択色 players[0].selection (#7aa4a136) に合わせて透過させる
     "element.selection_background": "#7aa4a140",
 
+    // ----- 検索ハイライト -----
+    // Terafox - blurred のデフォルトはエディタ背景に近いグレーで埋もれる。
+    // 暗いティール背景に映える暖色 (テーマの bright_yellow 系) を半透明で重ねて
+    // 視認性を上げる。不透明度を上げすぎると文字が読みにくくなるので 50% 前後
+    "search.match_background": "#fe801980",
+
     // ----- ターミナル配色 (Gruvbox 系) -----
     // ANSI カラーをターミナル背景込みで上書き
     "terminal.background": "#0f1629",
