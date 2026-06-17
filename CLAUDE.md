@@ -16,6 +16,7 @@ ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
 ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
+ln -sf ~/dotfiles/zed/tasks.json ~/.config/zed/tasks.json
 # Cursor (macOS。パスにスペースが含まれるため必ずクオートする)
 ln -sf ~/dotfiles/cursor/settings.json "$HOME/Library/Application Support/Cursor/User/settings.json"
 ln -sf ~/dotfiles/cursor/keybindings.json "$HOME/Library/Application Support/Cursor/User/keybindings.json"
@@ -85,6 +86,7 @@ PATH や API キーなど環境固有の設定は各自の `~/.zshrc` に直接�
 
 - `settings.json` — Zed エディタの設定ファイル（テーマ、フォント、ターミナル、エージェント等）
 - `keymap.json` — キーバインド定義
+- `tasks.json` — Zed Task 定義。ラベル付きでターミナルを起動するために利用（Zed のターミナルタブは OSC 2 を受けないので、Task の `label` をタブ名として使う）
 
 `~/.config/zed` 配下には `prompts/`（内部 DB）など自動生成されるファイルがあるため、ディレクトリごとリンクせず管理対象のファイル単位でシンボリックリンクを張る方針。
 

@@ -1,0 +1,24 @@
+[
+  // ===== ラベル付きターミナルを開く =====
+  // Zed のターミナルタブには OSC 2 が効かないため、Task の label をタブ名に流用する。
+  // command palette (cmd-shift-p) → "task: spawn" から呼び出すか、
+  // keymap.json で task::Spawn にキーバインドを当てる。
+  {
+    "label": "shell",
+    "command": "zsh",
+    "args": ["-il"],
+    "shell": "system",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": true,
+    "reveal": "always"
+  },
+  {
+    "label": "$ZED_WORKTREE_ROOT",
+    "command": "zsh",
+    "args": ["-il"],
+    "shell": "system",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": true,
+    "reveal": "always"
+  }
+]
