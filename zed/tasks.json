@@ -4,7 +4,7 @@
   // command palette (cmd-shift-p) → "task: spawn" から呼び出すか、
   // keymap.json で task::Spawn にキーバインドを当てる。
   {
-    "label": "shell",
+    "label": "$SHELL",
     "command": "zsh",
     "args": ["-il"],
     "shell": "system",
