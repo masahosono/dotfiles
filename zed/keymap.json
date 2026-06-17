@@ -48,14 +48,14 @@
     },
   },
   // ターミナル内での分割・タブ・ペイン移動
-  // - cmd+t         : tasks.json の "$SHELL" task を起動 (ラベル付き新規タブ)
+  // - cmd+t         : tasks.json の "shell" task を起動 (ラベル付き新規タブ)
   // - cmd+d         : 右に分割
   // - cmd+shift+d   : 下に分割
   // - cmd+[ / cmd+] : ペイン間を前後に移動
   {
     "context": "Terminal",
     "bindings": {
-      "cmd-t": ["task::Spawn", { "task_name": "$SHELL" }],
+      "cmd-t": ["task::Spawn", { "task_name": "shell" }],
       "cmd-d": "pane::SplitRight",
       "cmd-shift-d": "pane::SplitDown",
       "cmd-[": "workspace::ActivatePreviousPane",
