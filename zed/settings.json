@@ -221,6 +221,7 @@
       // https://github.com/anthropics/claude-code/issues/26356
       "FORCE_HYPERLINK": "1",
     },
+    "working_directory": "current_project_directory"
   },
 
   // ===== Git =====
