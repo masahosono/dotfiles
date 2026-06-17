@@ -160,6 +160,9 @@
   // ===== ウィンドウ =====
   // macOS のシステムウィンドウタブを使用 (cmd-` で切り替え可能)
   "use_system_window_tabs": true,
+  // CLI (`zed` コマンド) でパスを開くときは常に新規ウィンドウで開く
+  // (replace: 既存ウィンドウを置換 / add: 既存ウィンドウにタブ追加 / new_window: 新規ウィンドウ)
+  "cli_default_open_behavior": "new_window",
   // 非アクティブなペインの強調 (境界線と不透明度)
   "active_pane_modifiers": {
     "border_size": 1.0,
