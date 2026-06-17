@@ -66,12 +66,14 @@
   // エディター内での分割（ターミナルと同じ感覚で扱えるように合わせる）
   // - cmd+d       : 右に分割
   // - cmd+shift+d : 下に分割
+  // - cmd+g       : 置換バーを開く（デフォルトの SelectNextMatch を上書き）
   // デフォルトの cmd+d (editor::SelectNext) は上書きされる。
   {
     "context": "Editor",
     "bindings": {
       "cmd-d": "pane::SplitRight",
       "cmd-shift-d": "pane::SplitDown",
+      "cmd-g": "buffer_search::DeployReplace",
     },
   },
 ]
