@@ -76,4 +76,11 @@
       "cmd-g": "buffer_search::DeployReplace",
     },
   },
+  // 検索バーが開いている時に cmd+g で置換欄の表示をトグルする
+  {
+    "context": "BufferSearchBar",
+    "bindings": {
+      "cmd-g": "search::ToggleReplace",
+    },
+  },
 ]
