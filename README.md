@@ -9,7 +9,7 @@
 - **Neovim** (`nvim/`) — lazy.nvim + gruvbox + telescope + neo-tree
 - **WezTerm** (`wezterm/`) — ターミナルエミュレータ設定
 - **Zed** (`zed/`) — Zed エディタの `settings.json` / `keymap.json`
-- **zsh** (`zsh/`) — 汎用設定 (`.zshconfig`) とプロンプト表示 (`.zshprompt`) のみ。`~/.zshrc` 本体は環境ごとに各自作成し、これらを source する
+- **zsh** (`zsh/`) — 汎用設定 (`.zshconfig`)、プロンプト表示 (`.zshprompt`)、汎用エイリアス (`.zshalias`) のみ。`~/.zshrc` 本体は環境ごとに各自作成し、これらを source する
 - **inshellisense** (`inshellisense/`) — シェル補完ツールの設定
 - **Claude Code** (`claude/`) — Claude Code 関連の設定スクリプト
 
@@ -31,11 +31,13 @@ ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
 
 ln -sf ~/dotfiles/zsh/.zshconfig ~/.zshconfig
 ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt
+ln -sf ~/dotfiles/zsh/.zshalias ~/.zshalias
 
 # ~/.zshrc は環境ごとに各自作成し、末尾あたりで以下を追記する：
 #   [[ -f ~/.zshconfig ]] && source ~/.zshconfig
 #   [[ -f ~/.zshprompt ]] && source ~/.zshprompt
-# PATH・エイリアス等の環境依存設定は各自の ~/.zshrc に書く
+#   [[ -f ~/.zshalias ]] && source ~/.zshalias
+# PATH や API キーなど環境固有の設定は各自の ~/.zshrc に書く
 
 # Claude Code 設定（~/.claude が存在しない場合は先に作成）
 mkdir -p ~/.claude/output-styles
