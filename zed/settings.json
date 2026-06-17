@@ -222,8 +222,10 @@
       "FORCE_HYPERLINK": "1",
     },
     "working_directory": "current_project_directory",
+    // カーソルはバー形状で点滅させる
     "cursor_shape": "bar",
     "blinking": "on",
+    // ツールバーに cwd のパンくずを表示
     "toolbar": {
       "breadcrumbs": true
     }
