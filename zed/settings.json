@@ -222,6 +222,8 @@
       "FORCE_HYPERLINK": "1",
     },
     "working_directory": "current_project_directory",
+    "cursor_shape": "bar",
+    "blinking": "on",
     "toolbar": {
       "breadcrumbs": true
     }
