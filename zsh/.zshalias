@@ -1,3 +1,11 @@
 # エイリアス
 # 環境に依存しない汎用的なエイリアスをここに集約する
 # PATH や API キーなど環境固有のものは ~/.zshrc に書くこと
+
+# 短縮: よく使うコマンドを 1〜2 文字で叩く
+alias c='claude'
+alias cl='clear'
+alias n='nvim'
+
+# git: skip-worktree されているファイルを一覧
+alias git-skipped='git ls-files -v | grep "^S"'
