@@ -21,8 +21,9 @@ ln -sf ~/dotfiles/cursor/settings.json "$HOME/Library/Application Support/Cursor
 ln -sf ~/dotfiles/cursor/keybindings.json "$HOME/Library/Application Support/Cursor/User/keybindings.json"
 ln -sf ~/dotfiles/zsh/.zshconfig ~/.zshconfig
 ln -sf ~/dotfiles/zsh/.zshprompt ~/.zshprompt
-# ~/.zshrc は環境ごとに各自作成し、上記2ファイルを source する
-# PATH・エイリアス等の環境依存設定は ~/.zshrc に直接書く
+ln -sf ~/dotfiles/zsh/.zshalias ~/.zshalias
+# ~/.zshrc は環境ごとに各自作成し、上記3ファイルを source する
+# PATH 等の環境依存設定は ~/.zshrc に直接書く
 # Claude Code 設定
 mkdir -p ~/.claude/output-styles
 ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
@@ -60,15 +61,17 @@ ln -sf ~/dotfiles/claude/skills/output-style ~/.claude/skills/output-style
 
 - `.zshconfig` — 補完・シェルオプション・ヒストリー・キーバインド・TIMEFMT などの汎用的な対話設定
 - `.zshprompt` — プロンプト表示（`vcs_info` を使った Git ブランチ表示、GitHub リモートのリンク化を含む）
+- `.zshalias` — 環境に依存しない汎用エイリアス
 
 `~/.zshrc` 本体は dotfiles 管理対象外。環境ごとに各自作成し、その中で次のように source する想定:
 
 ```zsh
 [[ -f ~/.zshconfig ]] && source ~/.zshconfig
 [[ -f ~/.zshprompt ]] && source ~/.zshprompt
+[[ -f ~/.zshalias ]] && source ~/.zshalias
 ```
 
-PATH 設定、エイリアスその他の環境依存設定は各自の `~/.zshrc` に直接書く。
+PATH や API キーなど環境固有の設定は各自の `~/.zshrc` に直接書く。
 
 ## WezTerm 設定
 
