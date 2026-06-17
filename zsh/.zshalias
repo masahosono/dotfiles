@@ -7,5 +7,8 @@ alias c='claude'
 alias cl='clear'
 alias n='nvim'
 
+# git: 状態確認
+alias gits='git status'
+
 # git: skip-worktree されているファイルを一覧
 alias git-skipped='git ls-files -v | grep "^S"'
