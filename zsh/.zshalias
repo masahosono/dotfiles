@@ -7,6 +7,9 @@ alias c='claude'
 alias cl='clear'
 alias n='nvim'
 
+# ls: 隠しファイル含む詳細表示（種別記号付き・サイズ可読）
+alias ll='ls -lAFh'
+
 # git: 状態確認
 alias gits='git status'
 
