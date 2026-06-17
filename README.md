@@ -28,6 +28,7 @@ ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
 ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
+ln -sf ~/dotfiles/zed/tasks.json ~/.config/zed/tasks.json
 
 # zsh
 ln -sf ~/dotfiles/zsh/.zshconfig ~/.zshconfig
