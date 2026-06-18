@@ -247,7 +247,7 @@
   "agent_servers": {
     "claude-acp": {
       "default_config_options": {
-        "model": "claude-opus-4-8",
+        "model": "claude-opus-4-7",
       },
       "type": "registry",
     },
