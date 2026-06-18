@@ -9,8 +9,9 @@ MODEL=$(echo "$input" | jq -r '.model.display_name')
 DIR=$(echo "$input" | jq -r '.workspace.current_dir')
 
 COST=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
-ADDED=$(echo "$input" | jq -r '.cost.total_lines_added // 0')
-REMOVED=$(echo "$input" | jq -r '.cost.total_lines_removed // 0')
+# 差分行数は git の HEAD ベースで後ろのセクションで計算する (cost 由来の累計は使わない)
+ADDED=0
+REMOVED=0
 
 CTX_PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 CTX_TOTAL=$(echo "$input" | jq -r '.context_window.total_tokens // 0')
@@ -70,6 +71,20 @@ fi
 BRANCH_NAME=""
 git rev-parse --git-dir > /dev/null 2>&1 && BRANCH_NAME=$(git branch --show-current 2>/dev/null)
 REMOTE=$(git remote get-url origin 2>/dev/null | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')
+
+# HEAD との差分行数 (staged + unstaged の tracked files)。
+# コミットして差分が消えれば自動的に 0 に戻るので、カレントの作業ツリーの状態が分かる。
+# untracked file は対象外。
+if [ -n "$BRANCH_NAME" ]; then
+  read ADDED REMOVED <<< "$(git diff --numstat HEAD 2>/dev/null | awk '
+    BEGIN { a=0; r=0 }
+    $1 != "-" { a += $1 }
+    $2 != "-" { r += $2 }
+    END { print a, r }
+  ')"
+  ADDED=${ADDED:-0}
+  REMOVED=${REMOVED:-0}
+fi
 
 # === OSC 8 ハイパーリンク ===
 if [ -n "$REMOTE" ]; then
