@@ -253,6 +253,21 @@
     },
   },
 
+  // ===== 拡張機能 =====
+  // ここに列挙した拡張は Zed 起動時に自動でインストールされる。
+  // 新しい拡張を入れたら必ずこのリストにも追記する (宣言的管理)
+  "auto_install_extensions": {
+    "astro": true,
+    "dockerfile": true,
+    "git-firefly": true,
+    "html": true,
+    "lua": true,
+    "material-icon-theme": true,
+    "nvim-nightfox": true,
+    "snazzy": true,
+    "toml": true,
+  },
+
   // ===== プライバシー・セッション =====
   // テレメトリ送信を無効化
   "telemetry": {
