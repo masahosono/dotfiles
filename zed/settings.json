@@ -257,15 +257,19 @@
   // ここに列挙した拡張は Zed 起動時に自動でインストールされる。
   // 新しい拡張を入れたら必ずこのリストにも追記する (宣言的管理)
   "auto_install_extensions": {
+    // ----- Languages -----
     "astro": true,
     "dockerfile": true,
-    "git-firefly": true,
     "html": true,
     "lua": true,
-    "material-icon-theme": true,
+    "toml": true,
+    // ----- Themes -----
     "nvim-nightfox": true,
     "snazzy": true,
-    "toml": true,
+    // ----- Icon themes -----
+    "material-icon-theme": true,
+    // ----- Tools -----
+    "git-firefly": true,
   },
 
   // ===== プライバシー・セッション =====
