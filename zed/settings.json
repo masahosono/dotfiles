@@ -262,6 +262,7 @@
     "dockerfile": true,
     "html": true,
     "lua": true,
+    "mdx": true,
     "toml": true,
     // ----- Themes -----
     "nvim-nightfox": true,
