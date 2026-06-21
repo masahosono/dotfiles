@@ -23,6 +23,13 @@ SEVEN_D_RESET=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty
 
 MODE=$(echo "$input" | jq -r '.permission_mode // empty')
 
+# ログイン中の Claude アカウント (emailAddress) を ~/.claude.json から取得します。
+# statusline の入力 JSON にはアカウント情報が含まれないため、ローカル設定ファイルを直接読みます。
+ACCOUNT=""
+if [ -r "$HOME/.claude.json" ]; then
+  ACCOUNT=$(jq -r '.oauthAccount.emailAddress // empty' "$HOME/.claude.json" 2>/dev/null)
+fi
+
 # reasoning effort はフィールド名が公式に明記されていないため、よく使われる候補を順に試します
 # 値はオブジェクト {"level": "xhigh"} か文字列のどちらでも届くので両方に対応します
 EFFORT=$(echo "$input" | jq -r '
@@ -111,6 +118,7 @@ MODEL_LABEL="[$MODEL"
 MODEL_LABEL="${MODEL_LABEL}]"
 
 HEADER="${CYAN}${BOLD}${MODEL_LABEL}${RESET}"
+[ -n "$ACCOUNT" ] && HEADER="${HEADER} ${SEP} ${MAGENTA}👤 ${ACCOUNT}${RESET}"
 HEADER="${HEADER} ${SEP} 📁 ${DIR_LINK}"
 if [ -n "$BRANCH_LINK" ]; then
   GIT_INFO="${GREEN}${BRANCH_LINK}${RESET}"
