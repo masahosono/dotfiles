@@ -118,7 +118,6 @@ MODEL_LABEL="[$MODEL"
 MODEL_LABEL="${MODEL_LABEL}]"
 
 HEADER="${CYAN}${BOLD}${MODEL_LABEL}${RESET}"
-[ -n "$ACCOUNT" ] && HEADER="${HEADER} ${SEP} ${MAGENTA}👤 ${ACCOUNT}${RESET}"
 HEADER="${HEADER} ${SEP} 📁 ${DIR_LINK}"
 if [ -n "$BRANCH_LINK" ]; then
   GIT_INFO="${GREEN}${BRANCH_LINK}${RESET}"
@@ -129,6 +128,7 @@ if [ -n "$BRANCH_LINK" ]; then
 elif [ "$ADDED" -gt 0 ] || [ "$REMOVED" -gt 0 ]; then
   HEADER="${HEADER} ${SEP} ${DIFF_FMT}"
 fi
+[ -n "$ACCOUNT" ] && HEADER="${HEADER} ${SEP} ${MAGENTA}👤 ${ACCOUNT}${RESET}"
 
 printf '%b\n' "$HEADER"
 
