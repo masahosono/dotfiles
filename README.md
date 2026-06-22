@@ -61,7 +61,7 @@ ln -sf ~/dotfiles/claude/skills/output-style ~/.claude/skills/output-style
 bash ~/dotfiles/scripts/doctor.sh
 ```
 
-全項目 OK なら終了コード 0、1 つでも NG があれば 1 を返す。`--quiet` で OK 行を抑制できる。
+全項目 OK なら終了コード 0、1 つでも NG があれば 1 を返す。
 
 ## ライセンス
 
