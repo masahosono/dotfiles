@@ -261,6 +261,7 @@
     "astro": true,
     "dockerfile": true,
     "html": true,
+    "jsonl": true,
     "lua": true,
     "mdx": true,
     "toml": true,
