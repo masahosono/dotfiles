@@ -3,13 +3,12 @@
 # 正しく張られているかを検証する。
 #
 # 使い方:
-#   bash ~/dotfiles/scripts/doctor.sh
+#   bash ~/dotfiles/doctor.sh
 
 set -u
 
 # このスクリプト自身の位置を基準にして dotfiles ディレクトリを特定する。
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 for arg in "$@"; do
   case "$arg" in
