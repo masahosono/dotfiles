@@ -4,7 +4,6 @@
 #
 # 使い方:
 #   bash ~/dotfiles/scripts/doctor.sh
-#   bash ~/dotfiles/scripts/doctor.sh --quiet   # OK の行は出さず、問題のある項目だけ表示
 
 set -u
 
@@ -12,12 +11,10 @@ set -u
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-QUIET=0
 for arg in "$@"; do
   case "$arg" in
-    -q|--quiet) QUIET=1 ;;
     -h|--help)
-      sed -n '2,8p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+      sed -n '2,7p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
       exit 0
       ;;
     *)
@@ -42,7 +39,7 @@ PASS=0
 FAIL=0
 WARN=0
 
-log_ok()   { [ "$QUIET" -eq 1 ] && return; printf '  %sOK%s   %s\n' "$C_OK" "$C_RESET" "$1"; }
+log_ok()   { printf '  %sOK%s   %s\n' "$C_OK" "$C_RESET" "$1"; }
 log_ng()   { printf '  %sNG%s   %s\n' "$C_NG" "$C_RESET" "$1"; [ -n "${2:-}" ] && printf '       %s%s%s\n' "$C_DIM" "$2" "$C_RESET"; }
 log_warn() { printf '  %sWARN%s %s\n' "$C_WARN" "$C_RESET" "$1"; [ -n "${2:-}" ] && printf '       %s%s%s\n' "$C_DIM" "$2" "$C_RESET"; }
 

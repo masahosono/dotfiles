@@ -44,8 +44,7 @@ ln -sf ~/dotfiles/claude/skills/output-style ~/.claude/skills/output-style
 シンボリックリンクが期待通りに張られているかは `scripts/doctor.sh` で検証する:
 
 ```bash
-bash ~/dotfiles/scripts/doctor.sh        # 全項目を表示
-bash ~/dotfiles/scripts/doctor.sh --quiet # OK 行を抑制し、問題のある項目のみ表示
+bash ~/dotfiles/scripts/doctor.sh
 ```
 
 全項目 OK なら終了コード 0、NG があれば 1。新しく管理対象のシンボリックリンクを追加した場合は `scripts/doctor.sh` のチェック対象にも追加すること。`claude/output-styles/*.md` だけはディレクトリ内の `*.md` を自動でスキャンするため、output style を追加・リネームしたときの doctor.sh 更新は不要。
