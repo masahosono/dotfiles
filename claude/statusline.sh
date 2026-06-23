@@ -21,8 +21,6 @@ FIVE_H_RESET=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty'
 SEVEN_D_PCT=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 SEVEN_D_RESET=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
-MODE=$(echo "$input" | jq -r '.permission_mode // empty')
-
 # ログイン中の Claude アカウント (emailAddress) を ~/.claude.json から取得します。
 # statusline の入力 JSON にはアカウント情報が含まれないため、ローカル設定ファイルを直接読みます。
 ACCOUNT=""
@@ -215,12 +213,4 @@ if [ -n "$SEVEN_D_PCT" ]; then
   printf '%b\n' "${DIM}Weekly: ${RESET} ${W_BAR} ${DIM}[${W_PCT}%]${RESET}${W_REMAIN}"
 else
   printf '%b\n' "${DIM}Weekly: ${RESET} $(bar 15 0 "$DIM") ${DIM}[--%]${RESET}"
-fi
-
-# === 5行目: パーミッションモード ===
-# MODE が取れない場合も空行を出して高さを揃える
-if [ -n "$MODE" ]; then
-  printf '%b\n' "${DIM}▶▶ ${MODE} ${DIM}(shift+tab to cycle)${RESET}"
-else
-  printf '\n'
 fi
