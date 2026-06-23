@@ -93,6 +93,33 @@ if [ -n "$BRANCH_NAME" ]; then
   REMOVED=${REMOVED:-0}
 fi
 
+# === PR 情報 (gh CLI、60秒キャッシュ) ===
+# statusline は頻繁に呼ばれるため gh 呼び出しはキャッシュする。
+# PR が無いブランチも空ファイルをキャッシュして再問い合わせを抑制する。
+PR_NUM=""
+PR_URL=""
+if [ -n "$BRANCH_NAME" ] && command -v gh >/dev/null 2>&1; then
+  PR_CACHE_DIR="${TMPDIR:-/tmp}/claude-statusline-pr"
+  mkdir -p "$PR_CACHE_DIR" 2>/dev/null
+  PR_CACHE_FILE="${PR_CACHE_DIR}/$(printf '%s' "${DIR}#${BRANCH_NAME}" | shasum | awk '{print $1}')"
+  CACHE_TTL=60
+
+  NOW_TS=$(date +%s)
+  MTIME=0
+  [ -f "$PR_CACHE_FILE" ] && MTIME=$(stat -f %m "$PR_CACHE_FILE" 2>/dev/null || echo 0)
+  if [ "$((NOW_TS - MTIME))" -lt "$CACHE_TTL" ]; then
+    PR_INFO=$(cat "$PR_CACHE_FILE" 2>/dev/null)
+  else
+    PR_INFO=$(gh pr view --json number,url 2>/dev/null)
+    printf '%s' "$PR_INFO" > "$PR_CACHE_FILE" 2>/dev/null
+  fi
+
+  if [ -n "$PR_INFO" ]; then
+    PR_NUM=$(printf '%s' "$PR_INFO" | jq -r '.number // empty' 2>/dev/null)
+    PR_URL=$(printf '%s' "$PR_INFO" | jq -r '.url // empty' 2>/dev/null)
+  fi
+fi
+
 # === OSC 8 ハイパーリンク ===
 if [ -n "$REMOTE" ]; then
   DIR_LINK="\e]8;;${REMOTE}\a${DIR##*/}\e]8;;\a"
@@ -105,6 +132,14 @@ if [ -n "$BRANCH_NAME" ]; then
     BRANCH_LINK="\e]8;;${REMOTE}/tree/${BRANCH_NAME}\a${BRANCH_NAME}\e]8;;\a"
   else
     BRANCH_LINK="${BRANCH_NAME}"
+  fi
+fi
+PR_LINK=""
+if [ -n "$PR_NUM" ]; then
+  if [ -n "$PR_URL" ]; then
+    PR_LINK="\e]8;;${PR_URL}\aPR #${PR_NUM}\e]8;;\a"
+  else
+    PR_LINK="PR #${PR_NUM}"
   fi
 fi
 
@@ -123,6 +158,9 @@ if [ -n "$BRANCH_LINK" ]; then
   GIT_INFO="${GREEN}${BRANCH_LINK}${RESET}"
   if [ "$ADDED" -gt 0 ] || [ "$REMOVED" -gt 0 ]; then
     GIT_INFO="${GIT_INFO} (${DIFF_FMT})"
+  fi
+  if [ -n "$PR_LINK" ]; then
+    GIT_INFO="${GIT_INFO} ${SEP} ${BLUE}${PR_LINK}${RESET}"
   fi
   HEADER="${HEADER} ${SEP} ${GIT_INFO}"
 elif [ "$ADDED" -gt 0 ] || [ "$REMOVED" -gt 0 ]; then
