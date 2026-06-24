@@ -264,6 +264,7 @@
     "jsonl": true,
     "lua": true,
     "mdx": true,
+    "sql": true,
     "toml": true,
     // ----- Themes -----
     "nvim-nightfox": true,
