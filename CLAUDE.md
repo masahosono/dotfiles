@@ -30,6 +30,7 @@ mkdir -p ~/.claude/output-styles
 ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
+ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -sf ~/dotfiles/claude/output-styles/amadeus.md ~/.claude/output-styles/amadeus.md
 ln -sf ~/dotfiles/claude/output-styles/rockman-exe.md ~/.claude/output-styles/rockman-exe.md
 ln -sf ~/dotfiles/claude/output-styles/fable-sato.md ~/.claude/output-styles/fable-sato.md
@@ -123,6 +124,7 @@ macOS 限定パス。Linux なら `~/.config/Cursor/User/`、Windows なら `%AP
 
 `claude/` 以下の構成:
 
+- `CLAUDE.md` — 全プロジェクト共通のグローバル指示（応答言語、ツール利用ルール等）。`~/.claude/CLAUDE.md` から symlink する
 - `settings.json` — Claude Code のグローバル設定（permissions / model / hooks / statusLine 等）
 - `statusline.sh` — ステータスライン用シェルスクリプト。`settings.json` の `statusLine.command` から参照される
 - `notify.sh` — 通知用シェルスクリプト。`settings.json` の `hooks.Notification` / `hooks.Stop` から参照される
