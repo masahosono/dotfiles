@@ -223,10 +223,11 @@
       // リンクが剥がされる。強制的に有効化する
       // https://github.com/anthropics/claude-code/issues/26356
       "FORCE_HYPERLINK": "1",
-      // Homebrew (Apple Silicon) のパスを通す。
-      // Zed から起動するシェル/エージェントは .zshenv を読み込まないため、
-      // gh / brew などのコマンドが見つからない。ここで明示的に通す
-      "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}",
+      // Homebrew (Apple Silicon) と Google Cloud SDK のパスを通す。
+      // Zed から起動するシェル/エージェントは .zshenv / .zshrc を読み込まないため、
+      // gh / brew / gcloud などのコマンドが見つからない。ここで明示的に通す
+      // (gcloud は本来 ~/google-cloud-sdk/path.zsh.inc を .zshrc から source して通す)
+      "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:${HOME}/google-cloud-sdk/bin:${PATH}",
     },
     "working_directory": "current_project_directory",
     // カーソルはバー形状で点滅させる
