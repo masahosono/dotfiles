@@ -223,6 +223,10 @@
       // リンクが剥がされる。強制的に有効化する
       // https://github.com/anthropics/claude-code/issues/26356
       "FORCE_HYPERLINK": "1",
+      // Homebrew (Apple Silicon) のパスを通す。
+      // Zed から起動するシェル/エージェントは .zshenv を読み込まないため、
+      // gh / brew などのコマンドが見つからない。ここで明示的に通す
+      "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}",
     },
     "working_directory": "current_project_directory",
     // カーソルはバー形状で点滅させる
