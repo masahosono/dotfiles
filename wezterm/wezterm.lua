@@ -35,7 +35,7 @@ config.inactive_pane_hsb = {
 -- ============================================================
 config.font = wezterm.font_with_fallback {
   'Menlo',
-  'ヒラギノ角ゴシック',
+  'ヒラギノ丸ゴ ProN',
 }
 config.font_size = 12
 config.use_ime = true
