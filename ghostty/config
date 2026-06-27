@@ -10,3 +10,8 @@ theme = Ryuuko
 # 背景をぼかすには background-opacity を 1 未満にする必要がある
 background-opacity = 0.85
 background-blur = 40
+
+# --- フォント ---
+# 日本語（CJK 記号・ひらがな・カタカナ・漢字・全角形）だけヒラギノ丸ゴ ProN に差し替える。
+# 英文部分は Ghostty デフォルト（macOS では SF Mono 系）のまま。
+font-codepoint-map = U+3000-U+30FF,U+4E00-U+9FFF,U+FF00-U+FFEF=Hiragino Maru Gothic ProN
