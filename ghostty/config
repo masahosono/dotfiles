@@ -2,6 +2,10 @@
 # 形式: key = value
 # デフォルト値とドキュメント一覧: ghostty +show-config --default --docs
 
+# --- テーマ ---
+# 利用可能な一覧: ghostty +list-themes
+theme = Ryuuko
+
 # --- 背景 ---
 # 背景をぼかすには background-opacity を 1 未満にする必要がある
 background-opacity = 0.85
