@@ -1,3 +1,8 @@
 # Ghostty 設定ファイル
 # 形式: key = value
 # デフォルト値とドキュメント一覧: ghostty +show-config --default --docs
+
+# --- 背景 ---
+# 背景をぼかすには background-opacity を 1 未満にする必要がある
+background-opacity = 0.85
+background-blur = 40
