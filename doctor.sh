@@ -91,6 +91,9 @@ check_symlink "$HOME/.config/nvim"           "$DOTFILES_DIR/nvim"
 check_symlink "$HOME/.config/wezterm"        "$DOTFILES_DIR/wezterm"
 check_symlink "$HOME/.config/inshellisense"  "$DOTFILES_DIR/inshellisense"
 
+section "Ghostty"
+check_symlink "$HOME/.config/ghostty/config" "$DOTFILES_DIR/ghostty/config"
+
 section "Zed"
 check_symlink "$HOME/.config/zed/settings.json" "$DOTFILES_DIR/zed/settings.json"
 check_symlink "$HOME/.config/zed/keymap.json"   "$DOTFILES_DIR/zed/keymap.json"

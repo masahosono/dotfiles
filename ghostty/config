@@ -1,0 +1,3 @@
+# Ghostty 設定ファイル
+# 形式: key = value
+# デフォルト値とドキュメント一覧: ghostty +show-config --default --docs

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Zed、Cursor、zsh、inshellisense、Claude Code の設定を管理している。
+個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Ghostty、Zed、Cursor、zsh、inshellisense、Claude Code の設定を管理している。
 
 ## セットアップ
 
@@ -13,6 +13,9 @@ git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
+# Ghostty (~/.config/ghostty が存在しない場合は先に作成)
+mkdir -p ~/.config/ghostty
+ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
 ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
@@ -90,6 +93,14 @@ PATH や API キーなど環境固有の設定は各自の `~/.zshrc` に直接�
 `wezterm/` 以下の構成:
 
 - `wezterm.lua` — メイン設定ファイル（ウィンドウサイズ、フォントサイズ、カラースキームなど）
+
+## Ghostty 設定
+
+`ghostty/` 以下の構成:
+
+- `config` — Ghostty の設定ファイル。`key = value` 形式のシンプルなテキスト。デフォルト値とドキュメントは `ghostty +show-config --default --docs` で参照できる
+
+`~/.config/ghostty/` 配下に Ghostty 本体がキャッシュやテーマを自動生成する可能性があるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Zed / Cursor と同じ）。
 
 ## Zed 設定
 

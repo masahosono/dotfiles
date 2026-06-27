@@ -8,6 +8,7 @@
 
 - **Neovim** (`nvim/`) — lazy.nvim + gruvbox + telescope + neo-tree
 - **WezTerm** (`wezterm/`) — ターミナルエミュレータ設定
+- **Ghostty** (`ghostty/`) — ターミナルエミュレータ設定
 - **Zed** (`zed/`) — Zed エディタの `settings.json` / `keymap.json`
 - **zsh** (`zsh/`) — 汎用設定 (`.zshconfig`)、プロンプト表示 (`.zshprompt`)、汎用エイリアス (`.zshalias`) のみ。`~/.zshrc` 本体は環境ごとに各自作成し、これらを source する
 - **inshellisense** (`inshellisense/`) — シェル補完ツールの設定
@@ -23,6 +24,10 @@ git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
+
+# Ghostty 設定（~/.config/ghostty が存在しない場合は先に作成）
+mkdir -p ~/.config/ghostty
+ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
 
 # Zed 設定（~/.config/zed が存在しない場合は先に作成）
 mkdir -p ~/.config/zed
