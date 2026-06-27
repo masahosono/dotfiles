@@ -33,9 +33,13 @@
   "buffer_font_weight": 400,
   // エディタの行間 (standard / comfortable / custom)
   "buffer_line_height": "comfortable",
-  // フォントファミリーを固定したい場合は下記を有効化 (インストール済みフォント名)
-  // "ui_font_family": ".SystemUIFont",
-  // "buffer_font_family": ".ZedMono",
+  // UI フォント (サイドバー・タブ・コマンドパレット等)。
+  // 日本語グリフは fallbacks 経由でヒラギノ丸ゴ ProN へ流す
+  "ui_font_family": ".SystemUIFont",
+  "ui_font_fallbacks": ["Hiragino Maru Gothic ProN"],
+  // エディタ本文フォント。同様に日本語だけ丸ゴへフォールバック
+  "buffer_font_family": ".ZedMono",
+  "buffer_font_fallbacks": ["Hiragino Maru Gothic ProN"],
   // リガチャ (calt) を無効化。=== や != などが合字でつながって見えるのを防ぐ
   "buffer_font_features": {
     "calt": false,
@@ -230,6 +234,10 @@
       "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:${HOME}/google-cloud-sdk/bin:${PATH}",
     },
     "working_directory": "current_project_directory",
+    // ターミナルフォント。日本語は fallbacks 経由でヒラギノ丸ゴ ProN へ流して
+    // Zed 内の見た目を本文・UI と揃える
+    "font_family": ".ZedMono",
+    "font_fallbacks": ["Hiragino Maru Gothic ProN"],
     // カーソルはバー形状で点滅させる
     "cursor_shape": "bar",
     "blinking": "on",
