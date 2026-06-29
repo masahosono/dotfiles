@@ -11,6 +11,10 @@ theme = Ryuuko
 background-opacity = 0.65
 background-blur = 20
 
+# --- ウィンドウ動作 ---
+# Cmd+W などでサーフェスを閉じる際の確認ダイアログを抑止する
+confirm-close-surface = false
+
 # --- フォント ---
 # 日本語（CJK 記号・ひらがな・カタカナ・漢字・全角形）だけヒラギノ丸ゴ ProN に差し替える。
 # 英文部分は Ghostty デフォルト（macOS では SF Mono 系）のまま。
