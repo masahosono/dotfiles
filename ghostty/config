@@ -19,6 +19,13 @@ confirm-close-surface = false
 # スクロールバックの保持行数（デフォルト 10000 行）
 scrollback-limit = 100000
 
+# --- アイコン ---
+# Dock とアプリケーションスイッチャーに表示されるアイコンを独自のものに差し替える。
+# Finder アイコンは署名バンドル内で固定のため変更不可。
+# 参照: https://ghostty.org/docs/config/reference#macos-custom-icon
+macos-icon = custom
+macos-custom-icon = ~/.config/ghostty/ghostty-original.icns
+
 # --- フォント ---
 # 日本語（CJK 記号・ひらがな・カタカナ・漢字・全角形）だけヒラギノ丸ゴ ProN に差し替える。
 # 英文部分は Ghostty デフォルト（macOS では SF Mono 系）のまま。
