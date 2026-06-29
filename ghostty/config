@@ -30,7 +30,6 @@ working-directory = home
 # Dock とアプリケーションスイッチャーに表示されるアイコンを独自のものに差し替える。
 # Finder アイコンは署名バンドル内で固定のため変更不可。
 # 参照: https://ghostty.org/docs/config/reference#macos-custom-icon
-# 採用アイコン: https://github.com/lukejanicke/ghostty-app-icons/blob/main/icons/ghostty-original.icns
 macos-icon = custom
 macos-custom-icon = ~/.config/ghostty/ghostty-original.icns
 
