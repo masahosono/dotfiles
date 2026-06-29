@@ -18,6 +18,12 @@ minimum-contrast = 2.5
 confirm-close-surface = false
 # スクロールバックの保持行数（デフォルト 10000 行）
 scrollback-limit = 100000
+# 新規タブ (Cmd+T) はホームディレクトリで開く。
+# Split は split-inherit-working-directory のデフォルト (true) に従って引き継ぐ。
+# working-directory を明示しておかないと CLI 起動時に inherit がフォールバックになるため、
+# 新規タブのフォールバック先として home を明示する。
+tab-inherit-working-directory = false
+working-directory = home
 
 # --- アイコン ---
 # Dock とアプリケーションスイッチャーに表示されるアイコンを独自のものに差し替える。
