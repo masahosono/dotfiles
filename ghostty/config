@@ -10,6 +10,8 @@ theme = Ryuuko
 # 背景をぼかすには background-opacity を 1 未満にする必要がある
 background-opacity = 0.65
 background-blur = 20
+# 前景色と背景色のコントラスト比の下限（1.0=強制なし、4.5=WCAG AA 相当）
+minimum-contrast = 2.5
 
 # --- ウィンドウ動作 ---
 # Cmd+W などでサーフェスを閉じる際の確認ダイアログを抑止する
