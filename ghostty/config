@@ -8,8 +8,8 @@ theme = Ryuuko
 
 # --- 背景 ---
 # 背景をぼかすには background-opacity を 1 未満にする必要がある
-background-opacity = 0.85
-background-blur = 40
+background-opacity = 0.65
+background-blur = 20
 
 # --- フォント ---
 # 日本語（CJK 記号・ひらがな・カタカナ・漢字・全角形）だけヒラギノ丸ゴ ProN に差し替える。
