@@ -16,6 +16,7 @@ ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 # Ghostty (~/.config/ghostty が存在しない場合は先に作成)
 mkdir -p ~/.config/ghostty
 ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
+ln -sf ~/dotfiles/ghostty/custom.icns ~/.config/ghostty/custom.icns
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
 ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
@@ -99,6 +100,7 @@ PATH や API キーなど環境固有の設定は各自の `~/.zshrc` に直接�
 `ghostty/` 以下の構成:
 
 - `config` — Ghostty の設定ファイル。`key = value` 形式のシンプルなテキスト。デフォルト値とドキュメントは `ghostty +show-config --default --docs` で参照できる
+- `custom.icns` — `macos-custom-icon` から参照する Dock 用アイコン。ソースになる画像 (jpg など) は dotfiles 管理外で、Pillow + `iconutil` で生成した icns だけを管理する
 
 `~/.config/ghostty/` 配下に Ghostty 本体がキャッシュやテーマを自動生成する可能性があるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Zed / Cursor と同じ）。
 

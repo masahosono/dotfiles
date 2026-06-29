@@ -92,7 +92,8 @@ check_symlink "$HOME/.config/wezterm"        "$DOTFILES_DIR/wezterm"
 check_symlink "$HOME/.config/inshellisense"  "$DOTFILES_DIR/inshellisense"
 
 section "Ghostty"
-check_symlink "$HOME/.config/ghostty/config" "$DOTFILES_DIR/ghostty/config"
+check_symlink "$HOME/.config/ghostty/config"     "$DOTFILES_DIR/ghostty/config"
+check_symlink "$HOME/.config/ghostty/custom.icns" "$DOTFILES_DIR/ghostty/custom.icns"
 
 section "Zed"
 check_symlink "$HOME/.config/zed/settings.json" "$DOTFILES_DIR/zed/settings.json"
