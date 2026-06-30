@@ -16,11 +16,11 @@ alias gits='git status'
 # git: skip-worktree されているファイルを一覧
 alias git-skipped='git ls-files -v | grep "^S"'
 
-# Ghostty から Claude Code を起動するときだけ --name にカレントディレクトリ名を渡し、
-# Claude Code が書き換えるタブタイトルをディレクトリ名に揃える。
+# Ghostty から Claude Code を起動するときだけ --name にホーム相対のパスを渡し、
+# Claude Code が書き換えるタブタイトルを ~/path/to/dir 形式に揃える。
 claude() {
   if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
-    command claude --name "${PWD:t}" "$@"
+    command claude --name "${PWD/#$HOME/~}" "$@"
   else
     command claude "$@"
   fi
