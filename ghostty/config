@@ -11,7 +11,7 @@ theme = Ryuuko
 background-opacity = 0.85
 background-blur = 10
 # 前景色と背景色のコントラスト比の下限（1.0=強制なし、4.5=WCAG AA 相当）
-minimum-contrast = 2.5
+# minimum-contrast = 2.5
 
 # --- ウィンドウ動作 ---
 # Cmd+W などでサーフェスを閉じる際の確認ダイアログを抑止する
