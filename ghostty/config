@@ -33,11 +33,6 @@ working-directory = home
 macos-icon = custom
 macos-custom-icon = ~/.config/ghostty/custom.icns
 
-# --- シェル統合 ---
-# タブタイトルは zsh の precmd から OSC 2 でカレントディレクトリ名を送るので、
-# Ghostty のシェル統合によるタイトル書き換え（実行中コマンド等）は無効化する。
-shell-integration-features = no-title
-
 # --- フォント ---
 # 日本語（CJK 記号・ひらがな・カタカナ・漢字・全角形）だけヒラギノ丸ゴ ProN に差し替える。
 # 英文部分は Ghostty デフォルト（macOS では SF Mono 系）のまま。

@@ -43,8 +43,3 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-color
 zstyle ':vcs_info:*' formats "%F{250}on%f %b%c%u"
 zstyle ':vcs_info:*' actionformats '[%b|%a]'
 precmd () { vcs_info }
-
-# 端末タブのタイトルをカレントディレクトリ名（末尾 1 要素、~ 短縮あり）で固定する
-autoload -Uz add-zsh-hook
-__set_tab_title() { print -Pn '\e]2;%1~\a' }
-add-zsh-hook precmd __set_tab_title
