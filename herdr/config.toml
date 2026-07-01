@@ -130,26 +130,20 @@ auto_switch = false
 # workspaces = "" # e.g. "ctrl+shift" makes ctrl+shift+1..9 switch workspaces directly
 # agents = ""     # e.g. "alt" makes alt+1..9 focus agent rows directly
 
-# --- wezterm-like direct bindings (ctrl+alt fallback since cmd+X is claimed by Ghostty) ---
-# prefix (ctrl+b) 版のデフォルトは配列で併存させ、慣れるまでのフォールバックにする。
-# split 方向が wezterm と逆になっていたら split_vertical と split_horizontal の右辺を入れ替える。
-# cmd+k (スクリーンクリア) は herdr に該当アクションがないため未マップ。シェルの clear / Ctrl+L で代替。
-new_tab             = ["prefix+c", "ctrl+alt+t"]
-close_pane          = ["prefix+x", "ctrl+alt+w"]
-split_vertical      = ["prefix+v", "ctrl+alt+d"]
-split_horizontal    = ["prefix+minus", "ctrl+alt+shift+d"]
-cycle_pane_previous = ["prefix+shift+tab", "ctrl+alt+["]
-cycle_pane_next     = ["prefix+tab", "ctrl+alt+]"]
-previous_tab        = ["prefix+p", "ctrl+alt+shift+["]
-next_tab            = ["prefix+n", "ctrl+alt+shift+]"]
-zoom                = ["prefix+z", "ctrl+alt+enter"]
-edit_scrollback     = ["prefix+e", "ctrl+alt+y"]
+# --- prefix key override ---
+# 2 キー同時押しで完結させるため、デフォルトの ctrl+b から ctrl+space に変更。
+# 親指 (space) + 小指 (ctrl) で押しやすい。CapsLock→Ctrl remap 環境なら最も楽。
+# 注意: macOS の「前の入力ソースを選択」ショートカット (システム設定 → キーボード
+# → キーボードショートカット → 入力ソース) がデフォルトで ctrl+space に割り当て
+# られている。日本語 IME を使うならシステム設定側でこのショートカットを解除するか
+# 別キーに変更しておくこと。
+prefix = "ctrl+space"
 
 # --- workspace (space) switching ---
-# tab (ctrl+alt+shift+[/]) より外側の概念なので hjkl 系で区別する。
+# tab の prefix+p / prefix+n と対称に、workspace は角括弧で前後移動。
 # 番号指定は prefix+shift+1..9 (tab の prefix+1..9 と shift で対比)。
-previous_workspace = "ctrl+alt+shift+h"
-next_workspace     = "ctrl+alt+shift+l"
+previous_workspace = "prefix+["
+next_workspace     = "prefix+]"
 switch_workspace   = "prefix+shift+1..9"
 
 # [worktrees]
