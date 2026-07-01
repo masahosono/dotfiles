@@ -25,6 +25,9 @@ scrollback-limit = 100000
 tab-inherit-working-directory = false
 window-inherit-working-directory = false
 working-directory = home
+# アプリ再起動時に前回のウィンドウ状態（作業ディレクトリ含む）を復元しない。
+# これがないと working-directory = home の指定が macOS の状態復元に上書きされる。
+window-save-state = never
 
 # --- アイコン ---
 # Dock とアプリケーションスイッチャーに表示されるアイコンを独自のものに差し替える。
