@@ -130,6 +130,21 @@ auto_switch = false
 # workspaces = "" # e.g. "ctrl+shift" makes ctrl+shift+1..9 switch workspaces directly
 # agents = ""     # e.g. "alt" makes alt+1..9 focus agent rows directly
 
+# --- wezterm-like direct bindings (ctrl+alt fallback since cmd+X is claimed by Ghostty) ---
+# prefix (ctrl+b) 版のデフォルトは配列で併存させ、慣れるまでのフォールバックにする。
+# split 方向が wezterm と逆になっていたら split_vertical と split_horizontal の右辺を入れ替える。
+# cmd+k (スクリーンクリア) は herdr に該当アクションがないため未マップ。シェルの clear / Ctrl+L で代替。
+new_tab             = ["prefix+c", "ctrl+alt+t"]
+close_pane          = ["prefix+x", "ctrl+alt+w"]
+split_vertical      = ["prefix+v", "ctrl+alt+d"]
+split_horizontal    = ["prefix+minus", "ctrl+alt+shift+d"]
+cycle_pane_previous = ["prefix+shift+tab", "ctrl+alt+["]
+cycle_pane_next     = ["prefix+tab", "ctrl+alt+]"]
+previous_tab        = ["prefix+p", "ctrl+alt+shift+["]
+next_tab            = ["prefix+n", "ctrl+alt+shift+]"]
+zoom                = ["prefix+z", "ctrl+alt+enter"]
+edit_scrollback     = ["prefix+e", "ctrl+alt+y"]
+
 # [worktrees]
 # directory = "~/.herdr/worktrees"
 
