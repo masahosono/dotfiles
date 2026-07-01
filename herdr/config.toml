@@ -145,6 +145,13 @@ next_tab            = ["prefix+n", "ctrl+alt+shift+]"]
 zoom                = ["prefix+z", "ctrl+alt+enter"]
 edit_scrollback     = ["prefix+e", "ctrl+alt+y"]
 
+# --- workspace (space) switching ---
+# tab (ctrl+alt+shift+[/]) より外側の概念なので hjkl 系で区別する。
+# 番号指定は prefix+shift+1..9 (tab の prefix+1..9 と shift で対比)。
+previous_workspace = "ctrl+alt+shift+h"
+next_workspace     = "ctrl+alt+shift+l"
+switch_workspace   = "prefix+shift+1..9"
+
 # [worktrees]
 # directory = "~/.herdr/worktrees"
 
