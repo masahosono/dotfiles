@@ -5,6 +5,7 @@
 # 短縮: よく使うコマンドを 1〜2 文字で叩く
 alias c='claude'
 alias cl='clear'
+alias h='herdr'
 alias n='nvim'
 
 # ls: 隠しファイル含む詳細表示（種別記号付き・サイズ可読）
