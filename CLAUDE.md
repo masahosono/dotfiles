@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Ghostty、Zed、Cursor、zsh、inshellisense、Claude Code の設定を管理している。
+個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Ghostty、herdr、Zed、Cursor、zsh、inshellisense、Claude Code の設定を管理している。
 
 ## セットアップ
 
@@ -17,6 +17,9 @@ ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
 mkdir -p ~/.config/ghostty
 ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
 ln -sf ~/dotfiles/ghostty/custom.icns ~/.config/ghostty/custom.icns
+# herdr (~/.config/herdr が存在しない場合は先に作成)
+mkdir -p ~/.config/herdr
+ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
 ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
@@ -103,6 +106,14 @@ PATH や API キーなど環境固有の設定は各自の `~/.zshrc` に直接�
 - `custom.icns` — `macos-custom-icon` から参照する Dock 用アイコン。ソースになる画像 (jpg など) は dotfiles 管理外で、Pillow + `iconutil` で生成した icns だけを管理する
 
 `~/.config/ghostty/` 配下に Ghostty 本体がキャッシュやテーマを自動生成する可能性があるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Zed / Cursor と同じ）。
+
+## herdr 設定
+
+`herdr/` 以下の構成:
+
+- `config.toml` — herdr の設定ファイル。TOML 形式。デフォルト値とコメント付きテンプレートは `herdr --default-config` で参照できる。`HERDR_CONFIG_PATH` 環境変数で読み込み先を差し替えることもできる
+
+`~/.config/herdr/` 配下にはセッション状態 (`session.json`)・ローカルソケット・ログなど herdr 本体が実行時に生成するファイルが含まれるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Ghostty / Zed / Cursor と同じ）。
 
 ## Zed 設定
 
