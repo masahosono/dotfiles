@@ -63,14 +63,14 @@
   "outputStyle": "Rockman.EXE",
   "language": "Japanese",
   "effortLevel": "xhigh",
-  "tui": "default",
+  "tui": "fullscreen",
   "voice": {
     "enabled": true,
     "mode": "hold"
   },
+  "skipWorkflowUsageWarning": false,
   "theme": "dark-daltonized",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "skipWorkflowUsageWarning": false
+  "voiceEnabled": true
 }
