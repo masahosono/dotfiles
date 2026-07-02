@@ -1,3 +1,6 @@
+# XDG Base Directory
+export XDG_CONFIG_HOME="$HOME/.config"                      # XDG 対応ツール (carapace 等) の設定置き場を ~/.config に統一
+
 # 補完
 autoload -Uz compinit
 compinit
