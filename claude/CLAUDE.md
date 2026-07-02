@@ -7,6 +7,11 @@
 
 - 常に日本語で応答すること (Always respond in Japanese)
 
+## コミットの方針
+
+- Claude Code がコミットを作成する場合、コミットメッセージ末尾に必ず Co-Authored-By トレーラーを付けること。作業した Claude を後から特定できるようにするため。
+- 形式は `Co-Authored-By: Claude <モデル名> <noreply@anthropic.com>`。モデル名には実際に作業したモデルを入れる（例: `Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>`）。
+
 ## ファイル変更の方針
 
 - Claude Code が変更を加えるファイルは、基本的に git などでバージョン管理されているものに限定する。誤って修正・削除した場合でも復元できる状態を保つため。
