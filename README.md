@@ -12,6 +12,7 @@
 - **Zed** (`zed/`) — Zed エディタの `settings.json` / `keymap.json`
 - **zsh** (`zsh/`) — 汎用設定 (`.zshconfig`)、プロンプト表示 (`.zshprompt`)、汎用エイリアス (`.zshalias`) のみ。`~/.zshrc` 本体は環境ごとに各自作成し、これらを source する
 - **inshellisense** (`inshellisense/`) — シェル補完ツールの設定
+- **carapace** (`carapace/`) — シェル補完ツールの設定 (specs / overlays / styles.json / choices)
 - **Claude Code** (`claude/`) — Claude Code 関連の設定スクリプト
 
 ## セットアップ
@@ -24,6 +25,7 @@ git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
+ln -sf ~/dotfiles/carapace ~/.config/carapace  # XDG_CONFIG_HOME=~/.config が前提 (.zshconfig で export 済み)
 
 # Ghostty 設定（~/.config/ghostty が存在しない場合は先に作成）
 mkdir -p ~/.config/ghostty

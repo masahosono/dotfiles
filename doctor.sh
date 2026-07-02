@@ -98,6 +98,9 @@ check_symlink "$HOME/.config/ghostty/custom.icns" "$DOTFILES_DIR/ghostty/custom.
 section "herdr"
 check_symlink "$HOME/.config/herdr/config.toml" "$DOTFILES_DIR/herdr/config.toml"
 
+section "carapace"
+check_symlink "$HOME/.config/carapace" "$DOTFILES_DIR/carapace"
+
 section "Zed"
 check_symlink "$HOME/.config/zed/settings.json" "$DOTFILES_DIR/zed/settings.json"
 check_symlink "$HOME/.config/zed/keymap.json"   "$DOTFILES_DIR/zed/keymap.json"

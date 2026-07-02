@@ -13,6 +13,8 @@ git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/nvim ~/.config/nvim
 ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
+# carapace (XDG_CONFIG_HOME=~/.config の設定が前提。zsh/.zshconfig で export している)
+ln -sf ~/dotfiles/carapace ~/.config/carapace
 # Ghostty (~/.config/ghostty が存在しない場合は先に作成)
 mkdir -p ~/.config/ghostty
 ln -sf ~/dotfiles/ghostty/config ~/.config/ghostty/config
@@ -78,7 +80,7 @@ bash ~/dotfiles/doctor.sh
 
 `zsh/` 以下の構成:
 
-- `.zshconfig` — 補完・シェルオプション・ヒストリー・キーバインド・TIMEFMT などの汎用的な対話設定
+- `.zshconfig` — XDG_CONFIG_HOME・補完・シェルオプション・ヒストリー・キーバインド・TIMEFMT などの汎用的な対話設定
 - `.zshprompt` — プロンプト表示（`vcs_info` を使った Git ブランチ表示、GitHub リモートのリンク化を含む）
 - `.zshalias` — 環境に依存しない汎用エイリアス
 
@@ -143,6 +145,19 @@ macOS 限定パス。Linux なら `~/.config/Cursor/User/`、Windows なら `%AP
 `inshellisense/` 以下の構成:
 
 - `rc.toml` — inshellisense の設定ファイル（エイリアス利用、Nerd Font、補完候補数など）
+
+## carapace 設定
+
+`carapace/` 以下の構成:
+
+- `specs/` — 自作の補完定義（carapace-spec 形式の YAML）を置く
+- `overlays/` — 既存補完への追加・上書き定義（spec と同形式）を置く
+- `styles.json` — 補完候補の色・装飾。`carapace --style 'carapace.Value=bold,magenta'` の実行で carapace 自身が書き込む
+- `choices/` — 同名補完が複数あるときの優先バリアント指定。`carapace --choice sed@bsd` の実行で 1 行テキストとして生成される
+
+carapace は全 OS で `XDG_CONFIG_HOME` を尊重するため、`zsh/.zshconfig` で `XDG_CONFIG_HOME=~/.config` を export して設定ディレクトリを `~/.config/carapace` に固定している（未設定だと macOS では `~/Library/Application Support/carapace` になる）。キャッシュは `~/Library/Caches/carapace` と別の場所にあり、設定ディレクトリには管理対象のファイルしか置かれないため、Neovim と同様にディレクトリごとシンボリックリンクを張る方針。`styles.json` や `choices/` は carapace 自身が書き込むファイルだが、ディレクトリごとリンクしてあるので自動的に dotfiles 管理下に入る。
+
+ブリッジ経由の補完リストはキャッシュされるため、新しいシェルやコマンドを追加したのに補完が出ないときは `carapace --clear-cache` を実行する。シェルへの組み込み（`CARAPACE_BRIDGES` の export と `source <(carapace _carapace)`）は各自の `~/.zshrc` に書く。
 
 ## Claude Code 設定
 
