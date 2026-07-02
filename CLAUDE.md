@@ -11,8 +11,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 git clone git@github.com:masahosono/dotfiles.git ~/dotfiles
 ln -sf ~/dotfiles/nvim ~/.config/nvim
-ln -sf ~/dotfiles/wezterm ~/.config/wezterm
 ln -sf ~/dotfiles/inshellisense ~/.config/inshellisense
+# WezTerm (herdr 専用モードで運用中。~/.config/wezterm が存在しない場合は先に作成)
+mkdir -p ~/.config/wezterm
+ln -sf ~/dotfiles/wezterm/wezterm_herdr.lua ~/.config/wezterm/wezterm.lua
 # carapace (XDG_CONFIG_HOME=~/.config の設定が前提。zsh/.zshconfig で export している)
 ln -sf ~/dotfiles/carapace ~/.config/carapace
 # Ghostty (~/.config/ghostty が存在しない場合は先に作成)
@@ -98,7 +100,19 @@ PATH や API キーなど環境固有の設定は各自の `~/.zshrc` に直接�
 
 `wezterm/` 以下の構成:
 
-- `wezterm.lua` — メイン設定ファイル（ウィンドウサイズ、フォントサイズ、カラースキームなど）
+- `wezterm.lua` — 通常モード用の設定（WezTerm 単体をマルチプレクサとして使うときの構成。バックアップ的に温存）
+- `wezterm_herdr.lua` — **現用**。herdr 専用モードの設定。タブバー非表示、`disable_default_key_bindings = true` にした上で必要なもの (Cmd+C/V/Q/N/=/-/0) だけ復活。Cmd+X は WezTerm 側で Ctrl+Alt+X に変換して pane へ送出し、herdr は `ctrl+alt+X` の direct binding で受ける（cmd/super 生送出は公式が「terminal 依存で不安定」と警告しているため経由しない）
+- **herdr は手動起動運用**。当初は `default_prog` で自動起動する構成だったが、WezTerm 終了時に default_prog の子プロセスが絡んで `~/.local/share/wezterm/gui-sock-<pid>` の消し忘れが起き、次回 Dock/Finder 起動でクラッシュする事象があったため、`default_prog` は無効化してある。WezTerm 起動後にシェルから `herdr` を叩いてアタッチする。新規ウィンドウは Cmd+N で開ける（WezTerm ネイティブの SpawnWindow を残してある）
+
+`~/.config/wezterm/` はディレクトリごとリンクせず、`~/.config/wezterm/wezterm.lua` をファイル単位で dotfiles 内の `.lua` ファイルに向ける方針（Ghostty / Zed / Cursor と同じ）。モード切替は symlink の張り替えで完結する:
+
+```bash
+# herdr 専用モード (現用)
+ln -sf ~/dotfiles/wezterm/wezterm_herdr.lua ~/.config/wezterm/wezterm.lua
+
+# 通常モードへ戻す
+ln -sf ~/dotfiles/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
+```
 
 ## Ghostty 設定
 
@@ -116,6 +130,8 @@ PATH や API キーなど環境固有の設定は各自の `~/.zshrc` に直接�
 - `config.toml` — herdr の設定ファイル。TOML 形式。デフォルト値とコメント付きテンプレートは `herdr --default-config` で参照できる。`HERDR_CONFIG_PATH` 環境変数で読み込み先を差し替えることもできる
 
 `~/.config/herdr/` 配下にはセッション状態 (`session.json`)・ローカルソケット・ログなど herdr 本体が実行時に生成するファイルが含まれるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Ghostty / Zed / Cursor と同じ）。
+
+キーバインドは prefix (`ctrl+space`) を非常口として残しつつ、主要アクションは `prefix+X` と `ctrl+alt+X` の dual binding にしてある。WezTerm (`wezterm_herdr.lua`) 側で Cmd+X を Ctrl+Alt+X に変換して送出しているため、ユーザー打鍵 Cmd+X 一発で herdr のアクションが発火する構成。cmd/super の直送出は公式が「terminal 依存で不安定」と警告しているためこの経路は採らない。
 
 ## Zed 設定
 

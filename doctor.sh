@@ -86,10 +86,12 @@ check_symlink() {
   PASS=$((PASS + 1))
 }
 
-section "Neovim / WezTerm / inshellisense"
+section "Neovim / inshellisense"
 check_symlink "$HOME/.config/nvim"           "$DOTFILES_DIR/nvim"
-check_symlink "$HOME/.config/wezterm"        "$DOTFILES_DIR/wezterm"
 check_symlink "$HOME/.config/inshellisense"  "$DOTFILES_DIR/inshellisense"
+
+section "WezTerm (herdr 専用モード)"
+check_symlink "$HOME/.config/wezterm/wezterm.lua" "$DOTFILES_DIR/wezterm/wezterm_herdr.lua"
 
 section "Ghostty"
 check_symlink "$HOME/.config/ghostty/config"     "$DOTFILES_DIR/ghostty/config"
