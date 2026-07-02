@@ -56,14 +56,107 @@ config.cursor_blink_ease_out = 'EaseOut'
 config.color_scheme = 'GruvboxDarkHard'
 
 -- ============================================================
+-- 分割ユーティリティ
+-- ============================================================
+-- WezTerm デフォルトの Split は「現在のペインを 50/50 に分ける」ため、n 枚
+-- 目のペインは 1/2^n の幅になってしまう。同じ行/列にあるペイン全てを均等な
+-- サイズに揃えたいので、分割前に境界を動かして active ペインが (2*T + 1)
+-- セル分になるよう調整し、そのあと size = { Cells = T } で分割することで、
+-- 分割後に全ペインが T セル幅で並ぶようにする。
+local function split_equal(axis)
+  local is_h = axis == 'horizontal'
+  local ctor = is_h and act.SplitHorizontal or act.SplitVertical
+  local plus_dir = is_h and 'Right' or 'Down'
+  local minus_dir = is_h and 'Left' or 'Up'
+
+  return wezterm.action_callback(function(window, pane)
+    local default_action = ctor { domain = 'CurrentPaneDomain' }
+    local tab = pane:tab()
+    if not tab then
+      window:perform_action(default_action, pane)
+      return
+    end
+
+    local all_panes = tab:panes_with_info()
+    local ref
+    for _, p in ipairs(all_panes) do
+      if p.is_active then ref = p; break end
+    end
+    if not ref then
+      window:perform_action(default_action, pane)
+      return
+    end
+
+    -- horizontal 分割なら同じ top/height、vertical 分割なら同じ left/width
+    -- を持つペインが 1 本の行/列を成す。それ以外はツリー上の別枝
+    local peers = {}
+    for _, p in ipairs(all_panes) do
+      local same_line
+      if is_h then
+        same_line = p.top == ref.top and p.height == ref.height
+      else
+        same_line = p.left == ref.left and p.width == ref.width
+      end
+      if same_line then
+        table.insert(peers, p)
+      end
+    end
+    table.sort(peers, function(a, b)
+      if is_h then return a.left < b.left end
+      return a.top < b.top
+    end)
+
+    local n = #peers
+    local total = 0
+    for _, p in ipairs(peers) do
+      total = total + (is_h and p.width or p.height)
+    end
+
+    -- 分割後は (n+1) 枚のペイン + n 個の区切りで元の総セル数を分け合う
+    local target = math.floor((total - 1) / (n + 1))
+    if target < 2 then
+      window:perform_action(default_action, pane)
+      return
+    end
+
+    local active_idx
+    for i, p in ipairs(peers) do
+      if p.is_active then active_idx = i; break end
+    end
+
+    -- 境界 i (i = 1..n-1) を左から順に動かす。累積目標と累積現在幅の差分を
+    -- 境界 i の移動量とする。境界 i の位置は先行する境界移動の影響を受けな
+    -- いため、原初の幅からの累積で計算できる
+    local cum_target, cum_cur = 0, 0
+    for i = 1, n - 1 do
+      cum_target = cum_target + ((i == active_idx) and (2 * target + 1) or target)
+      cum_cur = cum_cur + (is_h and peers[i].width or peers[i].height)
+      local delta = cum_target - cum_cur
+      if delta > 0 then
+        window:perform_action(act.AdjustPaneSize { plus_dir, delta }, peers[i].pane)
+      elseif delta < 0 then
+        window:perform_action(act.AdjustPaneSize { minus_dir, -delta }, peers[i].pane)
+      end
+    end
+
+    -- 事前調整済みの active ペイン (2*target+1 セル) を target セルで分割
+    window:perform_action(
+      ctor { domain = 'CurrentPaneDomain', size = { Cells = target } },
+      pane
+    )
+  end)
+end
+
+-- ============================================================
 -- キーバインド
 -- ============================================================
 config.keys = {
   -- Cmd+t: 新しいタブをホームディレクトリで開く
   { key = 't', mods = 'SUPER', action = act.SpawnCommandInNewTab { cwd = wezterm.home_dir } },
   -- Cmd+d: 右に分割, Cmd+Shift+d: 下に分割 (カレントディレクトリを引き継ぐ)
-  { key = 'd', mods = 'SUPER', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-  { key = 'd', mods = 'SUPER|SHIFT', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+  -- 分割後は同じ行/列のペインが均等な幅/高さになるように再配分する
+  { key = 'd', mods = 'SUPER', action = split_equal('horizontal') },
+  { key = 'd', mods = 'SUPER|SHIFT', action = split_equal('vertical') },
   -- Cmd+[ / Cmd+]: ペイン間移動
   { key = '[', mods = 'SUPER', action = act.ActivatePaneDirection 'Prev' },
   { key = ']', mods = 'SUPER', action = act.ActivatePaneDirection 'Next' },
