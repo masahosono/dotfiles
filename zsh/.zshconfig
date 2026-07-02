@@ -1,6 +1,10 @@
 # XDG Base Directory
 export XDG_CONFIG_HOME="$HOME/.config"                      # XDG 対応ツール (carapace 等) の設定置き場を ~/.config に統一
 
+# LS_COLORS — 補完候補のファイル種別の色付け (zsh の list-colors と carapace が参照)
+# 基本 ANSI 色のみで定義し、実際の発色は端末側のテーマ (Ryuuko / Gruvbox 等) に追従させる
+export LS_COLORS='di=1;34:ln=36:or=31:ex=32:so=35:pi=33:bd=1;33:cd=1;33:su=37;41:sg=30;43:tw=30;42:ow=34:*.tar=31:*.tgz=31:*.gz=31:*.zip=31:*.bz2=31:*.xz=31:*.7z=31:*.jpg=35:*.jpeg=35:*.png=35:*.gif=35:*.svg=35:*.mp3=36:*.wav=36:*.mp4=1;35:*.mov=1;35'
+
 # 補完
 autoload -Uz compinit
 compinit

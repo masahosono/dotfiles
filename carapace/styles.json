@@ -1,3 +1,7 @@
 {
-  "carapace": {}
+  "carapace": {
+    "FlagArg": "bold blue",
+    "FlagNoArg": "blue",
+    "FlagOptArg": "cyan"
+  }
 }
