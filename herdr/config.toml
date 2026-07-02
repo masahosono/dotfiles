@@ -139,6 +139,20 @@ auto_switch = false
 # 別キーに変更しておくこと。
 prefix = "ctrl+space"
 
+# --- wezterm-inspired additional prefix bindings ---
+# デフォルトの prefix+c/v/p/n/z/e と並列に、wezterm の cmd+X 打鍵を思い出しやすい
+# キーを追加バインドする (2 段階打鍵は同じ)。
+# 衝突するものは既存を優先して追加しない:
+#   prefix+w       → workspace_picker (デフォルト)
+#   prefix+shift+d → close_workspace (デフォルト)
+#   prefix+[ / prefix+] → previous_workspace / next_workspace (下のセクションで指定)
+new_tab         = ["prefix+c", "prefix+t"]
+split_vertical  = ["prefix+v", "prefix+d"]
+previous_tab    = ["prefix+p", "prefix+shift+["]
+next_tab        = ["prefix+n", "prefix+shift+]"]
+zoom            = ["prefix+z", "prefix+enter"]
+edit_scrollback = ["prefix+e", "prefix+y"]
+
 # --- workspace (space) switching ---
 # tab の prefix+p / prefix+n と対称に、workspace は角括弧で前後移動。
 # 番号指定は prefix+shift+1..9 (tab の prefix+1..9 と shift で対比)。
