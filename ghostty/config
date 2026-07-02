@@ -3,13 +3,39 @@
 # デフォルト値とドキュメント一覧: ghostty +show-config --default --docs
 
 # --- テーマ ---
-# 利用可能な一覧: ghostty +list-themes
-theme = Ryuuko
+# WezTerm (wezterm/wezterm.lua) と揃えた配色。Gruvbox Dark Hard がベースだが、
+# yellow は緑寄りで green と判別しづらいため orange (#fe8019) に差し替えている。
+# background は WezTerm 側と同じ紺色にする。
+# 利用可能なプリセット一覧: ghostty +list-themes
+background = 0f1629
+foreground = ebdbb2
+cursor-color = ebdbb2
+selection-background = 3c3836
+selection-foreground = ebdbb2
+
+# ANSI 0-7 (通常)
+palette = 0=#1d2021
+palette = 1=#cc241d
+palette = 2=#98971a
+palette = 3=#fe8019
+palette = 4=#458588
+palette = 5=#b16286
+palette = 6=#689d6a
+palette = 7=#a89984
+# ANSI 8-15 (bright)。11 (bright yellow) も orange に揃える
+palette = 8=#928374
+palette = 9=#fb4934
+palette = 10=#b8bb26
+palette = 11=#fe8019
+palette = 12=#83a598
+palette = 13=#d3869b
+palette = 14=#8ec07c
+palette = 15=#ebdbb2
 
 # --- 背景 ---
 # 背景をぼかすには background-opacity を 1 未満にする必要がある
-background-opacity = 0.85
-background-blur = 10
+background-opacity = 0.80
+background-blur = 15
 # 前景色と背景色のコントラスト比の下限（1.0=強制なし、4.5=WCAG AA 相当）
 # minimum-contrast = 2.5
 
