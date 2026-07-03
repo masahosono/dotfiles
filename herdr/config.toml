@@ -25,7 +25,7 @@ onboarding = false
 # red = "#ff6188"
 # green = "#a6e3a1"
 
-name = "catppuccin"
+name = "gruvbox"
 auto_switch = false
 [terminal]
 # Executable used for new interactive panes.
