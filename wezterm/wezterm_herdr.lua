@@ -31,12 +31,6 @@ config.scrollback_lines = 100000
 -- multiplexer / cli 機能が動く。herdr 専用モードでは不要なので切る。
 config.unix_domains = {}
 
--- Dock/Finder から再起動したとき、既存 wezterm-gui プロセスに spawn 要求を投げず
--- 新規プロセスとして GUI を立ち上げる。これをやらないと `~/.local/share/wezterm/
--- gui-sock-<pid>` 経由で既存インスタンスに接続を試み、Broken pipe を起こして
--- 新規ウィンドウが出ないまま落ちる (=見た目クラッシュ) 事象が発生する。
-config.default_gui_startup_args = { 'start', '--always-new-process' }
-
 -- ============================================================
 -- レンダラ
 -- ============================================================
