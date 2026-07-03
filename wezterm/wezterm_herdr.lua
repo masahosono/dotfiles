@@ -152,6 +152,11 @@ config.keys = {
   csi_u('y', 'SUPER', 121, 7),
   -- Cmd+`: workspace (space) を次へ (herdr next_workspace). '`' = 0x60 = 96
   csi_u('`', 'SUPER', 96, 7),
+  -- Cmd+Shift+`: agent を次へ (herdr next_agent).
+  -- macOS が Shift+` を '~' として通知するケースがあるので両方にバインド
+  -- (Cmd+Shift+[ の {,[ 両バインドと同じ対策)。CSI-u は unshifted の '`' (=96) を送る。
+  csi_u('`', 'SUPER|SHIFT', 96, 8),
+  csi_u('~', 'SUPER|SHIFT', 96, 8),
 
   -- ---- WezTerm 側で完結させる ----
   -- Cmd+Enter: 全画面切替
