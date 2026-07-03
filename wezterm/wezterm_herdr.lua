@@ -44,8 +44,7 @@ config.webgpu_power_preference = 'LowPower'
 -- ============================================================
 config.initial_cols = 180
 config.initial_rows = 42
-config.window_background_opacity = 0.80
-config.macos_window_background_blur = 15
+config.window_background_opacity = 1.0
 config.native_macos_fullscreen_mode = true
 config.inactive_pane_hsb = {
   saturation = 0.9,
@@ -85,19 +84,7 @@ config.cursor_blink_ease_out = 'EaseOut'
 -- ============================================================
 -- 配色
 -- ============================================================
-config.color_scheme = 'GruvboxDarkHard'
-config.colors = {
-  background = '#0f1629',
-  -- Gruvbox の yellow は緑寄りで green と判別しづらいため orange に差し替える
-  ansi = {
-    '#1d2021', '#cc241d', '#98971a', '#fe8019',
-    '#458588', '#b16286', '#689d6a', '#a89984',
-  },
-  brights = {
-    '#928374', '#fb4934', '#b8bb26', '#fe8019',
-    '#83a598', '#d3869b', '#8ec07c', '#ebdbb2',
-  },
-}
+config.color_scheme = 'Kanagawa (Gogh)'
 
 -- ============================================================
 -- タブバー
