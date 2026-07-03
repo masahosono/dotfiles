@@ -163,6 +163,8 @@ cycle_pane_next     = ["prefix+tab", "ctrl+alt+]"]
 # tab の prefix+p / prefix+n と対称に、workspace は角括弧で前後移動。
 # 番号指定は prefix+shift+1..9 (tab の prefix+1..9 と shift で対比)。
 # Cmd+` は wezterm 側で ctrl+alt+backtick に変換して送出しているのを next_workspace で受ける。
+# Cmd+N は wezterm 側で ctrl+alt+n に変換して送出しているのを new_workspace で受ける。
+new_workspace      = ["prefix+shift+n", "ctrl+alt+n"]
 previous_workspace = "prefix+["
 next_workspace     = ["prefix+]", "ctrl+alt+backtick"]
 switch_workspace   = "prefix+shift+1..9"

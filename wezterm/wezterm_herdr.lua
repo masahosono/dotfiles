@@ -131,6 +131,8 @@ config.keys = {
   -- ---- herdr へ CSI-u シーケンス (= ctrl+alt+X 相当) として送出 ----
   -- Cmd+T: 新しいタブ (herdr new_tab). 't' = 0x74 = 116
   csi_u('t', 'SUPER', 116, 7),
+  -- Cmd+N: 新しい workspace (herdr new_workspace). 'n' = 110
+  csi_u('n', 'SUPER', 110, 7),
   -- Cmd+D: 左右分割 (herdr split_vertical) / Cmd+Shift+D: 上下分割 (herdr split_horizontal)
   -- WezTerm と herdr で vertical/horizontal の呼び方が逆なので注意。'd' = 100
   csi_u('d', 'SUPER', 100, 7),
@@ -165,10 +167,6 @@ config.keys = {
   { key = 'c', mods = 'SUPER', action = act.CopyTo 'Clipboard' },
   { key = 'v', mods = 'SUPER', action = act.PasteFrom 'Clipboard' },
   { key = 'q', mods = 'SUPER', action = act.QuitApplication },
-  -- Cmd+N: 新規 WezTerm ウィンドウ。Cmd+Q で完全 quit した後、Dock から起動すると
-  -- gui-sock ゾンビが残っている場合にクラッシュすることがある。× でウィンドウを
-  -- 閉じてもプロセスは生きるので、Cmd+N で新規ウィンドウを開ける方が安定する
-  { key = 'n', mods = 'SUPER', action = act.SpawnWindow },
   { key = '=', mods = 'SUPER', action = act.IncreaseFontSize },
   { key = '-', mods = 'SUPER', action = act.DecreaseFontSize },
   { key = '0', mods = 'SUPER', action = act.ResetFontSize },
