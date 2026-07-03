@@ -148,10 +148,15 @@ config.keys = {
   csi_u('w', 'SUPER', 119, 7),
   -- Cmd+Y: スクロールバック編集 (herdr edit_scrollback). 'y' = 121
   csi_u('y', 'SUPER', 121, 7),
+  -- Cmd+`: workspace (space) を次へ (herdr next_workspace). '`' = 0x60 = 96
+  csi_u('`', 'SUPER', 96, 7),
 
   -- ---- WezTerm 側で完結させる ----
   -- Cmd+Enter: 全画面切替
   { key = 'Enter', mods = 'SUPER', action = act.ToggleFullScreen },
+  -- Cmd+F: WezTerm ネイティブの検索 (herdr のスクロールバックには効かないが、
+  -- WezTerm 自体のスクロールバックに対しては動く)
+  { key = 'f', mods = 'SUPER', action = act.Search 'CurrentSelectionOrEmptyString' },
   -- Cmd+K: 画面とスクロールバックをクリア (WezTerm ネイティブ。herdr 内 pane の
   -- 独自スクロールバックには効かない可能性あり)
   { key = 'k', mods = 'SUPER', action = act.ClearScrollback 'ScrollbackAndViewport' },
@@ -168,5 +173,11 @@ config.keys = {
   { key = '-', mods = 'SUPER', action = act.DecreaseFontSize },
   { key = '0', mods = 'SUPER', action = act.ResetFontSize },
 }
+
+-- Cmd+1..9: タブ切替 (herdr switch_tab). '1'..'9' = 49..57.
+-- 9 個ぶんリテラル展開すると冗長なのでループで table.insert する。
+for i = 1, 9 do
+  table.insert(config.keys, csi_u(tostring(i), 'SUPER', 48 + i, 7))
+end
 
 return config
