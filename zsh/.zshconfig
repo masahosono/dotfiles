@@ -6,11 +6,14 @@ export XDG_CONFIG_HOME="$HOME/.config"                      # XDG 対応ツー�
 export LS_COLORS='di=1;34:ln=36:or=31:ex=32:so=35:pi=33:bd=1;33:cd=1;33:su=37;41:sg=30;43:tw=30;42:ow=34:*.tar=31:*.tgz=31:*.gz=31:*.zip=31:*.bz2=31:*.xz=31:*.7z=31:*.jpg=35:*.jpeg=35:*.png=35:*.gif=35:*.svg=35:*.mp3=36:*.wav=36:*.mp4=1;35:*.mov=1;35'
 
 # 補完
-autoload -Uz compinit
-compinit
+# compinit は .zshrc 側で carapace source の前に呼ばれている想定。
+# ここで再度 compinit を呼ぶと、carapace が登録した compdef (_carapace_completer) が
+# zsh 標準の _git などに巻き戻され、carapace 由来の list-colors が効かなくなるため無効化。
+# autoload -Uz compinit
+# compinit
 zstyle ':completion:*' menu select                          # Tab で補完候補をメニュー選択可能に
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # 補完時に大文字小文字を区別しない
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}       # 補完候補を LS_COLORS で色付け
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}       # 補完候補を LS_COLORS で色付け (cd/ls など zsh 標準補完側で使う。carapace 対応コマンドは carapace が :completion:${curcontext}:* に specific な list-colors を注入するのでこちらが優先される)
 zstyle ':completion:*:default' menu select=2                # 候補が2つ以上のとき選択メニューを表示
 setopt auto_param_slash                                     # ディレクトリ名補完時に末尾 / を自動付与
 setopt list_packed                                          # 補完候補をコンパクトに表示

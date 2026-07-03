@@ -2,6 +2,9 @@
   "carapace": {
     "FlagArg": "bold blue",
     "FlagNoArg": "blue",
-    "FlagOptArg": "cyan"
+    "FlagOptArg": "cyan",
+    "Value": "bold green",
+    "Description": "dim",
+    "Highlight1": "bold green"
   }
 }
