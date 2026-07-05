@@ -1,25 +1,25 @@
 setopt prompt_subst
 
-# Kanagawa Dragon palette
-# dragonGray3=#7a8382 dragonBlue2=#8ba4b0 dragonGray=#a6a69c
-# dragonGreen=#87a987 dragonYellow=#c4b28a dragonRed=#c4746e
-PROMPT='%F{#7a8382}%*%f %B%F{#8ba4b0}%~%f%b ${vcs_info_msg_0_}
-%B%F{#87a987}❯%f%b '
+# Gruvbox palette (bright variant)
+# gray=#928374 fg4=#a89984 blue=#83a598
+# green=#b8bb26 yellow=#fabd2f red=#fb4934
+PROMPT='%F{#928374}%*%f %B%F{#83a598}%~%f%b ${vcs_info_msg_0_}
+%B%F{#b8bb26}❯%f%b '
 
 autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' stagedstr "%F{#c4b28a}[!]"
-zstyle ':vcs_info:git:*' unstagedstr "%F{#c4746e}[+]"
+zstyle ':vcs_info:git:*' stagedstr "%F{#fabd2f}[!]"
+zstyle ':vcs_info:git:*' unstagedstr "%F{#fb4934}[+]"
 
 # 変更状態に応じてブランチ名の色を切り替え、GitHub リモートがある場合はリンクにする
 +vi-git-color() {
   local color
   if [[ -n ${hook_com[unstaged]} ]]; then
-    color='#c4746e'
+    color='#fb4934'
   elif [[ -n ${hook_com[staged]} ]]; then
-    color='#c4b28a'
+    color='#fabd2f'
   else
-    color='#87a987'
+    color='#b8bb26'
   fi
 
   local branch="${hook_com[branch]}"
@@ -43,6 +43,6 @@ zstyle ':vcs_info:git:*' unstagedstr "%F{#c4746e}[+]"
 }
 zstyle ':vcs_info:git*+set-message:*' hooks git-color
 
-zstyle ':vcs_info:*' formats "%F{#a6a69c}on%f %b%c%u"
+zstyle ':vcs_info:*' formats "%F{#a89984}on%f %b%c%u"
 zstyle ':vcs_info:*' actionformats '[%b|%a]'
 precmd () { vcs_info }
