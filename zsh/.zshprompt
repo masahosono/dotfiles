@@ -14,13 +14,20 @@ zstyle ':vcs_info:git:*' unstagedstr "%F{#fb4934}[+]"
 # 変更状態に応じてブランチ名の色を切り替え、GitHub リモートがある場合はリンクにする
 +vi-git-color() {
   local color
-  if [[ -n ${hook_com[unstaged]} ]]; then
+  local has_untracked=""
+  if command git status --porcelain --untracked-files=normal 2>/dev/null | command grep -q '^??'; then
+    has_untracked=1
+  fi
+
+  if [[ -n ${hook_com[unstaged]} || -n "$has_untracked" ]]; then
     color='#fb4934'
   elif [[ -n ${hook_com[staged]} ]]; then
     color='#fabd2f'
   else
     color='#b8bb26'
   fi
+
+  [[ -n "$has_untracked" ]] && hook_com[unstaged]+="%F{#fb4934}[?]"
 
   local branch="${hook_com[branch]}"
   local url="" remote_url repo_path
