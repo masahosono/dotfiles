@@ -234,12 +234,12 @@
       "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:${HOME}/google-cloud-sdk/bin:${PATH}",
     },
     "working_directory": "current_project_directory",
-    // ターミナルフォント。日本語は fallbacks 経由でヒラギノ丸ゴ ProN へ流して
-    // Zed 内の見た目を本文・UI と揃える
-    "font_family": ".ZedMono",
+    // ターミナルフォントは WezTerm (Menlo) に揃える。
+    // 日本語は fallbacks 経由でヒラギノ丸ゴ ProN へ流す
+    "font_family": "Menlo",
     "font_fallbacks": ["Hiragino Maru Gothic ProN"],
-    // カーソルはバー形状で点滅させる
-    "cursor_shape": "bar",
+    // カーソルは WezTerm の BlinkingBlock に揃えるためブロック形状で点滅
+    "cursor_shape": "block",
     "blinking": "on",
     // ツールバーに cwd のパンくずを表示
     "toolbar": {
@@ -356,24 +356,26 @@
     // 視認性を上げる。不透明度を上げすぎると文字が読みにくくなるので 50% 前後
     "search.match_background": "#fe801980",
 
-    // ----- ターミナル配色 (Gruvbox 系) -----
+    // ----- ターミナル配色 (Kanagawa Dragon / Gogh) -----
+    // WezTerm 側の color_scheme = 'Kanagawa Dragon (Gogh)' と揃える。
     // ANSI カラーをターミナル背景込みで上書き
-    "terminal.background": "#0f1629",
-    "terminal.ansi.black": "#1d2021",
-    "terminal.ansi.red": "#cc241d",
-    "terminal.ansi.green": "#98971a",
-    "terminal.ansi.yellow": "#fe8019",
-    "terminal.ansi.blue": "#458588",
-    "terminal.ansi.magenta": "#b16286",
-    "terminal.ansi.cyan": "#689d6a",
-    "terminal.ansi.white": "#a89984",
-    "terminal.ansi.bright_black": "#928374",
-    "terminal.ansi.bright_red": "#fb4934",
-    "terminal.ansi.bright_green": "#b8bb26",
-    "terminal.ansi.bright_yellow": "#fe8019",
-    "terminal.ansi.bright_blue": "#83a598",
-    "terminal.ansi.bright_magenta": "#d3869b",
-    "terminal.ansi.bright_cyan": "#8ec07c",
-    "terminal.ansi.bright_white": "#ebdbb2",
+    "terminal.background": "#181616",
+    "terminal.foreground": "#c5c9c5",
+    "terminal.ansi.black": "#0d0c0c",
+    "terminal.ansi.red": "#c4746e",
+    "terminal.ansi.green": "#8a9a7b",
+    "terminal.ansi.yellow": "#c4b28a",
+    "terminal.ansi.blue": "#8ba4b0",
+    "terminal.ansi.magenta": "#a292a3",
+    "terminal.ansi.cyan": "#8ea4a2",
+    "terminal.ansi.white": "#c8c093",
+    "terminal.ansi.bright_black": "#a6a69c",
+    "terminal.ansi.bright_red": "#e46876",
+    "terminal.ansi.bright_green": "#87a987",
+    "terminal.ansi.bright_yellow": "#e6c384",
+    "terminal.ansi.bright_blue": "#7fb4ca",
+    "terminal.ansi.bright_magenta": "#938aa9",
+    "terminal.ansi.bright_cyan": "#7aa89f",
+    "terminal.ansi.bright_white": "#c5c9c5",
   },
 }
