@@ -25,23 +25,23 @@ ln -sf ~/dotfiles/hunk/config.toml ~/.config/hunk/config.toml
 
 設定可能なキー (`theme` / `mode` / `vcs` / `watch` / `exclude_untracked` / `line_numbers` / `wrap_lines` / `menu_bar` / `agent_notes` / `transparent_background` / カスタムテーマ) は [公式 README の Config セクション](https://github.com/modem-dev/hunk#config) を参照。
 
-## git diff のエイリアス設定
+## git の pager として登録する
 
-`git diff` の出力を hunk に流し込むエイリアスを登録しておくと便利。
-
-```bash
-git config --global alias.d '!hunk'
-```
-
-これで `git d` と打つと hunk が起動してカレントリポジトリの diff を閲覧できる。
-
-エイリアスを解除する場合は次のコマンドを実行する:
+`git diff` などの出力を hunk に流し込むには、`core.pager` に `hunk pager` を設定する。
 
 ```bash
-git config --global --unset alias.d
+git config --global core.pager "hunk pager"
 ```
 
-現在登録されている内容を確認したい場合は `git config --global --get alias.d` で表示できる。
+これで `git diff` / `git show` / `git log -p` などが hunk で表示されるようになる。
+
+pager 設定を解除する場合は次のコマンドを実行する:
+
+```bash
+git config --global --unset core.pager
+```
+
+現在登録されている内容を確認したい場合は `git config --global --get core.pager` で表示できる。
 
 ## 関連ファイル
 
