@@ -35,6 +35,14 @@ git config --global alias.d '!hunk'
 
 これで `git d` と打つと hunk が起動してカレントリポジトリの diff を閲覧できる。
 
+エイリアスを解除する場合は次のコマンドを実行する:
+
+```bash
+git config --global --unset alias.d
+```
+
+現在登録されている内容を確認したい場合は `git config --global --get alias.d` で表示できる。
+
 ## 関連ファイル
 
 - `config.toml` — 現在の設定。`theme = "auto"`（ターミナル背景に合わせて自動切り替え）と `agent_notes = true`（AI エージェントのメモ表示を有効化）を有効にしている
