@@ -9,7 +9,7 @@ hunk は `git diff` の出力をリッチな TUI で閲覧できるページャ�
 macOS (Homebrew):
 
 ```bash
-brew install modem-dev/tap/hunk
+brew install hunk
 ```
 
 その他のインストール方法・ビルド方法は [公式 README](https://github.com/modem-dev/hunk#installation) を参照。
