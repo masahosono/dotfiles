@@ -100,6 +100,9 @@ check_symlink "$HOME/.config/ghostty/custom.icns" "$DOTFILES_DIR/ghostty/custom.
 section "herdr"
 check_symlink "$HOME/.config/herdr/config.toml" "$DOTFILES_DIR/herdr/config.toml"
 
+section "hunk"
+check_symlink "$HOME/.config/hunk/config.toml" "$DOTFILES_DIR/hunk/config.toml"
+
 section "carapace"
 check_symlink "$HOME/.config/carapace" "$DOTFILES_DIR/carapace"
 

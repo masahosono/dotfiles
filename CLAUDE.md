@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## リポジトリ概要
 
-個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Ghostty、herdr、Zed、Cursor、zsh、inshellisense、Claude Code の設定を管理している。
+個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Ghostty、herdr、hunk、Zed、Cursor、zsh、inshellisense、Claude Code の設定を管理している。
 
 ## セットアップ
 
@@ -24,6 +24,9 @@ ln -sf ~/dotfiles/ghostty/custom.icns ~/.config/ghostty/custom.icns
 # herdr (~/.config/herdr が存在しない場合は先に作成)
 mkdir -p ~/.config/herdr
 ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+# hunk (~/.config/hunk が存在しない場合は先に作成)
+mkdir -p ~/.config/hunk
+ln -sf ~/dotfiles/hunk/config.toml ~/.config/hunk/config.toml
 mkdir -p ~/.config/zed
 ln -sf ~/dotfiles/zed/settings.json ~/.config/zed/settings.json
 ln -sf ~/dotfiles/zed/keymap.json ~/.config/zed/keymap.json
@@ -132,6 +135,14 @@ ln -sf ~/dotfiles/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 `~/.config/herdr/` 配下にはセッション状態 (`session.json`)・ローカルソケット・ログなど herdr 本体が実行時に生成するファイルが含まれるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Ghostty / Zed / Cursor と同じ）。
 
 キーバインドは prefix (`ctrl+space`) を非常口として残しつつ、主要アクションは `prefix+X` と `ctrl+alt+X` の dual binding にしてある。WezTerm (`wezterm_herdr.lua`) 側で Cmd+X を Ctrl+Alt+X に変換して送出しているため、ユーザー打鍵 Cmd+X 一発で herdr のアクションが発火する構成。cmd/super の直送出は公式が「terminal 依存で不安定」と警告しているためこの経路は採らない。
+
+## hunk 設定
+
+`hunk/` 以下の構成:
+
+- `config.toml` — hunk の設定ファイル。TOML 形式。設定可能なキー（`theme` / `mode` / `vcs` / `watch` / `exclude_untracked` / `line_numbers` / `wrap_lines` / `menu_bar` / `agent_notes` / `transparent_background` / カスタムテーマ）は [modem-dev/hunk の README](https://github.com/modem-dev/hunk#config) を参照。初期状態は空ファイル（hunk 側のデフォルトで動作する）
+
+`~/.config/hunk/` 配下には hunk 本体が実行時に生成する `state.json` が含まれるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Ghostty / herdr / Zed / Cursor と同じ）。
 
 ## Zed 設定
 
