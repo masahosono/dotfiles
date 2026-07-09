@@ -305,57 +305,74 @@
   //  ダブルクォートに書き換えるなどの意図しない変換が走る)
   "format_on_save": "off",
 
-  // ===== テーマ上書き =====
-  "experimental.theme_overrides": {
-    // ----- タブの視認性向上 -----
-    // Terafox - blurred はアクティブ/非アクティブタブがどちらも半透明 (不透明度34%) かつ
-    // ほぼ同色 (#293e4057 / #15252857) で判別しづらい。
-    // 非アクティブを暗く沈め、アクティブだけ不透明な明るめのティール
-    // (テーマの border.variant 色) にして差を付ける
-    "tab_bar.background": "#0f1c1eE3",
-    "tab.inactive_background": "#0f1c1eE3",
-    "tab.active_background": "#2d4f56",
-    // 非アクティブタブ等の文字色を一段落とす
-    // (テーマは text.muted ≈ text でほぼ同色のため、背景色差だけでは弱い)
-    "text.muted": "#cbd9d8",
-    // macOS ネイティブのウィンドウタブ (プロジェクトタブ) はタイトルバー色に
-    // 追従するため、少し明るい色にしてアクティブタブを判別しやすくする
-    // 上流の既知問題: https://github.com/zed-industries/zed/issues/38238
-    // まだ差が弱ければ #2d4f56 まで明るくするとアクティブなファイルタブと揃う
-    "title_bar.background": "#1d3337",
+  // ===== テーマ上書き (Terafox - blurred 用) =====
+  // 旧 experimental.theme_overrides はテーマ横断の共通上書きで、拡張テーマ (nvim-nightfox
+  // の Terafox - blurred など) 固有のキーを書き換えると効かないケースがある
+  // (editor.subheader.background 等)。テーマ名をキーにネストする per-theme overrides
+  // に移すと拡張テーマにも確実に反映される。
+  // 参考: https://github.com/zed-industries/zed/pull/30860
+  "theme_overrides": {
+    "Terafox - blurred": {
+      // ----- タブの視認性向上 -----
+      // Terafox - blurred はアクティブ/非アクティブタブがどちらも半透明 (不透明度34%) かつ
+      // ほぼ同色 (#293e4057 / #15252857) で判別しづらい。
+      // 非アクティブを暗く沈め、アクティブだけ不透明な明るめのティール
+      // (テーマの border.variant 色) にして差を付ける
+      "tab_bar.background": "#0f1c1eE3",
+      "tab.inactive_background": "#0f1c1eE3",
+      "tab.active_background": "#2d4f56",
+      // 非アクティブタブ等の文字色を一段落とす
+      // (テーマは text.muted ≈ text でほぼ同色のため、背景色差だけでは弱い)
+      "text.muted": "#cbd9d8",
+      // macOS ネイティブのウィンドウタブ (プロジェクトタブ) はタイトルバー色に
+      // 追従するため、少し明るい色にしてアクティブタブを判別しやすくする
+      // 上流の既知問題: https://github.com/zed-industries/zed/issues/38238
+      // まだ差が弱ければ #2d4f56 まで明るくするとアクティブなファイルタブと揃う
+      "title_bar.background": "#1d3337",
 
-    // ----- multibuffer のファイルヘッダー -----
-    // Terafox - blurred は editor.subheader.background 未定義のため
-    // デフォルトの暗いグレーにフォールバックし、ファイル境界が背景に溶ける。
-    // アクティブタブ (#2d4f56) より一段明るい不透明ティールにして
-    // ファイル境界を強調する (明るすぎるとヘッダー内の文字が読みづらくなる)
-    "editor.subheader.background": "#3d636c",
+      // ----- multibuffer / 未コミット差分ビューのファイルヘッダー -----
+      // Terafox - blurred はデフォルトで background.appearance = blurred (透過ウィンドウ)。
+      // Zed 本体 (crates/editor/src/element/header.rs) は透過ウィンドウでは
+      // editor.subheader.background を意図的に塗らない実装 (`.when(opaque_window, ...)`) で、
+      // 上書きしても効かない。ウィンドウ透過を opaque に切り替えて subheader を有効化する
+      // (テーマの背景色 #152528E3 の alpha 自体はそのまま残る)
+      "background.appearance": "opaque",
+      // アクティブタブ (#2d4f56) より一段明るい不透明ティールにして
+      // ファイル境界を強調する (明るすぎるとヘッダー内の文字が読みづらくなる)
+      "editor.subheader.background": "#3d636c",
 
-    // ----- エージェントパネル (ACP) の選択ハイライト -----
-    // Markdown 描画はテキストの上に選択ハイライトを重ね塗りするため、
-    // テーマの element.selection_background (#293e40, 不透明) だと文字が隠れる。
-    // エディタ本体の選択色 players[0].selection (#7aa4a136) に合わせて透過させる
-    "element.selection_background": "#7aa4a140",
+      // ----- エージェントパネル (ACP) の選択ハイライト -----
+      // Markdown 描画はテキストの上に選択ハイライトを重ね塗りするため、
+      // テーマの element.selection_background (#293e40, 不透明) だと文字が隠れる。
+      // エディタ本体の選択色 players[0].selection (#7aa4a136) に合わせて透過させる
+      "element.selection_background": "#7aa4a140",
 
-    // ----- コメントの視認性向上 -----
-    // Terafox - blurred のコメントは暗いティールグレーで本文に沈みがち。
-    // 白寄りのライトグレーで一段持ち上げて読みやすくする
-    // (italic 等の属性はテーマ側のデフォルトを維持するため color のみ上書き)
-    "syntax": {
-      "comment": {
-        "color": "#94a4a4",
-      },
-      "comment.doc": {
-        "color": "#94a4a4",
+      // ----- 検索ハイライト -----
+      // Terafox - blurred のデフォルトはエディタ背景に近いグレーで埋もれる。
+      // 暗いティール背景に映える暖色 (テーマの bright_yellow 系) を半透明で重ねて
+      // 視認性を上げる。不透明度を上げすぎると文字が読みにくくなるので 50% 前後
+      "search.match_background": "#fe801980",
+
+      // ----- コメントの視認性向上 -----
+      // Terafox - blurred のコメントは暗いティールグレーで本文に沈みがち。
+      // 白寄りのライトグレーで一段持ち上げて読みやすくする
+      // (italic 等の属性はテーマ側のデフォルトを維持するため color のみ上書き)
+      "syntax": {
+        "comment": {
+          "color": "#94a4a4",
+        },
+        "comment.doc": {
+          "color": "#94a4a4",
+        },
       },
     },
+  },
 
-    // ----- 検索ハイライト -----
-    // Terafox - blurred のデフォルトはエディタ背景に近いグレーで埋もれる。
-    // 暗いティール背景に映える暖色 (テーマの bright_yellow 系) を半透明で重ねて
-    // 視認性を上げる。不透明度を上げすぎると文字が読みにくくなるので 50% 前後
-    "search.match_background": "#fe801980",
-
+  // ===== 全テーマ共通の上書き =====
+  // ターミナル配色は WezTerm と揃えるためライト/ダーク問わず Kanagawa Dragon に固定したい。
+  // per-theme overrides に書くと Ayu Light 側にも同じ値を重複させる必要があるため、
+  // テーマ横断で効く experimental.theme_overrides に残す
+  "experimental.theme_overrides": {
     // ----- ターミナル配色 (Kanagawa Dragon / Gogh) -----
     // WezTerm 側の color_scheme = 'Kanagawa Dragon (Gogh)' と揃える。
     // ANSI カラーをターミナル背景込みで上書き
