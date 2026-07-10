@@ -15,11 +15,11 @@
   "theme": {
     "mode": "dark",
     "light": "Ayu Light",
-    "dark": "Terafox - blurred",
+    "dark": "Gruvbox Dark Hard",
   },
   // ファイルツリー等で使うアイコンテーマ
   "icon_theme": {
-    "mode": "dark",
+    "mode": "light",
     "light": "Zed (Default)",
     "dark": "Material Icon Theme",
   },
