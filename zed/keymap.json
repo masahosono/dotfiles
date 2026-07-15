@@ -52,6 +52,7 @@
   // - cmd+d         : 右に分割
   // - cmd+shift+d   : 下に分割
   // - cmd+[ / cmd+] : ペイン間を前後に移動
+  // - ctrl+tab      : 次のタブへ移動 (デフォルトの ActivateLastItem を上書き)
   {
     "context": "Terminal",
     "bindings": {
@@ -60,6 +61,7 @@
       "cmd-shift-d": "pane::SplitDown",
       "cmd-[": "workspace::ActivatePreviousPane",
       "cmd-]": "workspace::ActivateNextPane",
+      "ctrl-tab": "pane::ActivateNextItem",
     },
     "unbind": {},
   },
