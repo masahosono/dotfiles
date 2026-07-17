@@ -24,6 +24,8 @@ ln -sf ~/dotfiles/ghostty/custom.icns ~/.config/ghostty/custom.icns
 # herdr (~/.config/herdr が存在しない場合は先に作成)
 mkdir -p ~/.config/herdr
 ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+# herdr.app (WezTerm を herdr 専用ターミナルとしてラップした app を /Applications に生成)
+bash ~/dotfiles/herdr/make_app.sh
 # hunk (~/.config/hunk が存在しない場合は先に作成)
 mkdir -p ~/.config/hunk
 ln -sf ~/dotfiles/hunk/config.toml ~/.config/hunk/config.toml
@@ -131,6 +133,10 @@ ln -sf ~/dotfiles/wezterm/wezterm.lua ~/.config/wezterm/wezterm.lua
 `herdr/` 以下の構成:
 
 - `config.toml` — herdr の設定ファイル。TOML 形式。デフォルト値とコメント付きテンプレートは `herdr --default-config` で参照できる。`HERDR_CONFIG_PATH` 環境変数で読み込み先を差し替えることもできる
+- `make_app.sh` — `/Applications/herdr.app` を生成するスクリプト。中身は `/Applications/WezTerm.app` の複製（`ditto --arch arm64` で thin 化）で、アイコンを `herdr.icns` に差し替え、`CFBundleName` / `CFBundleIdentifier`（`com.masahosono.herdr`）を変更し、`LSEnvironment` で `WEZTERM_CONFIG_FILE` を `wezterm_herdr.lua` に固定したうえで ad-hoc 再署名する。**WezTerm.app を更新したら再実行が必要**
+- `herdr.icns` — herdr.app 用のアプリアイコン。[公式ロゴ SVG](https://herdr.dev/assets/logo.svg) を qlmanage で 1024px に描画し、Pillow で macOS 標準の角丸グリッド（1024 キャンバスに 824 角丸矩形）に加工して iconutil で icns 化したもの。ソース画像は dotfiles 管理外で、生成済み icns だけを管理する（ghostty/custom.icns と同じ方針）
+
+herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動するための薄いラッパー。exec するだけのスクリプトバンドルでは GUI 接続時に Launch Services が実体パスから WezTerm.app として再登録してしまいアイコンが乗っ取られるため、バンドル丸ごと複製方式を採っている。`WEZTERM_CONFIG_FILE` を固定してあるので、`~/.config/wezterm/wezterm.lua` の symlink 先に関係なく常に herdr 専用モードで起動する（WezTerm.app 側は従来どおり symlink に従う）。なお LSEnvironment はシェルから `open` した場合は呼び出し元の環境変数が優先される点に注意
 
 `~/.config/herdr/` 配下にはセッション状態 (`session.json`)・ローカルソケット・ログなど herdr 本体が実行時に生成するファイルが含まれるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Ghostty / Zed / Cursor と同じ）。
 
