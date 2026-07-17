@@ -22,8 +22,7 @@ config.webgpu_power_preference = 'LowPower'
 -- ============================================================
 config.initial_cols = 180
 config.initial_rows = 42
-config.window_background_opacity = 0.80
-config.macos_window_background_blur = 15
+config.window_background_opacity = 1.0
 config.native_macos_fullscreen_mode = true
 config.inactive_pane_hsb = {
   saturation = 0.9,
@@ -53,7 +52,8 @@ config.cursor_blink_ease_out = 'EaseOut'
 -- ============================================================
 -- 配色
 -- ============================================================
-config.color_scheme = 'GruvboxDarkHard'
+-- herdr 専用モード (wezterm_herdr.lua) / Ghostty と揃えた配色
+config.color_scheme = 'Kanagawa Dragon (Gogh)'
 
 -- ============================================================
 -- キーバインド
@@ -93,13 +93,14 @@ config.use_fancy_tab_bar = false
 config.tab_bar_at_bottom = false
 config.tab_max_width = 32
 
-local TAB_BAR_BG = '#0a0f1f'
-local ACTIVE_BG = '#fe8019'
-local ACTIVE_FG = '#1d2021'
-local INACTIVE_BG = '#3c3836'
-local INACTIVE_FG = '#a89984'
-local HOVER_BG = '#504945'
-local HOVER_FG = '#ebdbb2'
+-- Kanagawa Dragon のパレットに合わせたタブバー配色
+local TAB_BAR_BG = '#0d0c0c'   -- dragonBlack0
+local ACTIVE_BG = '#8ba4b0'    -- dragonBlue2
+local ACTIVE_FG = '#0d0c0c'
+local INACTIVE_BG = '#282727'  -- dragonBlack4
+local INACTIVE_FG = '#a6a69c'  -- dragonGray
+local HOVER_BG = '#393836'     -- dragonBlack5
+local HOVER_FG = '#c5c9c5'     -- dragonWhite
 
 local TAB_LEFT_EDGE = utf8.char(0xe0b6)
 local TAB_RIGHT_EDGE = utf8.char(0xe0b4)
@@ -145,16 +146,6 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, cfg, hover, max_width)
 end)
 
 config.colors = {
-  background = '#0f1629',
-  -- Gruvbox の yellow は緑寄りで green と判別しづらいため orange に差し替える
-  ansi = {
-    '#1d2021', '#cc241d', '#98971a', '#fe8019',
-    '#458588', '#b16286', '#689d6a', '#a89984',
-  },
-  brights = {
-    '#928374', '#fb4934', '#b8bb26', '#fe8019',
-    '#83a598', '#d3869b', '#8ec07c', '#ebdbb2',
-  },
   tab_bar = {
     background = TAB_BAR_BG,
   },
