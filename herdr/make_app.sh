@@ -14,8 +14,10 @@ set -euo pipefail
 
 SRC="/Applications/WezTerm.app"
 DST="${1:-/Applications/herdr.app}"
-ICNS="$(cd "$(dirname "$0")" && pwd)/herdr.icns"
-CONFIG="$HOME/dotfiles/wezterm/wezterm_herdr.lua"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ICNS="$REPO_ROOT/herdr/herdr.icns"
+# LSEnvironment は $HOME を展開しないため、ここで絶対パスに解決して埋め込む
+CONFIG="$REPO_ROOT/wezterm/wezterm_herdr.lua"
 
 [[ -d "$SRC" ]] || { echo "NG: WezTerm.app が見つからない: $SRC" >&2; exit 1; }
 [[ -f "$ICNS" ]] || { echo "NG: アイコンが見つからない: $ICNS" >&2; exit 1; }
