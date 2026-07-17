@@ -279,6 +279,7 @@
     "mdx": true,
     "sql": true,
     "toml": true,
+    "xml": true,
     // ----- Themes -----
     "nvim-nightfox": true,
     // ----- Icon themes -----
