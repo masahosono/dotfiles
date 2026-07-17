@@ -90,8 +90,8 @@ section "Neovim / inshellisense"
 check_symlink "$HOME/.config/nvim"           "$DOTFILES_DIR/nvim"
 check_symlink "$HOME/.config/inshellisense"  "$DOTFILES_DIR/inshellisense"
 
-section "WezTerm (herdr 専用モード)"
-check_symlink "$HOME/.config/wezterm/wezterm.lua" "$DOTFILES_DIR/wezterm/wezterm_herdr.lua"
+section "WezTerm (通常モード。herdr 専用モードは herdr.app 側で固定)"
+check_symlink "$HOME/.config/wezterm/wezterm.lua" "$DOTFILES_DIR/wezterm/wezterm.lua"
 
 section "Ghostty"
 check_symlink "$HOME/.config/ghostty/config"     "$DOTFILES_DIR/ghostty/config"
