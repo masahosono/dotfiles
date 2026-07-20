@@ -12,7 +12,7 @@ alias n='nvim'
 alias ll='ls -lAFh'
 
 # git: 状態確認
-alias gits='git status'
+alias gs='git status'
 
 # git: skip-worktree されているファイルを一覧
 alias git-skipped='git ls-files -v | grep "^S"'
