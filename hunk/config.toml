@@ -2,3 +2,4 @@ theme = "auto"
 mode = "split"
 watch = true
 agent_notes = true
+transparent_background = true
