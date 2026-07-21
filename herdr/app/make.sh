@@ -8,14 +8,14 @@
 #     (herdr.app は ~/.config/wezterm/wezterm.lua の symlink 先に関係なく常に herdr 専用モード)
 #   - Info.plist を書き換えるため ad-hoc で再署名
 #
-# 使い方: bash make_app.sh [出力先.app]   (省略時 /Applications/herdr.app)
+# 使い方: bash make.sh [出力先.app]   (省略時 /Applications/herdr.app)
 # WezTerm.app を更新したら再実行すること。
 set -euo pipefail
 
 SRC="/Applications/WezTerm.app"
 DST="${1:-/Applications/herdr.app}"
-REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ICNS="$REPO_ROOT/herdr/herdr.icns"
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+ICNS="$REPO_ROOT/herdr/app/herdr.icns"
 # LSEnvironment は $HOME を展開しないため、ここで絶対パスに解決して埋め込む
 CONFIG="$REPO_ROOT/wezterm/wezterm_herdr.lua"
 
