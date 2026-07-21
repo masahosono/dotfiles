@@ -47,60 +47,20 @@
       "cmd-q": null,
     },
   },
-  // ターミナル内での herdr 操作 (WezTerm herdr 専用モードと同じ操作感)
-  //
-  // wezterm/wezterm_herdr.lua と同じ方式。ユーザー打鍵 Cmd+X を kitty keyboard の
-  // CSI-u シーケンス (= ctrl+alt+X 相当) に変換して pane へ直接送出し、
-  // herdr は config.toml の ctrl+alt+X direct binding で受ける。
-  // herdr 側の設定変更は不要。
-  //
-  // CSI-u modifier: Shift=1, Alt=2, Ctrl=4 の合計 + 1 が送出値。
-  //   Ctrl+Alt (6+1)       = 7
-  //   Ctrl+Alt+Shift (7+1) = 8
-  // "\u001b" は ESC。JSON の unicode エスケープとして書く。
-  //
-  // 注意:
-  // - herdr を動かしていない素のターミナルにも効く。その場合 CSI-u が
-  //   シェルに届くだけで概ね無視される (Zed ネイティブの cmd-t 分割等は失われる)
-  // - Terminal フォーカス中は Workspace 側の cmd-1..5 (パネル切替) や
-  //   cmd-` (ウィンドウタブ切替) よりこちらが優先される
+  // ターミナル内での分割・タブ・ペイン移動
+  // - cmd+t         : tasks.json の "shell" task を起動 (ラベル付き新規タブ)
+  // - cmd+d         : 右に分割
+  // - cmd+shift+d   : 下に分割
+  // - cmd+[ / cmd+] : ペイン間を前後に移動
+  // - ctrl+tab      : 次のタブへ移動 (デフォルトの ActivateLastItem を上書き)
   {
     "context": "Terminal",
     "bindings": {
-      // Cmd+T: 新しいタブ (herdr new_tab). 't' = 116
-      "cmd-t": ["terminal::SendText", "\u001b[116;7u"],
-      // Cmd+N: 新しい workspace (herdr new_workspace). 'n' = 110
-      "cmd-n": ["terminal::SendText", "\u001b[110;7u"],
-      // Cmd+D: 左右分割 (herdr split_vertical) / Cmd+Shift+D: 上下分割 (herdr split_horizontal)
-      // WezTerm と herdr で vertical/horizontal の呼び方が逆なので注意。'd' = 100
-      "cmd-d": ["terminal::SendText", "\u001b[100;7u"],
-      "cmd-shift-d": ["terminal::SendText", "\u001b[100;8u"],
-      // Cmd+[ / Cmd+]: ペイン循環 (herdr cycle_pane_previous/next). '[' = 91, ']' = 93
-      "cmd-[": ["terminal::SendText", "\u001b[91;7u"],
-      "cmd-]": ["terminal::SendText", "\u001b[93;7u"],
-      // Cmd+Shift+[ / Cmd+Shift+]: タブ切替 (herdr previous_tab/next_tab)
-      // Zed では shift+記号は記号そのもので書く。CSI-u は unshifted のコードを送る
-      "cmd-{": ["terminal::SendText", "\u001b[91;8u"],
-      "cmd-}": ["terminal::SendText", "\u001b[93;8u"],
-      // Cmd+W: 現在のペインを閉じる (herdr close_pane). 'w' = 119
-      "cmd-w": ["terminal::SendText", "\u001b[119;7u"],
-      // Cmd+Y: スクロールバック編集 (herdr edit_scrollback). 'y' = 121
-      "cmd-y": ["terminal::SendText", "\u001b[121;7u"],
-      // Cmd+`: workspace (space) を次へ (herdr next_workspace). '`' = 96
-      "cmd-`": ["terminal::SendText", "\u001b[96;7u"],
-      // Cmd+Shift+`: agent を次へ (herdr next_agent). CSI-u は unshifted の '`' (=96) を送る
-      "cmd-~": ["terminal::SendText", "\u001b[96;8u"],
-      // Cmd+1..9: タブ切替 (herdr switch_tab). '1'..'9' = 49..57
-      "cmd-1": ["terminal::SendText", "\u001b[49;7u"],
-      "cmd-2": ["terminal::SendText", "\u001b[50;7u"],
-      "cmd-3": ["terminal::SendText", "\u001b[51;7u"],
-      "cmd-4": ["terminal::SendText", "\u001b[52;7u"],
-      "cmd-5": ["terminal::SendText", "\u001b[53;7u"],
-      "cmd-6": ["terminal::SendText", "\u001b[54;7u"],
-      "cmd-7": ["terminal::SendText", "\u001b[55;7u"],
-      "cmd-8": ["terminal::SendText", "\u001b[56;7u"],
-      "cmd-9": ["terminal::SendText", "\u001b[57;7u"],
-      // Zed ターミナルタブの前後移動は Zed ネイティブのまま残す
+      "cmd-t": "workspace::NewTerminal",
+      "cmd-d": "pane::SplitRight",
+      "cmd-shift-d": "pane::SplitDown",
+      "cmd-[": "workspace::ActivatePreviousPane",
+      "cmd-]": "workspace::ActivateNextPane",
       "ctrl-tab": "pane::ActivateNextItem",
     },
     "unbind": {},
