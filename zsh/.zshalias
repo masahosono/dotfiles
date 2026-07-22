@@ -14,6 +14,9 @@ alias ll='ls -lAFh'
 # git: 状態確認
 alias gs='git status'
 
+# git: 履歴確認
+alias gl='git log'
+
 # git: skip-worktree されているファイルを一覧
 alias git-skipped='git ls-files -v | grep "^S"'
 
