@@ -161,7 +161,8 @@ if [ -d "$DOTFILES_DIR/claude/output-styles" ]; then
   done
 fi
 
-check_symlink "$HOME/.claude/skills/output-style" "$DOTFILES_DIR/claude/skills/output-style"
+check_symlink "$HOME/.claude/skills/output-style"       "$DOTFILES_DIR/claude/skills/output-style"
+check_symlink "$HOME/.claude/skills/commit-my-changes"  "$DOTFILES_DIR/claude/skills/commit-my-changes"
 
 # サマリ
 TOTAL=$((PASS + FAIL + WARN))

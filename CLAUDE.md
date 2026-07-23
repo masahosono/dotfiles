@@ -52,6 +52,7 @@ ln -sf ~/dotfiles/claude/output-styles/rockman-exe.md ~/.claude/output-styles/ro
 ln -sf ~/dotfiles/claude/output-styles/fable-sato.md ~/.claude/output-styles/fable-sato.md
 mkdir -p ~/.claude/skills
 ln -sf ~/dotfiles/claude/skills/output-style ~/.claude/skills/output-style
+ln -sf ~/dotfiles/claude/skills/commit-my-changes ~/.claude/skills/commit-my-changes
 ```
 
 プラグインは Neovim 初回起動時に lazy.nvim が自動インストールする。
@@ -196,5 +197,6 @@ carapace は全 OS で `XDG_CONFIG_HOME` を尊重するため、`zsh/.zshconfig
 - `output-styles/rockman-exe.md` — カスタム output style（ロックマン.EXE 口調）
 - `output-styles/fable-sato.md` — カスタム output style（ザ・ファブル／佐藤明口調）
 - `skills/output-style/SKILL.md` — `/output-style` スキル。output style を引数の部分一致または一覧選択で切り替える（反映は `/clear` か新セッションから）
+- `skills/commit-my-changes/SKILL.md` — `/commit-my-changes` スキル。今のセッションで自分（Claude）が編集したファイルだけを明示パス指定でコミットする。複数の Claude セッション並走時に他セッションの差分を巻き込まないための対策
 
 `~/.claude` 配下にはセッション履歴やキャッシュなど自動生成されるファイルが多いため、ディレクトリごとリンクせず、管理対象のファイル単位でシンボリックリンクを張る方針。
