@@ -44,6 +44,7 @@ ln -sf ~/dotfiles/zsh/.zshalias ~/.zshalias
 # Claude Code 設定
 mkdir -p ~/.claude/output-styles
 ln -sf ~/dotfiles/claude/statusline.sh ~/.claude/statusline.sh
+ln -sf ~/dotfiles/claude/statusline_fable.sh ~/.claude/statusline_fable.sh
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
 ln -sf ~/dotfiles/claude/notify.sh ~/.claude/notify.sh
 ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
@@ -191,7 +192,8 @@ carapace は全 OS で `XDG_CONFIG_HOME` を尊重するため、`zsh/.zshconfig
 
 - `CLAUDE.md` — 全プロジェクト共通のグローバル指示（応答言語、ツール利用ルール等）。`~/.claude/CLAUDE.md` から symlink する
 - `settings.json` — Claude Code のグローバル設定（permissions / model / hooks / statusLine 等）
-- `statusline.sh` — ステータスライン用シェルスクリプト。`settings.json` の `statusLine.command` から参照される
+- `statusline.sh` — ステータスライン用シェルスクリプト。`settings.json` の `statusLine.command` から参照される。1〜4 行目 (ヘッダー / Context / Session / Weekly) を担当し、モデル別の週次枠の実装だけは `statusline_fable.sh` に切り出して source している
+- `statusline_fable.sh` — モデル別の週次枠 (Fable など) を statusline に出す実装。`statusline.sh` から source される前提で、単体実行はしない。公開するのは `print_model_limits()` だけで、`bar()` / `color_for_pct()` / 色変数は呼び出し側に依存する。`statusline.sh` は `$(dirname "$0")/statusline_fable.sh` を source するので、**`statusline.sh` と同じように `~/.claude/statusline_fable.sh` にも symlink を張る必要がある** (`doctor.sh` のチェック対象に入れてあるので、張り忘れれば検出される)。読めなければ `print_model_limits` が未定義になり、その行が出ないだけで 1〜4 行目には影響しない。以下はこのファイルの実装メモ: モデル別の週次枠は statusline の入力 JSON に含まれない (本体が `anthropic-ratelimit-unified-{5h,7d}-*` レスポンスヘッダから `five_hour` / `seven_day` の 2 つだけを組み立てて渡している) ため、`/usage` コマンドと同じ内部 API `GET /api/oauth/usage` を自分のアクセストークンで直接叩き、`~/.cache/claude-statusline/` に 60 秒キャッシュしている。取得はバックグラウンドで行い描画はブロックしない (失敗が続いても叩き続けないよう試行間隔自体も 60 秒で絞ってある)。レスポンスの階層は決め打ちせず `kind: "weekly_scoped"` を含む配列を再帰的に探すため、構造が変わっても拾える (実測では `limits` は `rate_limits` の下ではなくトップレベルにあり、`resets_at` はマイクロ秒 + オフセット付き ISO 8601 で届く)。取得結果は同ディレクトリの `last-status` に 1 行だけ記録される (`<時刻>\t<OK|NG>\t<表示用の理由>\t<診断用の詳細>` の TSV)。これは単なるログではなく状態ファイルで、表示側もこれを読む。**取得に失敗したときは古い値を出さず `[--%] 取得失敗 (HTTP 401)` のように理由付きのプレースホルダーを出す** — 週次枠は数分の遅れなら問題ないが、取得が壊れ続けたときに何日も前の値を最新として見せると枠の残りを誤認するため。同時実行の防止と試行間隔の絞りは `attempt.lock` ディレクトリ 1 つで兼ねている (`mkdir` のアトミック性を使い、完了時に消さず TTL 経過後に奪う。完了時刻を基準にすると判定とマーカー作成の間に隙間ができて二重に走る)。ドキュメント化されていない API なのでフィールド名やパスが予告なく変わり得るが、どう失敗しても 1〜4 行目には影響しない設計
 - `notify.sh` — 通知用シェルスクリプト。`settings.json` の `hooks.Notification` / `hooks.Stop` から参照される
 - `output-styles/amadeus.md` — カスタム output style（アマデウス／AI 牧瀬紅莉栖口調）
 - `output-styles/rockman-exe.md` — カスタム output style（ロックマン.EXE 口調）

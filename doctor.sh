@@ -148,6 +148,7 @@ fi
 
 section "Claude Code"
 check_symlink "$HOME/.claude/statusline.sh"  "$DOTFILES_DIR/claude/statusline.sh"
+check_symlink "$HOME/.claude/statusline_fable.sh" "$DOTFILES_DIR/claude/statusline_fable.sh"
 check_symlink "$HOME/.claude/settings.json"  "$DOTFILES_DIR/claude/settings.json"
 check_symlink "$HOME/.claude/notify.sh"      "$DOTFILES_DIR/claude/notify.sh"
 check_symlink "$HOME/.claude/CLAUDE.md"      "$DOTFILES_DIR/claude/CLAUDE.md"

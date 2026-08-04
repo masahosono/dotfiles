@@ -64,6 +64,15 @@ color_for_pct() {
   else printf '%s' "$GREEN"; fi
 }
 
+# === モデル別の週次枠 (Fable など) の読み込み ===
+# 実装は statusline_fable.sh に分けてあります (取得・キャッシュ・表示で 200 行近くあり、
+# statusline 本体の見通しを保つため)。公開されるのは print_model_limits() だけです。
+# このスクリプトと同じディレクトリに置かれている前提です。~/.claude/statusline.sh と同様に
+# ~/.claude/statusline_fable.sh も symlink を張ってください (doctor.sh のチェック対象です)。
+# 読めなければ print_model_limits が未定義になり、その行が出ないだけで以降には影響しません。
+FABLE_LIB="$(dirname "$0")/statusline_fable.sh"
+[ -r "$FABLE_LIB" ] && . "$FABLE_LIB"
+
 # === コンテキスト上限ラベル (1M / 200K) ===
 CTX_TOTAL_LABEL=""
 if [ "$CTX_TOTAL" -ge 1000000 ]; then
@@ -176,3 +185,8 @@ if [ -n "$SEVEN_D_PCT" ]; then
 else
   printf '%b\n' "${DIM}Weekly: ${RESET} $(bar 15 0 "$DIM") ${DIM}[--%]${RESET}"
 fi
+
+# === 5行目以降: モデル別の週次枠 (Fable など) ===
+# statusline_fable.sh が読めていれば 1 モデル 1 行で出力します。
+# 読めていなければ関数が未定義なので、何も起きません。
+command -v print_model_limits >/dev/null 2>&1 && print_model_limits
