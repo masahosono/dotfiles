@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 個人の dotfiles 管理リポジトリ。Neovim、WezTerm、Ghostty、herdr、hunk、Zed、Cursor、zsh、inshellisense、Claude Code の設定を管理している。
 
+## ブランチ運用
+
+**基本的に `main` ブランチで直接作業してコミットする。** 作業用ブランチや PR は作らない。個人リポジトリでレビュアーがいないため、ブランチを切っても手動でマージし直す手間が増えるだけになる（実際の履歴も一貫して `main` への直接コミット）。
+
+ブランチを切るのは、複数の変更を並行して試したい場合や、後で丸ごと捨てる可能性のある実験的な変更に限る。その場合も作業後は `main` に fast-forward マージし、ブランチは削除する。
+
+なお複数の Claude Code セッションを並走させている場合、`git add .` や `git commit -a` で他セッションの差分を巻き込む事故が起きる。コミット対象は必ず明示的にパス指定する（`claude/skills/commit-my-changes` の `/commit-my-changes` がこれを自動化する）。
+
 ## セットアップ
 
 ```bash
