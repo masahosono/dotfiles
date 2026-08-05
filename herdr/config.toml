@@ -241,6 +241,18 @@ prompt_new_tab_name = false
 # Background notification popup delivery
 show_agent_labels_on_pane_borders = true
 agent_panel_sort = "spaces"
+
+# --- sidebar の行間 ---
+# herdr 0.8.0 で sidebar の行構成が [ui.sidebar.spaces] / [ui.sidebar.agents] として
+# 設定可能になり、同時にエントリ間の空行のデフォルトが row_gap = 0 に変わった。
+# 空行が消えると space の区切りが視覚的に判別しづらいので、従来の 1 行空けに戻す。
+# 注意: これらはサブテーブルなので、[ui] 直下のキーより後ろに書くこと。
+[ui.sidebar.spaces]
+row_gap = 1
+
+[ui.sidebar.agents]
+row_gap = 1
+
 [ui.toast]
 # off = disable pop-up notifications
 # herdr = show in-app toasts
