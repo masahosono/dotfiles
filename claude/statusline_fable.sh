@@ -55,9 +55,20 @@ file_age() {
 
 # OAuth アクセストークンを取り出します。ファイルを優先します
 # (Keychain を別プロセスから読むと認可ダイアログが出ることがあるため、無いときだけフォールバック)。
+# ただし macOS では本体が更新し続けるのは Keychain 側で、ファイルは過去のログイン等の残骸が
+# 放置されることがあります。期限切れのファイルトークンを優先し続けると 401 を返し続けるため、
+# expiresAt (ミリ秒 epoch) を確かめて、切れていれば Keychain へフォールバックします。
 read_access_token() {
-  local t="" f="$HOME/.claude/.credentials.json"
-  [ -r "$f" ] && t=$(jq -r '.claudeAiOauth.accessToken // .accessToken // empty' "$f" 2>/dev/null)
+  local t="" exp f="$HOME/.claude/.credentials.json"
+  if [ -r "$f" ]; then
+    t=$(jq -r '.claudeAiOauth.accessToken // .accessToken // empty' "$f" 2>/dev/null)
+    exp=$(jq -r '.claudeAiOauth.expiresAt // .expiresAt // empty' "$f" 2>/dev/null)
+    case "$exp" in
+      (''|*[!0-9]*) ;;  # 期限が読めない形式ならそのまま使う (判定できないだけで有効かもしれない)
+      (*) [ "${#exp}" -gt 10 ] && exp=${exp%???}   # ミリ秒 → 秒
+          [ "$exp" -le "$(date +%s)" ] && t="" ;;
+    esac
+  fi
   if [ -z "$t" ]; then
     t=$(security find-generic-password -s 'Claude Code-credentials' -w 2>/dev/null \
         | jq -r '.claudeAiOauth.accessToken // .accessToken // empty' 2>/dev/null)
