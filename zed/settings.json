@@ -122,6 +122,10 @@
     // タブ上の診断表示 (off / errors / all)
     "show_diagnostics": "errors",
   },
+  // preview タブ (シングルクリックで開く仮タブ) を無効化し、常に恒久タブで開く
+  "preview_tabs": {
+    "enabled": false,
+  },
   // タブバー本体の表示制御
   "tab_bar": {
     "show": true,
