@@ -288,7 +288,6 @@
     "xml": true,
     // ----- Themes -----
     "nvim-nightfox": true,
-    "snazzy": true,
     // ----- Icon themes -----
     "material-icon-theme": true,
     // ----- Tools -----
