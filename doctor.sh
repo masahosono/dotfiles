@@ -1,5 +1,5 @@
 #!/bin/bash
-# dotfiles doctor — セットアップ手順 (CLAUDE.md / README.md) のシンボリックリンクが
+# dotfiles doctor — セットアップ手順 (AGENTS.md / README.md) のシンボリックリンクが
 # 正しく張られているかを検証する。
 #
 # 使い方:
