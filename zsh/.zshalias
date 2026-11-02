@@ -29,3 +29,90 @@ claude() {
     command claude "$@"
   fi
 }
+
+# ポートを指定して、そのポートを LISTEN しているプロセスを終了する。
+# `lsof -i:PORT` はそのポートに接続している側のプロセスも拾ってしまうため、
+# `-sTCP:LISTEN` でサーバー側に限定する。
+#
+# 落とす単位は PID ではなくプロセスグループ (= ジョブ)。LISTEN しているのは
+# supervisor 配下の孫プロセスであることが多く (`npm run dev` → wrangler →
+# workerd など)、その 1 匹だけ殺しても親が即座に代わりを spawn するのでポートは
+# 空かない。wrangler の場合は再生成された workerd が `--socket-addr=...:0` で
+# ランダムポートに逃げ、開発サーバーごと行方不明になる。ただし自分のシェルが
+# 属するグループだけは対象から外す (この関数ごと道連れになるため)。
+#
+# 消す前に必ず ps で対象を表示し、まず SIGTERM で後始末の機会を与えてから、
+# 居残ったものだけ SIGKILL する。生存確認に kill -0 を使うとゾンビにも成功して
+# しまうので、ps の状態を見て Z は死んだものとして扱う。
+killport() {
+  if (( $# == 0 )); then
+    print -u2 "usage: killport <port> [port...]"
+    return 1
+  fi
+
+  local ports="${(j:,:)@}"
+  local -a pids
+  pids=(${(f)"$(lsof -ti:"$ports" -sTCP:LISTEN 2>/dev/null)"})
+  if (( ${#pids} == 0 )); then
+    print "killport: :${ports} を LISTEN しているプロセスはありません"
+    return 0
+  fi
+
+  # ps の pgid / tty 出力は右寄せで先頭に空白が入るので、クオートせず単語分割で拾う。
+  local mypgid="${$(ps -o pgid= -p $$)// /}"
+  local -a pgids
+  pgids=(${(u)$(ps -o pgid= -p "${pids[@]}" 2>/dev/null)})
+  pgids=(${pgids:#$mypgid})
+
+  # 対象グループのメンバーを全部集める。自分と同居しているグループしかなかった
+  # 場合は巻き込めないので、LISTEN している PID だけを相手にする。
+  local -a targets
+  local pgid pid st t
+  if (( ${#pgids} )); then
+    while read -r pgid pid; do
+      (( ${pgids[(Ie)$pgid]} )) && targets+=("$pid")
+    done < <(ps -axo pgid=,pid=)
+  else
+    targets=("${pids[@]}")
+  fi
+
+  # 対象が別ターミナルのジョブなら、その端末を後で正気に戻す必要がある。
+  # wrangler dev や vite のような TUI は `[x] to exit` のキー入力を取るために
+  # 端末を raw mode で握っており、外から殺されると復元処理を通らないため、
+  # 残されたタブがエコーも改行もしない状態になる。死ぬ前に tty を記録しておく。
+  local mytty="${$(ps -o tty= -p $$)// /}"
+  local -a ttys
+  ttys=(${(u)$(ps -o tty= -p "${targets[@]}" 2>/dev/null)})
+  ttys=(${ttys:#$mytty})
+  ttys=(${ttys:#\?\?})
+
+  print "killport: :${ports} → ${#targets} プロセスを終了する"
+  ps -o pid=,tty=,command= -p "${targets[@]}"
+  if (( ${#pgids} )); then
+    kill -TERM ${pgids/#/-} 2>/dev/null
+  else
+    kill -TERM "${targets[@]}" 2>/dev/null
+  fi
+
+  # 最大 2 秒 (0.1s × 20) 待って終了を確認する。
+  local -a alive
+  local i
+  for i in {1..20}; do
+    alive=()
+    while read -r pid st; do
+      [[ $st == Z* ]] && continue
+      (( ${targets[(Ie)$pid]} )) && alive+=("$pid")
+    done < <(ps -axo pid=,stat=)
+    (( ${#alive} == 0 )) && break
+    sleep 0.1
+  done
+
+  if (( ${#alive} )); then
+    print "killport: SIGTERM に応答しないため SIGKILL: ${alive[*]}"
+    kill -KILL "${alive[@]}" 2>/dev/null
+  fi
+
+  for t in "${ttys[@]}"; do
+    [[ -c /dev/$t ]] && stty -f /dev/$t sane 2>/dev/null
+  done
+}
