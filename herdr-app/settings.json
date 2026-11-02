@@ -4,5 +4,6 @@
   "sounds": {
     "enabled": true
   },
-  "minimum_contrast": 1
+  "minimum_contrast": 1,
+  "telemetry": false
 }
