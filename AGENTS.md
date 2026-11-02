@@ -32,6 +32,10 @@ ln -sf ~/dotfiles/ghostty/custom.icns ~/.config/ghostty/custom.icns
 # herdr (~/.config/herdr が存在しない場合は先に作成)
 mkdir -p ~/.config/herdr
 ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
+# Herdr app (デスクトップ版。~/.config/herdr-app はアプリ初回起動で生成される)
+mkdir -p ~/.config/herdr-app
+ln -sf ~/dotfiles/herdr-app/keys.json ~/.config/herdr-app/keys.json
+ln -sf ~/dotfiles/herdr-app/settings.json ~/.config/herdr-app/settings.json
 # herdr.app (WezTerm を herdr 専用ターミナルとしてラップした app を /Applications に生成)
 bash ~/dotfiles/herdr/app/make.sh
 # hunk (~/.config/hunk が存在しない場合は先に作成)
@@ -143,6 +147,15 @@ herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動
 `~/.config/herdr/` 配下にはセッション状態 (`session.json`)・ローカルソケット・ログなど herdr 本体が実行時に生成するファイルが含まれるため、ディレクトリごとリンクせずファイル単位でシンボリックリンクを張る方針（Ghostty / Zed / Cursor と同じ）。
 
 キーバインドは prefix (`ctrl+space`) を非常口として残しつつ、主要アクションは `prefix+X` と `ctrl+alt+X` の dual binding にしてある。WezTerm (`wezterm_herdr.lua`) 側で Cmd+X を Ctrl+Alt+X に変換して送出しているため、ユーザー打鍵 Cmd+X 一発で herdr のアクションが発火する構成。cmd/super の直送出は公式が「terminal 依存で不安定」と警告しているためこの経路は採らない。
+
+## Herdr app（デスクトップ版）設定
+
+`herdr-app/` 以下の構成（`~/.config/herdr-app/` へファイル単位で symlink）:
+
+- `keys.json` — キーバインド。セクションは `global` / `terminal` / `layout:<name>` / `mod:<name>`、値はコマンド名（`herdr-app commands` で一覧）。現状はアプリのデフォルトそのままのテンプレート
+- `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。現状はアプリのデフォルトそのままのテンプレート。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
+
+それ以外（`AGENTS.md`・`*.d.ts`・`frame/`・`view.json`・`shared.json`・`data/` など）はアプリが起動時・実行時に生成・上書きするため管理しない。
 
 ## hunk 設定
 
