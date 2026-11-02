@@ -36,6 +36,8 @@ ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 mkdir -p ~/.config/herdr-app
 ln -sf ~/dotfiles/herdr-app/keys.json ~/.config/herdr-app/keys.json
 ln -sf ~/dotfiles/herdr-app/settings.json ~/.config/herdr-app/settings.json
+mkdir -p ~/.config/herdr-app/layouts
+ln -sf ~/dotfiles/herdr-app/layouts/custom.json ~/.config/herdr-app/layouts/custom.json
 # herdr.app (WezTerm を herdr 専用ターミナルとしてラップした app を /Applications に生成)
 bash ~/dotfiles/herdr/app/make.sh
 # hunk (~/.config/hunk が存在しない場合は先に作成)
@@ -154,6 +156,7 @@ herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動
 
 - `keys.json` — キーバインド。セクションは `global` / `terminal` / `layout:<name>` / `mod:<name>`、値はコマンド名（`herdr-app commands` で一覧）。現状はアプリのデフォルトそのままのテンプレート
 - `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。現状はアプリのデフォルトそのままのテンプレート。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
+- `layouts/custom.json` — 自作 layout。同梱の `main` を `herdr-app do layout.clone '{"name":"main","as":"custom"}'` で複製したもの（`cloned_from` が記録される）。同梱 layout（`main` / `terminals` / `win98`）は起動のたびに丸ごと上書きされる読み取り専用なので、構造や見た目を変えるときは必ず複製側を編集する。`layout.switch`（Cmd+Shift+L）か Settings 画面で切り替える。編集エラーは `~/.config/herdr-app/layout.error` に書かれる。layouts/ はディレクトリごとリンクせず、自作 layout をファイル単位で symlink する（`.state/` にクリック状態が、同梱 layout が起動時に書かれるため）
 
 それ以外（`AGENTS.md`・`*.d.ts`・`frame/`・`view.json`・`shared.json`・`data/` など）はアプリが起動時・実行時に生成・上書きするため管理しない。
 

@@ -103,6 +103,7 @@ check_symlink "$HOME/.config/herdr/config.toml" "$DOTFILES_DIR/herdr/config.toml
 section "Herdr app (デスクトップ版)"
 check_symlink "$HOME/.config/herdr-app/keys.json"           "$DOTFILES_DIR/herdr-app/keys.json"
 check_symlink "$HOME/.config/herdr-app/settings.json"       "$DOTFILES_DIR/herdr-app/settings.json"
+check_symlink "$HOME/.config/herdr-app/layouts/custom.json" "$DOTFILES_DIR/herdr-app/layouts/custom.json"
 
 section "hunk"
 check_symlink "$HOME/.config/hunk/config.toml" "$DOTFILES_DIR/hunk/config.toml"
