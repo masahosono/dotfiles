@@ -46,6 +46,17 @@
                 "weight": 1
               },
               "min": 90
+            },
+            {
+              "id": "git",
+              "type": "block",
+              "content": {
+                "mod": "git-status"
+              },
+              "size": {
+                "weight": 1
+              },
+              "min": 90
             }
           ]
         },

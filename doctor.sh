@@ -104,6 +104,8 @@ section "Herdr app (デスクトップ版)"
 check_symlink "$HOME/.config/herdr-app/keys.json"           "$DOTFILES_DIR/herdr-app/keys.json"
 check_symlink "$HOME/.config/herdr-app/settings.json"       "$DOTFILES_DIR/herdr-app/settings.json"
 check_symlink "$HOME/.config/herdr-app/layouts/custom.json" "$DOTFILES_DIR/herdr-app/layouts/custom.json"
+check_symlink "$HOME/.config/herdr-app/mods/git-status/main.js"  "$DOTFILES_DIR/herdr-app/mods/git-status/main.js"
+check_symlink "$HOME/.config/herdr-app/mods/git-status/mod.json" "$DOTFILES_DIR/herdr-app/mods/git-status/mod.json"
 
 section "hunk"
 check_symlink "$HOME/.config/hunk/config.toml" "$DOTFILES_DIR/hunk/config.toml"
