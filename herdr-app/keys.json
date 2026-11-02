@@ -1,8 +1,6 @@
 {
   "global": {
     "cmd-q": "app.quit",
-    "cmd-h": "app.hide",
-    "cmd-alt-h": "app.hide_others",
     "cmd-t": "tab.new",
     "cmd-w": "pane.close",
     "ctrl-tab": "tab.next",
