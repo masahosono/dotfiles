@@ -37,6 +37,16 @@
               "min": 90
             },
             {
+              "id": "new-space-in-home-directory",
+              "type": "block",
+              "content": {
+                "mod": "new-space-in-home-directory"
+              },
+              "size": {
+                "px": 30
+              }
+            },
+            {
               "id": "agents",
               "type": "block",
               "content": {
