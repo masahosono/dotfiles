@@ -55,5 +55,9 @@
     "cmd-left": "send:\u0001",
     "cmd-right": "send:\u0005",
     "cmd-backspace": "send:\u0015"
+  },
+  "layout:custom": {
+    "cmd-`": "space-folders.next",
+    "cmd-shift-`": "space-folders.prev"
   }
 }

@@ -41,6 +41,9 @@ ln -sf ~/dotfiles/herdr-app/layouts/custom.json ~/.config/herdr-app/layouts/cust
 mkdir -p ~/.config/herdr-app/mods/git-status
 ln -sf ~/dotfiles/herdr-app/mods/git-status/main.js ~/.config/herdr-app/mods/git-status/main.js
 ln -sf ~/dotfiles/herdr-app/mods/git-status/mod.json ~/.config/herdr-app/mods/git-status/mod.json
+mkdir -p ~/.config/herdr-app/mods/space-folders
+ln -sf ~/dotfiles/herdr-app/mods/space-folders/main.js ~/.config/herdr-app/mods/space-folders/main.js
+ln -sf ~/dotfiles/herdr-app/mods/space-folders/mod.json ~/.config/herdr-app/mods/space-folders/mod.json
 # herdr.app (WezTerm を herdr 専用ターミナルとしてラップした app を /Applications に生成)
 bash ~/dotfiles/herdr/app/make.sh
 # hunk (~/.config/hunk が存在しない場合は先に作成)
@@ -161,6 +164,7 @@ herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動
 - `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。現状はアプリのデフォルトそのままのテンプレート。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
 - `layouts/custom.json` — 自作 layout。同梱の `main` を `herdr-app do layout.clone '{"name":"main","as":"custom"}'` で複製したもの（`cloned_from` が記録される）。同梱 layout（`main` / `terminals` / `win98`）は起動のたびに丸ごと上書きされる読み取り専用なので、構造や見た目を変えるときは必ず複製側を編集する。`layout.switch`（Cmd+Shift+L）か Settings 画面で切り替える。編集エラーは `~/.config/herdr-app/layout.error` に書かれる。layouts/ はディレクトリごとリンクせず、自作 layout をファイル単位で symlink する（`.state/` にクリック状態が、同梱 layout が起動時に書かれるため）
 - `mods/git-status/` — 自作 mod。サイドバーの Spaces / Agents の下（`custom.json` の `git` ブロック）に、フォーカス中ペインの cwd の Git 状態（ブランチ・ahead/behind・直近コミット・変更ファイル）を出す。ファイルをクリックすると右の changes パネルを開く。cwd の変化は 1 秒ごと、git の再取得は 5 秒ごと。**mod はディレクトリごと symlink すると SVG などのアセットが読み込まれない**ため、`~/.config/herdr-app/mods/<name>/` は実ディレクトリにして `main.js` / `mod.json` をファイル単位で symlink する（アセットを持たない mod にしてある）。また layout や mod を dotfiles 側で編集しても反映されないときは `touch -h` で symlink 側を触る
+- `mods/space-folders/` — [jankeesvw/herdr-space-folders](https://github.com/jankeesvw/herdr-space-folders)（0f1bae8。同梱 `spaces` 0.1.10 の複製がベース）を取り込み、各スペースの下にそのスペースのターミナル（全タブ分、タブ順。アイコン・名前・エージェント状態）をツリー表示する改変を足したもの。スペースを色付きフォルダにまとめ、フォルダ単位で折りたためる。振り分けはドラッグか、フォルダの「Collect spaces from」ルール（`~/Code/mit/*` のようなパスやフォルダ名）。フォルダの右クリックで色・編集・削除。ターミナル行のクリックでそのスペースに切り替えてペインをフォーカスする。`custom.json` の `spaces` ブロックがこちらを参照する。**フォルダ定義は mod 自身が `~/.config/herdr-space-folders.json` に書き込む**（マシンごとの実行時状態なので dotfiles 管理外）。フォルダ順でスペースを巡回するため、`keys.json` の `layout:custom` で `` cmd-` `` / `` cmd-shift-` `` を `space-folders.next` / `.prev` に割り当てている（Herdr 標準の `space.next` はフォルダ順を知らない）。ライセンスは MIT（同梱 spaces 由来部分は Apache-2.0）で、`LICENSE` / `LICENSE-APACHE` を同じディレクトリに置いてある。upstream の更新は自動では入らないので、取り込むときは差分を見てターミナルツリーの改変（`terminalRows` と `foldered` の `draw`）を当て直す
 
 それ以外（`AGENTS.md`・`*.d.ts`・`frame/`・`view.json`・`shared.json`・`data/` など）はアプリが起動時・実行時に生成・上書きするため管理しない。
 
