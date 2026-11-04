@@ -10,7 +10,7 @@
     "cmd-]": "pane.go:right",
     "cmd-[": "pane.go:left",
     "cmd-shift-l": "layout.switch",
-    "cmd-n": "new-space-in-home-directory.new",
+    "cmd-n": "space.new",
     "cmd-p": "mod.open:picker",
     "cmd-shift-p": "app.palette",
     "cmd-,": "app.settings",
@@ -56,17 +56,9 @@
     "cmd-right": "send:\u0005",
     "cmd-backspace": "send:\u0015"
   },
-  "layout:main": {
-    "cmd-n": "space.new"
-  },
-  "layout:terminals": {
-    "cmd-n": "space.new"
-  },
-  "layout:win98": {
-    "cmd-n": "space.new"
-  },
   "layout:custom": {
     "cmd-`": "space-folders.next",
-    "cmd-shift-`": "space-folders.prev"
+    "cmd-shift-`": "space-folders.prev",
+    "cmd-n": "new-space-in-home-directory.new"
   }
 }
