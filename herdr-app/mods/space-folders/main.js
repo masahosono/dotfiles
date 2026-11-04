@@ -9,6 +9,9 @@
 // grouped by machine when more than one is known. After a space's name, the repo
 // its first terminal is in now, only where unusual: branch, ahead/behind. Agent state lives in the agents list, not here. Click to
 // switch, right-click for its menu, drag to reorder.
+// Also changed in dotfiles: a space's right-click menu puts it in a new folder,
+// moves it to another or takes it out (as a browser's tab groups), above
+// Herdr's own items for a space.
 //
 // Folders (Herdr's own spaces mod, cloned): spaces dragged onto a folder's
 // header go in it, dropped on a space they join its folder, dropped below the
@@ -102,6 +105,26 @@ function machineFolder(m, rows, ps) {
   return folders(null).list.find((f) => collects(f, m) || rows.some((r) => collects(f, place(r.w, ps))))?.id ?? null;
 }
 
+// A space's checkout, as Herdr's own menu tells it: "main", "linked" (a worktree), or null.
+async function checkout(folder, on) {
+  const top = await exec("git", ["rev-parse", "--show-toplevel"], { cwd: folder, on });
+  const common = await exec("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], { cwd: folder, on });
+  if (top.code !== 0 || common.code !== 0) return null;
+  return common.stdout.trim() === `${top.stdout.trim()}/.git` ? "main" : "linked";
+}
+
+// A space into a folder (or out of one, with null): only one of its own
+// machine's. Out of a folder its rules would put it in, it stays out ("").
+function assign(s, id) {
+  const machine = s?.machine ?? null, f = folders(machine);
+  if (!s || (id && !f.list.some((x) => x.id === id))) return;
+  const of = { ...f.of };
+  if (id) of[localId(s)] = id;
+  else if (folderOf(s, f, panes())) of[localId(s)] = "";
+  else delete of[localId(s)];
+  saveFolders(machine, { ...f, of });
+}
+
 function saveFolders(machine, data) {
   const next = { list: data.list, of: data.of, at: Date.now() };
   setShared("space-folders", { ...all(), [key(machine)]: next });
@@ -142,6 +165,12 @@ const FALLBACK = 60000;
 // that draws space avatars): one strong color per hue, light and dark alike.
 const MARK = { ansi6: "#22a99a", ansi3: "#e3814f", ansi4: "#5b8def", ansi5: "#8b7cf6", ansi2: "#3fae6a", ansi1: "#d9649a" };
 
+// A folder's color as a browser's tab group shows it: a light fill with dark
+// ink, the same hue as a space avatar of that color ("" is grey).
+const GROUP = { "": "#dadce0", ansi6: "#78d9ec", ansi3: "#fcad70", ansi4: "#8ab4f8", ansi5: "#c58af9", ansi2: "#81c995", ansi1: "#ff8bcb" };
+const GROUP_INK = "#202124";
+const groupColor = (color) => GROUP[color ?? ""] ?? color;
+
 // A space speaks up only when something in it needs you.
 export function glyph(status) {
   return status === "blocked" || status === "done" ? "●" : "·";
@@ -162,11 +191,18 @@ const lastPart = (p) => {
 export default class Spaces extends View {
   init(_props, cx) {
     // As an overlay of the sidebar: a folder's menu, or the dialog editing one.
-    const { folderMenu, edit, machine = null, fresh = false, overlay } = props() ?? {};
+    const { folderMenu, spaceMenu, edit, space = null, machine = null, fresh = false, overlay } = props() ?? {};
     if (folderMenu) { this.folderMenu = { id: folderMenu, machine, overlay }; return; }
+    if (spaceMenu) {
+      this.spaceMenu = { id: spaceMenu, overlay, git: null };
+      const s = spaces().find((x) => x.id === spaceMenu), folder = s && place(s, panes());
+      if (folder) cx.spawn(async (cx) => { this.spaceMenu.git = await checkout(folder, s.machine).catch(() => null); cx.notify(); });
+      return;
+    }
     if (edit) {
       const f = folders(machine).list.find((x) => x.id === edit) ?? { name: NEW_FOLDER };
-      this.editing = { id: edit, machine, fresh, overlay };
+      // `space`: a space to put in it once saved ("Add to new folder" in a space's menu).
+      this.editing = { id: edit, machine, fresh, overlay, space };
       this.name = InputState.new({ value: f.name ?? "" });
       this.path = InputState.new({ value: f.path ?? "", placeholder: "e.g. ~/Documents/github.com/owner/repo" });
       this.match = InputState.new({ value: f.match ?? "", placeholder: "e.g. wbso-ai, ~/code/client-*" });
@@ -187,8 +223,11 @@ export default class Spaces extends View {
       return;
     }
     this.overFolder = null;
-    this.moving = null; // a folder being dragged: { machine, id, index }
-    this.overMove = null;
+    this.moving = null; // a folder being dragged: { machine, id, ids: its spaces }
+    this.overMove = null; // where it would go: { machine: key(machine), k: before the k-th block }
+    this.after = false; // a space dragged over a row's lower half: it goes after that row
+    this.overRow = null; // the row a dragged space is over: { id, folder }
+    this.blocks = {}; // key(machine) -> its blocks as last drawn (see foldered), for a folder's drop
     this.git = {}; // where() -> { name, branch, ahead, behind, repo, linked }, null: not a repo
     this.checked = {}; // where() -> when it was last looked at
     this.unsure = new Set(); // where()s git couldn't answer for (a machine away)
@@ -365,9 +404,10 @@ export default class Spaces extends View {
     });
   }
 
+  // Herdr's own space menu, with the folder items in front (as a browser's
+  // "Add tab to group"). A popup is as tall as its items; height is only the most.
   menu(w) {
-    // A popup is as tall as its items; height is only the most.
-    openOverlay({ mod: "menu", kind: "popup", width: 200, height: 260, props: { tab: "space", target: { id: w.id } } });
+    openOverlay({ mod: "space-folders", kind: "popup", width: 230, height: 420, props: { spaceMenu: w.id } });
   }
 
   // ---- folders ----
@@ -385,9 +425,10 @@ export default class Spaces extends View {
   }
 
   // A new folder is only made when its dialog is saved; cancelled, nothing's left.
-  newFolder(machine) {
+  // With `space`, that space goes in it.
+  newFolder(machine, space = null) {
     const id = `f${Date.now().toString(36)}`;
-    openOverlay({ mod: "space-folders", kind: "dialog", width: 460, props: { edit: id, machine, fresh: true } });
+    openOverlay({ mod: "space-folders", kind: "dialog", width: 460, props: { edit: id, machine, fresh: true, space } });
   }
 
   reorder(machine, from, to) {
@@ -408,16 +449,9 @@ export default class Spaces extends View {
     saveFolders(machine, { ...f, list: f.list.map((x) => x.id === id ? { ...x, folded: !x.folded } : x) });
   }
 
-  // A space dropped into a folder (or out of one, with null): only one of its own
-  // machine's. Out of a folder its rules would put it in, it stays out ("").
+  // A space dropped into a folder (or out of one, with null).
   drop(index, id) {
-    const s = spaces()[index], machine = s?.machine ?? null, f = folders(machine);
-    if (!s || (id && !f.list.some((x) => x.id === id))) return;
-    const of = { ...f.of };
-    if (id) of[localId(s)] = id;
-    else if (folderOf(s, f, panes())) of[localId(s)] = "";
-    else delete of[localId(s)];
-    saveFolders(machine, { ...f, of });
+    assign(spaces()[index], id);
   }
 
   // A space made from a folder (its + or its menu) goes in it: the first new space
@@ -433,11 +467,12 @@ export default class Spaces extends View {
   }
 
   saveFolder() {
-    const { id, machine, fresh, overlay } = this.editing, f = folders(machine);
+    const { id, machine, fresh, overlay, space } = this.editing, f = folders(machine);
     const name = this.name.value().trim(), path = this.path.value().trim() || null, match = this.match.value().trim() || null;
     // A folder deleted while its dialog was open isn't made again; a new one is made now.
     const list = fresh && !f.list.some((x) => x.id === id) ? [...f.list, { id, name: NEW_FOLDER, folded: false }] : f.list;
-    saveFolders(machine, { ...f, list: list.map((x) => x.id === id ? { ...x, name: name || x.name, path, match } : x) });
+    const of = space && list.some((x) => x.id === id) ? { ...f.of, [space]: id } : f.of;
+    saveFolders(machine, { ...f, of, list: list.map((x) => x.id === id ? { ...x, name: name || x.name, path, match } : x) });
     closeOverlay(overlay);
   }
 
@@ -460,9 +495,11 @@ export default class Spaces extends View {
   }
 
   // A machine's folders, each with its spaces and the machines it takes in,
-  // then the spaces in none. A worktree goes where its checkout's space goes.
-  // Every space goes in `seen` in this order, folded away (`hidden`) or not,
-  // for the keys that step through the list.
+  // and the spaces in none, in Herdr's order of spaces: as a browser's tab
+  // group, a folder shows where its first space is (one with none, last).
+  // A worktree goes where its checkout's space goes. Every space goes in
+  // `seen` in this order, folded away (`hidden`) or not, for the keys that
+  // step through the list.
   foldered(rows, machine, t, collapsed, { guests = [], nested = false, hidden = false, seen = [] } = {}) {
     const draw = (r, away) => {
       seen.push({ id: r.w.id, shown: !away });
@@ -474,63 +511,143 @@ export default class Spaces extends View {
       if (!r.tree) parent = folderOf(r.w, f, ps);
       return { ...r, folder: parent, nested };
     });
-    return [
-      ...list.flatMap((f, n) => {
-        const inside = placed.filter((r) => r.folder === f.id);
-        const visitors = guests.filter((g) => g.folder === f.id);
-        const counted = [...inside, ...visitors.flatMap((g) => g.rows)];
-        const away = hidden || f.folded;
-        return [
-          ...(hidden ? [] : [this.folderHead(f, n, machine, counted, t, collapsed)]),
-          ...inside.flatMap((r) => draw(r, away)),
-          ...visitors.flatMap((g) => this.machineSection(g.m, g.rows, t, collapsed, { nested: true, hidden: away, seen })),
-        ];
-      }),
-      ...placed.filter((r) => !r.folder).flatMap((r) => draw(r, hidden)),
-    ];
+    const block = (f) => {
+      const inside = placed.filter((r) => r.folder === f.id);
+      const visitors = guests.filter((g) => g.folder === f.id);
+      const counted = [...inside, ...visitors.flatMap((g) => g.rows)];
+      const away = hidden || f.folded;
+      // Its spaces in Herdr's order: what moves when the folder is dragged.
+      const own = [...inside].sort((a, b) => a.i - b.i);
+      const at = { ids: own.map((r) => r.w.id) };
+      const members = [
+        ...inside.flatMap((r) => draw(r, away)),
+        ...visitors.flatMap((g) => this.machineSection(g.m, g.rows, t, collapsed, { nested: true, hidden: away, seen })),
+      ];
+      // As a browser's tab group: its spaces hang off a line in its color.
+      const rail = members.length && !collapsed
+        ? [v_flex().flex_none().ml(8).mt(2).mb(4).border_l_2().border_color(groupColor(f.color)).children(members)]
+        : members;
+      return [...(hidden ? [] : [this.folderHead(f, at, machine, counted, t, collapsed)]), ...rail];
+    };
+    // Blocks: a folder with all in it, or a space in none with its worktrees.
+    // A folder is dragged between blocks; `ids` are a block's spaces in Herdr's order.
+    const units = [], done = new Set(), byI = (a, b) => a.i - b.i;
+    for (const r of placed) {
+      if (!r.folder) {
+        if (r.tree && units.length && !units.at(-1).folder) { const u = units.at(-1); u.els.push(...draw(r, hidden)); u.rows.push(r); }
+        else units.push({ els: draw(r, hidden), rows: [r], folder: null });
+        continue;
+      }
+      if (done.has(r.folder)) continue;
+      done.add(r.folder);
+      const x = list.find((y) => y.id === r.folder);
+      units.push({ els: block(x), rows: placed.filter((q) => q.folder === x.id), folder: x.id });
+    }
+    for (const x of list) if (!done.has(x.id)) units.push({ els: block(x), rows: [], folder: x.id });
+    for (const u of units) u.ids = [...u.rows].sort(byI).map((r) => r.w.id);
+    if (hidden || collapsed) return units.flatMap((u) => u.els);
+    const mk = key(machine), slot = this.moving && this.overMove?.machine === mk ? this.overMove.k : null;
+    this.blocks[mk] = units;
+    const line = () => div().absolute().left(0).right(0).h(2).bg(t.accent);
+    return units.map((u, k) => v_flex().relative().id(`block-${mk || "local"}-${u.folder ?? u.ids[0] ?? k}`).flex_none()
+      .children(u.els)
+      .when(slot === k, (el) => el.child(line().top(0)))
+      .when(slot === units.length && k === units.length - 1, (el) => el.child(line().bottom(0)))
+      // Over a block's first half row: before it; anywhere below that: after it.
+      .on_mouse_move((e, cx) => {
+        if (!this.moving || key(this.moving.machine) !== mk || !e.bounds) return;
+        const at = e.local_position.y < Math.min(15, e.bounds.height / 2) ? k : k + 1;
+        if (this.overMove?.machine !== mk || this.overMove.k !== at) { this.overMove = { machine: mk, k: at }; cx.notify(); }
+      }));
   }
 
-  folderHead(f, n, machine, inside, t, collapsed) {
+  // A drag let go: it goes where its line (or highlight) last showed, however
+  // far past it the pointer went. A space: before or after the row with the
+  // line, into that row's folder; onto the highlighted folder; or out of its
+  // folder at the dashed place. A folder: between the blocks with the line.
+  finishDrag() {
+    if (this.moving && this.overMove) {
+      const units = this.blocks[this.overMove.machine];
+      if (units) this.placeFolder(units, this.overMove.k);
+    } else if (this.pressed !== null) {
+      const from = this.pressed, s = spaces()[from];
+      if (s && this.overFolder === "out") this.drop(from, null);
+      else if (s && this.overFolder) this.drop(from, this.overFolder);
+      else if (s && this.over !== null && this.over !== from && this.overRow) {
+        this.drop(from, this.overRow.folder);
+        this.moveSpaces([s.id], this.overRow.id, this.after);
+      }
+    }
+    this.endDrag();
+  }
+
+  endDrag() {
+    this.pressed = null; this.over = null; this.overRow = null; this.overFolder = null; this.moving = null; this.overMove = null;
+  }
+
+  // The folder being dragged, before the k-th block (k = their count: last):
+  // its spaces go before the first space of the next block with any, else
+  // after the last space of the block before. Next to itself, it stays.
+  placeFolder(units, k) {
+    const mine = units.findIndex((u) => u.folder === this.moving.id), ids = this.moving.ids;
+    if (mine < 0 || k === mine || k === mine + 1) return;
+    // A folder with no space of its own sits among the others like it, in their list's order.
+    if (!ids.length) { const to = units[k]?.folder ?? units.at(-1)?.folder; if (to && !units.find((u) => u.folder === to).ids.length) this.reorder(this.moving.machine, this.moving.id, to); return; }
+    for (let j = k; j < units.length; j++) if (j !== mine && units[j].ids.length) return this.moveSpaces(ids, units[j].ids[0], false);
+    for (let j = k - 1; j >= 0; j--) if (j !== mine && units[j].ids.length) return this.moveSpaces(ids, units[j].ids.at(-1), true);
+  }
+
+  // A folder's spaces (`ids`, in order) moved together, before or after the
+  // space `to`: one space.move each, from the top down, to where it ends up.
+  moveSpaces(ids, to, after) {
+    const order = spaces().map((s) => s.id), set = new Set(ids);
+    if (!ids.length || set.has(to)) return;
+    const rest = order.filter((id) => !set.has(id)), at = rest.indexOf(to) + (after ? 1 : 0);
+    const want = [...rest.slice(0, at), ...ids, ...rest.slice(at)], now = [...order];
+    for (let k = 0; k < want.length; k++) {
+      if (now[k] === want[k]) continue;
+      now.splice(k, 0, ...now.splice(now.indexOf(want[k]), 1));
+      run("space.move", { id: want[k], index: k + 1 });
+    }
+  }
+
+  // `at`: { ids: its spaces, in Herdr's order }.
+  folderHead(f, at, machine, inside, t, collapsed) {
     const status = URGENT.find((s) => inside.some((r) => r.w.status === s));
     const target = this.pressed !== null && this.overFolder === f.id;
-    // A folder dragged over this one: a line where it would go, as for spaces.
-    const moving = this.moving, aimed = moving && moving.id !== f.id && this.overMove === f.id;
+    const moving = this.moving;
     // As tall as a space's row, with an 18px tile where a space has its avatar.
-    const head = h_flex().relative().id(`folder-${f.id}`).h(30).flex_none().px(collapsed ? 2 : 8).gap(9).items_center().rounded(8)
-      .text_color(t.foreground).cursor_pointer()
-      .when(target, (el) => el.bg(t.selected).border_1().border_color(t.accent))
-      .when(!target, (el) => el.hover((s) => s.bg(t.hover)))
-      .when(Boolean(moving) && moving.id === f.id && this.overMove !== f.id, (el) => el.opacity(0.5))
-      .when(Boolean(aimed), (el) => el.child(div().absolute().left(0).right(0).h(2).bg(t.accent)
-        .when(moving.index < n, (line) => line.bottom(0)).when(moving.index > n, (line) => line.top(0))))
-      .on_mouse_down("left", () => { this.moving = { machine, id: f.id, index: n }; this.overMove = f.id; })
+    const fill = groupColor(f.color);
+    // A browser's tab group header: a pill in the folder's color, its name in dark ink.
+    const head = h_flex().relative().id(`folder-${f.id}`).h(30).flex_none().mt(2).px(collapsed ? 2 : 12).gap(8).items_center().rounded(10)
+      .cursor_pointer()
+      .when(!collapsed, (el) => el.bg(fill).text_color(GROUP_INK).hover((s) => s.opacity(0.9)))
+      .when(collapsed, (el) => el.text_color(t.foreground).hover((s) => s.bg(t.hover)))
+      .when(target, (el) => el.border_2().border_color(t.accent))
+      .when(Boolean(moving) && moving.id === f.id && Boolean(this.overMove), (el) => el.opacity(0.5))
+      // Dragged, it goes between blocks (see foldered): the block around it takes the drop.
+      .on_mouse_down("left", () => { this.endDrag(); this.fresh = true; this.moving = { machine, id: f.id, ids: at.ids }; })
       .on_mouse_move((_e, cx) => {
         if (this.pressed !== null && this.overFolder !== f.id) { this.overFolder = f.id; this.over = null; cx.notify(); }
-        const over = this.moving && (this.moving.machine ?? null) === (machine ?? null) ? f.id : null;
-        if (this.moving && this.overMove !== over) { this.overMove = over; cx.notify(); }
-      })
-      .on_mouse_up("left", (_e, cx) => {
-        if (this.pressed !== null) this.drop(this.pressed, f.id);
-        else if (this.moving && this.moving.id !== f.id && this.overMove === f.id) this.reorder(machine, this.moving.id, f.id);
-        this.pressed = null; this.over = null; this.overFolder = null; this.moving = null; this.overMove = null;
-        cx.notify();
       })
       .on_click(() => this.toggleFolder(machine, f.id))
       .on_mouse_down("right", () => openOverlay({ mod: "space-folders", kind: "popup", width: 210, height: 160, props: { folderMenu: f.id, machine } }));
     // Built like a space's avatar: a filled 18px tile in the folder's color, its mark in white.
-    const tile = h_flex().size(18).flex_none().rounded(5).items_center().justify_center().bg(f.color ? (MARK[f.color] ?? f.color) : t.dim)
-      .child(svg("mods/workspace-chrome/folder.svg").size(13).text_color("#ffffff"));
+    // In the narrow rail: a tile in its color, as a space has its avatar.
+    const tile = h_flex().size(18).flex_none().rounded(5).items_center().justify_center().bg(fill)
+      .child(svg("mods/workspace-chrome/folder.svg").size(13).text_color(GROUP_INK));
     if (collapsed) return head.justify_center().child(tile);
+    const knob = (id, child, action) => h_flex().id(id).size(20).flex_none().items_center().justify_center().rounded(5)
+      .hover((s) => s.bg("#00000014")).on_mouse_down("left", (_e, cx) => cx.stop_propagation())
+      .on_click((_e, cx) => { cx.stop_propagation(); action(); }).child(child);
     return head
-      .child(tile)
-      .child(div().flex_1().min_w(0).truncate().font_medium().child(f.name))
+      .child(div().flex_1().min_w(0).truncate().font_semibold().child(f.name))
       // Folded, it still says when something in it is running or needs you.
-      .when(f.folded && status === "working", (el) => el.child(svg("mods/workspace-chrome/spinner.svg").size(11).flex_none().text_color(t.working).spin(900)))
-      .when(f.folded && Boolean(status) && status !== "working", (el) => el.child(div().flex_none().text_color(tone(t, status)).child(glyph(status))))
-      .child(div().id(`folder-add-${f.id}`).flex_none().px(4).rounded(4).text_color(t.dim).hover((s) => s.bg(t.hover).text_color(t.foreground))
-        .on_click((_e, cx) => { cx.stop_propagation(); newSpaceIn(machine, f.id); }).child("+"))
-      .child(div().flex_none().text_size(11.5).text_color(t.dim).child(String(inside.length)))
-      .child(svg(`mods/workspace-chrome/chevron-${f.folded ? "right" : "down"}.svg`).size(11).flex_none().text_color(t.dim));
+      .when(f.folded && status === "working", (el) => el.child(svg("mods/workspace-chrome/spinner.svg").size(11).flex_none().text_color(GROUP_INK).spin(900)))
+      .when(f.folded && Boolean(status) && status !== "working", (el) => el.child(div().size(7).flex_none().rounded(4).bg(tone(t, status))))
+      .child(knob(`folder-more-${f.id}`, div().text_size(15).font_bold().child("\u22ee"),
+        () => openOverlay({ mod: "space-folders", kind: "popup", width: 210, height: 160, props: { folderMenu: f.id, machine } })))
+      .child(svg(`mods/workspace-chrome/chevron-${f.folded ? "right" : "down"}.svg`).size(12).flex_none().text_color(GROUP_INK));
   }
 
   folderMenuView(t) {
@@ -539,7 +656,7 @@ export default class Spaces extends View {
       .hover((s) => s.bg(t.hover)).on_click(() => { closeOverlay(overlay); action(); }).child(label);
     const current = folders(machine).list.find((x) => x.id === id)?.color ?? null;
     const swatch = (color) => div().id(`folder-color-${color ?? "grey"}`).size(20).flex_none().rounded(10).cursor_pointer()
-      .bg(color ? MARK[color] : t.dim).border_2().border_color(color === current ? t.foreground : t.popover)
+      .bg(groupColor(color)).border_2().border_color(color === current ? t.foreground : t.popover)
       .hover((s) => s.border_color(t.muted)).on_click(() => { this.paint(machine, id, color); closeOverlay(overlay); });
     return v_flex().id("folder-menu").size_full().p(5).gap(1).bg(t.popover).text_color(t.foreground).text_size(12.5)
       .child(h_flex().px(8).pt(6).pb(8).gap(6).items_center().children([null, ...Object.keys(MARK)].map(swatch)))
@@ -549,6 +666,38 @@ export default class Spaces extends View {
         const f = folders(machine);
         saveFolders(machine, { list: f.list.filter((x) => x.id !== id), of: Object.fromEntries(Object.entries(f.of).filter(([, v]) => v !== id)) });
       }));
+  }
+
+  // A space's menu: which folder it's in (new, another, none), then Herdr's own items.
+  spaceMenuView(t) {
+    const { id, overlay, git } = this.spaceMenu;
+    const s = spaces().find((x) => x.id === id);
+    if (!s) return div();
+    const machine = s.machine ?? null, f = folders(machine), current = folderOf(s, f, panes());
+    const line = () => div().mx(7).my(4).h(1).bg(t.border);
+    const item = (key, label, lead, action) => h_flex().id(key).h(31).px(8).gap(9).rounded(7).items_center().cursor_pointer()
+      .text_color(t.foreground).hover((el) => el.bg(t.hover))
+      .on_click(() => { closeOverlay(overlay); action(); })
+      .child(lead).child(div().flex_1().min_w(0).truncate().child(label));
+    const glyphIcon = (name) => svg(`mods/workspace-chrome/${name}.svg`).size(14).flex_none().text_color(t.muted);
+    const tile = (x) => div().size(12).mx(1).flex_none().rounded(6).bg(groupColor(x.color));
+    const others = f.list.filter((x) => x.id !== current);
+    const herdr = [
+      ["space-rename", "Rename", "square-pen", () => run("space.rename", { id })],
+      ...(git ? [
+        ["space-wt-new", "New worktree", "git-branch", () => openOverlay({ mod: "worktree", kind: "dialog", width: 440, height: 260, props: { space: id, action: "new" } })],
+        ["space-wt-open", "Open worktree", "git-branch", () => openOverlay({ mod: "worktree", kind: "dialog", width: 560, height: 480, props: { space: id, action: "open" } })],
+      ] : []),
+      ...(git === "linked" ? [["space-wt-remove", "Remove worktree", "git-branch", () => openOverlay({ mod: "worktree", kind: "dialog", width: 440, height: 260, props: { space: id, action: "remove" } })]] : []),
+    ];
+    return v_flex().id("space-menu").w_full().min_h(0).p(5).bg(t.popover).text_size(12.8)
+      .child(item("space-folder-new", "Add to new folder", glyphIcon("folder-plus"), () => this.newFolder(machine, localId(s))))
+      .children(others.map((x) => item(`space-folder-to-${x.id}`, `Move to ${x.name}`, tile(x), () => assign(s, x.id))))
+      .when(Boolean(current), (el) => el.child(item("space-folder-out", "Remove from folder", glyphIcon("x"), () => assign(s, null))))
+      .child(line())
+      .children(herdr.map(([key, label, ic, action]) => item(key, label, glyphIcon(ic), action)))
+      .child(line())
+      .child(item("space-close", "Close", glyphIcon("x"), () => run("space.close", { id })));
   }
 
   editView(t) {
@@ -692,7 +841,7 @@ export default class Spaces extends View {
     return v_flex()
       .relative()
       .id(`space-${w.id}`)
-      .pl(folder || nested ? 26 : 8)
+      .pl(folder ? 14 : nested ? 26 : 8)
       .pr(8)
       .h(rowHeight({ tree }))
       .flex_none()
@@ -701,33 +850,37 @@ export default class Spaces extends View {
       .when(on, (el) => el.bg(t.selected))
       .when(!on, (el) => el.hover((s) => s.bg(t.hover)))
       .when(this.pressed === i && this.over !== i, (el) => el.opacity(0.5))
+      // A space dragged over this one: a line on the half it's over, as far in as
+      // the folder it would join.
       .when(this.pressed !== null && this.over === i && this.pressed !== i, (el) => el.child(
-        div().absolute().left(0).right(0).h(2).bg(t.accent)
-          .when(this.pressed < i, line => line.bottom(0))
-          .when(this.pressed > i, line => line.top(0)),
+        div().absolute().left(nested && !folder ? 20 : 0).right(0).h(2).bg(t.accent)
+          .when(this.after, line => line.bottom(0))
+          .when(!this.after, line => line.top(0)),
       ))
       .on_mouse_down("left", () => {
+        this.endDrag();
+        this.fresh = true;
         this.pressed = i;
         this.over = i;
+        this.overRow = { id: w.id, folder };
       })
-      .on_mouse_move((_e, cx) => {
+      .on_mouse_move((e, cx) => {
+        if (this.pressed === null) return;
         const source = spaces()[this.pressed];
         const over = source && (source.machine ?? null) === (w.machine ?? null) ? i : null;
-        if (this.pressed !== null && (this.over !== over || this.overFolder !== null)) {
+        const after = Boolean(e.bounds) && e.local_position.y >= e.bounds.height / 2;
+        if (this.over !== over || this.overFolder !== null || this.after !== after) {
           this.over = over;
+          this.overRow = over === null ? null : { id: w.id, folder };
           this.overFolder = null;
+          this.after = after;
           cx.notify();
         }
       })
-      .on_mouse_up("left", (_e, cx) => {
-        const from = this.pressed;
-        const over = this.over;
-        this.pressed = null;
-        this.over = null;
-        // Dropped on a space: it goes to that place, and into that space's folder.
-        if (from !== null && over === i && from !== i) { this.drop(from, folder); run("space.move", { id: spaces()[from].id, index: i + 1 }); }
-        else if (from === i) run("space.select", { id: w.id });
-        cx.notify();
+      // Pressed and released here without going anywhere: a click. Any drop is
+      // the list's (see finishDrag), wherever it's released.
+      .on_mouse_up("left", () => {
+        if (this.pressed === i && this.over === i) run("space.select", { id: w.id });
       })
       .on_mouse_down("right", () => this.menu(w))
       .child(
@@ -745,7 +898,7 @@ export default class Spaces extends View {
   terminalRows({ w, tree, folder, nested }, ps, t) {
     const tabs = (w.tabs ?? []).map((c) => c.id);
     const mine = tabs.flatMap((tab) => ps.filter((p) => p.tab === tab && p.terminal));
-    const indent = (folder || nested ? 18 : 0) + (tree ? 38 : 15);
+    const indent = (folder ? 6 : nested ? 18 : 0) + (tree ? 38 : 15);
     return mine.map((p, n) => {
       const on = w.active && p.focused;
       const st = p.status;
@@ -791,6 +944,7 @@ export default class Spaces extends View {
   render() {
     const t = theme();
     if (this.folderMenu) return this.folderMenuView(t);
+    if (this.spaceMenu) return this.spaceMenuView(t);
     if (this.editing) return this.editView(t);
     const collapsed = narrow();
     const palette = ["ansi6", "ansi3", "ansi4", "ansi5", "ansi2", "ansi1"];
@@ -813,18 +967,21 @@ export default class Spaces extends View {
     const seen = [], rows = this.grouped(t, collapsed, seen);
     this.seen = seen;
     return v_flex().size_full().min_h(0).bg(t.chrome).text_size(13)
+      // Released above the list (its header): the drop still goes where its line shows.
+      .on_mouse_up("left", (_e, cx) => { this.finishDrag(); cx.notify(); })
+      // A drag let go outside this block never heard its release: any other
+      // press here forgets it, so a later click can't drop it.
+      .on_mouse_down("left", (_e, cx) => {
+        if (!this.fresh && (this.pressed !== null || this.moving)) { this.endDrag(); cx.notify(); }
+        this.fresh = false;
+      })
       .child(h_flex().h(31).pl(16).pr(10).items_center().justify_between().text_size(11.5).text_color(t.dim)
         .when(!collapsed, el => el.child("Spaces"))
         .child(h_flex().gap(2)
           .when(!collapsed, el => el.child(button("folder-new", "folder-plus", () => this.newFolder(null))))
           .child(button("space-new", "plus", () => run("space.new")))))
       .child(v_flex().flex_1().min_h(0).px(8).pb(14).overflow_y_scrollbar().mode("always")
-        // Released anywhere but on a space or a folder: out of its folder.
-        .on_mouse_up("left", (_e, cx) => {
-          if (this.pressed !== null) this.drop(this.pressed, null);
-          this.pressed = null; this.over = null; this.overFolder = null; this.moving = null; this.overMove = null;
-          cx.notify();
-        })
+        .on_mouse_up("left", (_e, cx) => { this.finishDrag(); cx.notify(); })
         .children(rows)
         .when(leaving && !collapsed, el => el.child(div().id("folder-out").mt(6).h(34).flex_none().flex().items_center().justify_center()
           .rounded(8).border_1().border_dashed().border_color(this.overFolder === "out" ? t.accent : t.border)
