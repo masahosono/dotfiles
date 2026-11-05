@@ -24,27 +24,41 @@
         {
           "id": "sidebar-lists",
           "type": "column",
+          "divider": {
+            "width": 1,
+            "color": "border"
+          },
           "children": [
             {
-              "id": "spaces",
-              "type": "block",
-              "content": {
-                "mod": "space-folders"
-              },
+              "id": "spaces-group",
+              "type": "column",
+              "children": [
+                {
+                  "id": "spaces",
+                  "type": "block",
+                  "content": {
+                    "mod": "space-folders"
+                  },
+                  "size": {
+                    "weight": 1
+                  }
+                },
+                {
+                  "id": "new-space-in-home-directory",
+                  "type": "block",
+                  "content": {
+                    "mod": "new-space-in-home-directory"
+                  },
+                  "size": {
+                    "px": 30
+                  }
+                }
+              ],
               "size": {
                 "weight": 1
               },
-              "min": 90
-            },
-            {
-              "id": "new-space-in-home-directory",
-              "type": "block",
-              "content": {
-                "mod": "new-space-in-home-directory"
-              },
-              "size": {
-                "px": 30
-              }
+              "min": 120,
+              "resizable": false
             },
             {
               "id": "agents",
