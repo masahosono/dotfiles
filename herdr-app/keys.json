@@ -57,8 +57,11 @@
     "cmd-backspace": "send:\u0015"
   },
   "layout:custom": {
-    "cmd-`": "space-folders.next",
-    "cmd-shift-`": "space-folders.prev",
-    "cmd-n": "new-space-in-home-directory.new"
+    "cmd-`": "tab-groups.next",
+    "cmd-shift-`": "tab-groups.prev",
+    "ctrl-tab": "tab-groups.next",
+    "ctrl-shift-tab": "tab-groups.prev",
+    "cmd-n": "tab-groups.new",
+    "shift-f2": "tab.rename"
   }
 }
