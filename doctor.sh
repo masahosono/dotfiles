@@ -110,8 +110,6 @@ check_symlink "$HOME/.config/herdr-app/mods/space-folders/main.js"  "$DOTFILES_D
 check_symlink "$HOME/.config/herdr-app/mods/space-folders/mod.json" "$DOTFILES_DIR/herdr-app/mods/space-folders/mod.json"
 check_symlink "$HOME/.config/herdr-app/mods/new-space-in-home-directory/main.js"  "$DOTFILES_DIR/herdr-app/mods/new-space-in-home-directory/main.js"
 check_symlink "$HOME/.config/herdr-app/mods/new-space-in-home-directory/mod.json" "$DOTFILES_DIR/herdr-app/mods/new-space-in-home-directory/mod.json"
-check_symlink "$HOME/.config/herdr-app/mods/tab-groups/main.js"  "$DOTFILES_DIR/herdr-app/mods/tab-groups/main.js"
-check_symlink "$HOME/.config/herdr-app/mods/tab-groups/mod.json" "$DOTFILES_DIR/herdr-app/mods/tab-groups/mod.json"
 
 section "hunk"
 check_symlink "$HOME/.config/hunk/config.toml" "$DOTFILES_DIR/hunk/config.toml"

@@ -30,15 +30,35 @@
           },
           "children": [
             {
-              "id": "tab-list",
-              "type": "block",
-              "content": {
-                "mod": "tab-groups"
-              },
+              "id": "spaces-group",
+              "type": "column",
+              "children": [
+                {
+                  "id": "spaces",
+                  "type": "block",
+                  "content": {
+                    "mod": "space-folders"
+                  },
+                  "size": {
+                    "weight": 1
+                  }
+                },
+                {
+                  "id": "new-space-in-home-directory",
+                  "type": "block",
+                  "content": {
+                    "mod": "new-space-in-home-directory"
+                  },
+                  "size": {
+                    "px": 30
+                  }
+                }
+              ],
               "size": {
-                "weight": 2
+                "weight": 1
               },
-              "min": 120
+              "min": 120,
+              "resizable": false
             },
             {
               "id": "agents",
@@ -90,6 +110,17 @@
       "id": "work",
       "type": "column",
       "children": [
+        {
+          "id": "tabs",
+          "type": "block",
+          "content": {
+            "mod": "tabs"
+          },
+          "size": {
+            "px": 42
+          },
+          "window_drag": true
+        },
         {
           "id": "work-body",
           "type": "row",
