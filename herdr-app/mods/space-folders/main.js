@@ -894,15 +894,13 @@ export default class Spaces extends View {
       );
   }
 
-  // A space's tabs, in tab order, as a tree under its row, and under a tab split
-  // into two or more panes, its panes. A tab's row speaks for its main pane (an
-  // agent if there is one, else the focused pane, else the first); a tab of one
-  // pane is that pane, so it gets no pane rows.
+  // A space's tabs, in tab order, as a tree under its row, and under each tab its
+  // panes. A tab may hold a different agent in each pane, so a tab's row names no
+  // agent: a split mark and the tab's own name, else how many panes it holds.
   terminalRows({ w, tree, folder, nested }, ps, t) {
     const mine = (w.tabs ?? []).flatMap((c) => {
       const inTab = ps.filter((p) => p.tab === c.id && p.terminal);
-      const p = inTab.find((x) => x.program?.agent) ?? inTab.find((x) => x.focused) ?? inTab[0];
-      return p ? [{ c, p, inTab }] : [];
+      return inTab.length ? [{ c, inTab }] : [];
     });
     const indent = (folder ? 6 : nested ? 18 : 0) + (tree ? 38 : 15);
     const mark = (el, st) => el
@@ -926,21 +924,15 @@ export default class Spaces extends View {
         pick();
       });
     const branch = (last) => div().w(14).flex_none().text_color(t.dim).child(last ? "└" : "├");
-    return mine.flatMap(({ c, p, inTab }, n) => {
+    return mine.flatMap(({ c, inTab }, n) => {
       const lastTab = n === mine.length - 1;
-      const split = inTab.length > 1;
       const here = w.active && c.active;
-      // A split tab may hold a different agent in each pane, so its row names no
-      // agent: a split mark and the tab's own name, else how many panes it holds;
-      // its panes say the rest.
-      const tabRow = mark(line(`space-tab-${c.id}`, here && !split, () => run("tab.select", { id: c.id }))
+      const count = `${inTab.length} ${inTab.length === 1 ? "pane" : "panes"}`;
+      const tabRow = mark(line(`space-tab-${c.id}`, false, () => run("tab.select", { id: c.id }))
         .child(branch(lastTab))
-        .child(split ? svg("mods/workspace-chrome/layers.svg").size(13).flex_none().text_color(t.dim)
-          : icon(p.program, 13, t.dim) ?? div().size(13).flex_none())
-        .child(div().flex_1().min_w(0).truncate().text_color(here ? t.foreground : t.muted)
-          .child(c.named ? c.name : split ? `${inTab.length} panes` : termName(p))),
-        c.status ?? p.status);
-      if (!split) return [tabRow];
+        .child(svg("mods/workspace-chrome/layers.svg").size(13).flex_none().text_color(t.dim))
+        .child(div().flex_1().min_w(0).truncate().text_color(here ? t.foreground : t.muted).child(c.named ? c.name : count)),
+        c.status);
       return [tabRow, ...inTab.map((q, k) => {
         const on = here && q.focused;
         return mark(line(`space-term-${q.pane}`, on, () => { run("tab.select", { id: c.id }); run("pane.focus", { pane: q.pane }); })
