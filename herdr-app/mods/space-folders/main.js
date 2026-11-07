@@ -894,36 +894,62 @@ export default class Spaces extends View {
       );
   }
 
-  // A space's terminals, in tab order, as a tree under its row.
+  // A space's tabs, in tab order, as a tree under its row, and under a tab split
+  // into two or more panes, its panes. A tab's row speaks for its main pane (an
+  // agent if there is one, else the focused pane, else the first); a tab of one
+  // pane is that pane, so it gets no pane rows.
   terminalRows({ w, tree, folder, nested }, ps, t) {
-    const tabs = (w.tabs ?? []).map((c) => c.id);
-    const mine = tabs.flatMap((tab) => ps.filter((p) => p.tab === tab && p.terminal));
+    const mine = (w.tabs ?? []).flatMap((c) => {
+      const inTab = ps.filter((p) => p.tab === c.id && p.terminal);
+      const p = inTab.find((x) => x.program?.agent) ?? inTab.find((x) => x.focused) ?? inTab[0];
+      return p ? [{ c, p, inTab }] : [];
+    });
     const indent = (folder ? 6 : nested ? 18 : 0) + (tree ? 38 : 15);
-    return mine.map((p, n) => {
-      const on = w.active && p.focused;
-      const st = p.status;
-      return h_flex()
-        .id(`space-term-${p.pane}`)
-        .h(24)
-        .flex_none()
-        .pl(indent)
-        .pr(8)
-        .gap(6)
-        .items_center()
-        .rounded(6)
-        .text_size(12)
-        .when(on, (el) => el.bg(t.hover))
-        .when(!on, (el) => el.hover((s) => s.bg(t.hover)))
-        .on_click(() => {
-          if (!w.active) run("space.select", { id: w.id });
-          run("pane.focus", { pane: p.pane });
-        })
-        .child(div().w(14).flex_none().text_color(t.dim).child(n === mine.length - 1 ? "└" : "├"))
-        .child(icon(p.program, 13, t.dim) ?? div().size(13).flex_none())
-        .child(div().flex_1().min_w(0).truncate().text_color(on ? t.foreground : t.muted).child(termName(p)))
-        .when(st === "working", (el) => el.child(svg("mods/workspace-chrome/spinner.svg").size(11).flex_none().text_color(t.working).spin(900)))
-        .when(st === "blocked", (el) => el.child(div().size(7).flex_none().rounded(4).bg(t.blocked)))
-        .when(st === "done", (el) => el.child(div().size(7).flex_none().rounded(4).bg(t.done)));
+    const mark = (el, st) => el
+      .when(st === "working", (e) => e.child(svg("mods/workspace-chrome/spinner.svg").size(11).flex_none().text_color(t.working).spin(900)))
+      .when(st === "blocked", (e) => e.child(div().size(7).flex_none().rounded(4).bg(t.blocked)))
+      .when(st === "done", (e) => e.child(div().size(7).flex_none().rounded(4).bg(t.done)));
+    const line = (id, on, pick) => h_flex()
+      .id(id)
+      .h(24)
+      .flex_none()
+      .pl(indent)
+      .pr(8)
+      .gap(6)
+      .items_center()
+      .rounded(6)
+      .text_size(12)
+      .when(on, (el) => el.bg(t.hover))
+      .when(!on, (el) => el.hover((s) => s.bg(t.hover)))
+      .on_click(() => {
+        if (!w.active) run("space.select", { id: w.id });
+        pick();
+      });
+    const branch = (last) => div().w(14).flex_none().text_color(t.dim).child(last ? "└" : "├");
+    return mine.flatMap(({ c, p, inTab }, n) => {
+      const lastTab = n === mine.length - 1;
+      const split = inTab.length > 1;
+      const here = w.active && c.active;
+      // A split tab may hold a different agent in each pane, so its row names no
+      // agent: a split mark and the tab's own name, else how many panes it holds;
+      // its panes say the rest.
+      const tabRow = mark(line(`space-tab-${c.id}`, here && !split, () => run("tab.select", { id: c.id }))
+        .child(branch(lastTab))
+        .child(split ? svg("mods/workspace-chrome/layers.svg").size(13).flex_none().text_color(t.dim)
+          : icon(p.program, 13, t.dim) ?? div().size(13).flex_none())
+        .child(div().flex_1().min_w(0).truncate().text_color(here ? t.foreground : t.muted)
+          .child(c.named ? c.name : split ? `${inTab.length} panes` : termName(p))),
+        c.status ?? p.status);
+      if (!split) return [tabRow];
+      return [tabRow, ...inTab.map((q, k) => {
+        const on = here && q.focused;
+        return mark(line(`space-term-${q.pane}`, on, () => { run("tab.select", { id: c.id }); run("pane.focus", { pane: q.pane }); })
+          .child(div().w(14).flex_none().text_color(t.dim).child(lastTab ? "" : "│"))
+          .child(branch(k === inTab.length - 1))
+          .child(icon(q.program, 13, t.dim) ?? div().size(13).flex_none())
+          .child(div().flex_1().min_w(0).truncate().text_color(on ? t.foreground : t.muted).child(termName(q))),
+          q.status);
+      })];
     });
   }
 
