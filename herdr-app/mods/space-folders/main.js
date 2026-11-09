@@ -244,6 +244,8 @@ export default class Spaces extends View {
     this.over = null;
     this.machines = [];
     this.folded = new Set(JSON.parse(localStorage.getItem("machines.folded") ?? "[]"));
+    // Spaces whose tab tree is closed (a click on the space's row opens and closes it).
+    this.shut = new Set(JSON.parse(localStorage.getItem("spaces.shut") ?? "[]"));
     this.refreshMachines(cx);
     cx.timer.every(15000, cx => this.refreshMachines(cx));
     // Another screen may have changed them: read every machine's file again now and then.
@@ -503,7 +505,7 @@ export default class Spaces extends View {
   foldered(rows, machine, t, collapsed, { guests = [], nested = false, hidden = false, seen = [] } = {}) {
     const draw = (r, away) => {
       seen.push({ id: r.w.id, shown: !away });
-      return away ? [] : collapsed ? [this.compact(r, t)] : [this.row(r, t), ...this.terminalRows(r, ps, t)];
+      return away ? [] : collapsed ? [this.compact(r, t)] : [this.row(r, t), ...(this.shut.has(r.w.id) ? [] : this.terminalRows(r, ps, t))];
     };
     const f = folders(machine), { list } = f, ps = panes();
     let parent = null;
@@ -879,8 +881,14 @@ export default class Spaces extends View {
       })
       // Pressed and released here without going anywhere: a click. Any drop is
       // the list's (see finishDrag), wherever it's released.
-      .on_mouse_up("left", () => {
-        if (this.pressed === i && this.over === i) run("space.select", { id: w.id });
+      // A click also opens or closes its tab tree.
+      .on_mouse_up("left", (_e, cx) => {
+        if (this.pressed !== i || this.over !== i) return;
+        run("space.select", { id: w.id });
+        this.shut.has(w.id) ? this.shut.delete(w.id) : this.shut.add(w.id);
+        const live = new Set(spaces().map((s) => s.id));
+        localStorage.setItem("spaces.shut", JSON.stringify([...this.shut].filter((id) => live.has(id))));
+        cx?.notify();
       })
       .on_mouse_down("right", () => this.menu(w))
       .child(
@@ -890,7 +898,8 @@ export default class Spaces extends View {
           .when(Boolean(tree), el => el.pl(22).child(svg("mods/workspace-chrome/branch.svg").size(13).text_color(t.dim)))
           .when(!tree, el => el.child(h_flex().size(18).flex_none().rounded(5).bg(fill).items_center().justify_center().text_size(10.5).font_bold().text_color("#ffffff").child([...w.name][0]?.toUpperCase() ?? "?")))
           .child(div().flex_shrink(0).max_w(150).truncate().text_color(t.foreground).child(w.name))
-          .child(g ? this.gitTail(g, tree, w.name, t) : div().flex_1()),
+          .child(g ? this.gitTail(g, tree, w.name, t) : div().flex_1())
+          .when((w.tabs ?? []).length > 0, el => el.child(svg(`mods/workspace-chrome/chevron-${this.shut.has(w.id) ? "right" : "down"}.svg`).size(11).flex_none().text_color(t.dim))),
       );
   }
 
