@@ -56,7 +56,7 @@
     "cmd-right": "send:\u0005",
     "cmd-backspace": "send:\u0015"
   },
-  "layout:custom": {
+  "layout:chrome-tab-groups": {
     "cmd-`": "space-folders.next",
     "cmd-shift-`": "space-folders.prev",
     "cmd-n": "new-space-in-home-directory.new"
