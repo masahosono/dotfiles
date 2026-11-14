@@ -106,7 +106,7 @@ check_symlink "$HOME/.config/herdr-app/settings.json"       "$DOTFILES_DIR/herdr
 # 自作 layout と mod は別リポジトリ (masahosono/herdr-chrome-tab-groups) で管理している
 HERDR_LAYOUT_DIR="${HERDR_LAYOUT_DIR:-$HOME/MyCode/herdr-chrome-tab-groups}"
 check_symlink "$HOME/.config/herdr-app/layouts/chrome-tab-groups.json" "$HERDR_LAYOUT_DIR/layouts/chrome-tab-groups.json"
-for mod in custom-chrome git-status space-folders new-space-in-home-directory; do
+for mod in custom-chrome space-folders; do
   check_symlink "$HOME/.config/herdr-app/mods/$mod/main.js"  "$HERDR_LAYOUT_DIR/mods/$mod/main.js"
   check_symlink "$HOME/.config/herdr-app/mods/$mod/mod.json" "$HERDR_LAYOUT_DIR/mods/$mod/mod.json"
 done

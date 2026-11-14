@@ -59,6 +59,6 @@
   "layout:chrome-tab-groups": {
     "cmd-`": "space-folders.next",
     "cmd-shift-`": "space-folders.prev",
-    "cmd-n": "new-space-in-home-directory.new"
+    "cmd-n": "space-folders.home"
   }
 }
