@@ -57,8 +57,6 @@
     "cmd-backspace": "send:\u0015"
   },
   "layout:chrome-tab-groups": {
-    "cmd-`": "space-folders.next",
-    "cmd-shift-`": "space-folders.prev",
     "cmd-n": "space-folders.home"
   }
 }
