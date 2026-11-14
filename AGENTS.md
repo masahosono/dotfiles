@@ -156,7 +156,7 @@ herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動
 
 - `keys.json` — キーバインド。セクションは `global` / `terminal` / `layout:<name>` / `mod:<name>`、値はコマンド名（`herdr-app commands` で一覧）。現状はアプリのデフォルトそのままのテンプレート
 - `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。現状はアプリのデフォルトそのままのテンプレート。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
-- 自作 layout（`chrome-tab-groups`）とそれが使う mod（`custom-chrome` / `space-folders`）は、herdr.dev のギャラリーで共有するため別リポジトリ [masahosono/herdr-chrome-tab-groups](https://github.com/masahosono/herdr-chrome-tab-groups)（ローカルは `~/MyCode/herdr-chrome-tab-groups`）に移した。`~/.config/herdr-app/` からはそちらへファイル単位で symlink する（手順と開発メモはそのリポジトリの AGENTS.md）。`keys.json` の `layout:chrome-tab-groups` セクションはこの layout 用で、あちらの `keys.json` と内容を揃える。layout や mod を編集しても反映されないときは `touch -h` で symlink 側を触る
+- 自作 layout（`chrome-tab-groups`）とそれが使う mod（`custom-chrome` / `space-folders`）は、herdr.dev のギャラリーで共有するため別リポジトリ [masahosono/herdr-chrome-tab-groups](https://github.com/masahosono/herdr-chrome-tab-groups)（ローカルは `~/MyCode/herdr-chrome-tab-groups`）に移した。`~/.config/herdr-app/` からはそちらへファイル単位で symlink する（手順と開発メモはそのリポジトリの AGENTS.md）。この layout 用のキー割り当ては持たず、Cmd+N や Cmd+` は `global` の Herdr 標準の割り当てで動かしている。layout や mod を編集しても反映されないときは `touch -h` で symlink 側を触る
 
 それ以外（`AGENTS.md`・`*.d.ts`・`frame/`・`view.json`・`shared.json`・`data/` など）はアプリが起動時・実行時に生成・上書きするため管理しない。
 
