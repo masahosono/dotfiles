@@ -103,13 +103,6 @@ check_symlink "$HOME/.config/herdr/config.toml" "$DOTFILES_DIR/herdr/config.toml
 section "Herdr app (デスクトップ版)"
 check_symlink "$HOME/.config/herdr-app/keys.json"           "$DOTFILES_DIR/herdr-app/keys.json"
 check_symlink "$HOME/.config/herdr-app/settings.json"       "$DOTFILES_DIR/herdr-app/settings.json"
-# 自作 layout と mod は別リポジトリ (masahosono/herdr-chrome-tab-groups) で管理している
-HERDR_LAYOUT_DIR="${HERDR_LAYOUT_DIR:-$HOME/MyCode/herdr-chrome-tab-groups}"
-check_symlink "$HOME/.config/herdr-app/layouts/chrome-tab-groups.json" "$HERDR_LAYOUT_DIR/layouts/chrome-tab-groups.json"
-for mod in custom-chrome space-folders; do
-  check_symlink "$HOME/.config/herdr-app/mods/$mod/main.js"  "$HERDR_LAYOUT_DIR/mods/$mod/main.js"
-  check_symlink "$HOME/.config/herdr-app/mods/$mod/mod.json" "$HERDR_LAYOUT_DIR/mods/$mod/mod.json"
-done
 
 section "hunk"
 check_symlink "$HOME/.config/hunk/config.toml" "$DOTFILES_DIR/hunk/config.toml"
