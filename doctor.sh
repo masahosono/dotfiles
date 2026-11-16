@@ -104,6 +104,7 @@ section "Herdr app (デスクトップ版)"
 check_symlink "$HOME/.config/herdr-app/keys.json"           "$DOTFILES_DIR/herdr-app/keys.json"
 check_symlink "$HOME/.config/herdr-app/settings.json"       "$DOTFILES_DIR/herdr-app/settings.json"
 check_symlink "$HOME/.config/herdr-app/mods/pane-cycle"     "$DOTFILES_DIR/herdr-app/mods/pane-cycle"
+check_symlink "$HOME/.config/herdr-app/mods/new-space-in-home" "$DOTFILES_DIR/herdr-app/mods/new-space-in-home"
 
 section "hunk"
 check_symlink "$HOME/.config/hunk/config.toml" "$DOTFILES_DIR/hunk/config.toml"

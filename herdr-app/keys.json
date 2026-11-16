@@ -10,7 +10,7 @@
     "cmd-]": "pane-cycle.next",
     "cmd-[": "pane-cycle.prev",
     "cmd-shift-l": "layout.switch",
-    "cmd-n": "space.new",
+    "cmd-n": "new-space-in-home.open",
     "cmd-p": "mod.open:picker",
     "cmd-shift-p": "app.palette",
     "cmd-,": "app.settings",

@@ -38,6 +38,7 @@ ln -sf ~/dotfiles/herdr-app/keys.json ~/.config/herdr-app/keys.json
 ln -sf ~/dotfiles/herdr-app/settings.json ~/.config/herdr-app/settings.json
 mkdir -p ~/.config/herdr-app/layouts ~/.config/herdr-app/mods
 ln -sfn ~/dotfiles/herdr-app/mods/pane-cycle ~/.config/herdr-app/mods/pane-cycle
+ln -sfn ~/dotfiles/herdr-app/mods/new-space-in-home ~/.config/herdr-app/mods/new-space-in-home
 # 自作 layout と mod は別リポジトリ (~/MyCode/herdr-chrome-tab-groups) の AGENTS.md の手順で symlink する
 # herdr.app (WezTerm を herdr 専用ターミナルとしてラップした app を /Applications に生成)
 bash ~/dotfiles/herdr/app/make.sh
@@ -155,9 +156,13 @@ herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動
 
 `herdr-app/` 以下の構成（`~/.config/herdr-app/` へファイル単位で symlink）:
 
-- `keys.json` — キーバインド。セクションは `global` / `terminal` / `layout:<name>` / `mod:<name>`、値はコマンド名（`herdr-app commands` で一覧）。ほぼアプリのデフォルトそのままだが、Cmd+] / Cmd+[ だけは自作 mod `pane-cycle`（`herdr-app/mods/pane-cycle/`。`~/.config/herdr-app/mods/pane-cycle` からディレクトリごと symlink）の `pane-cycle.next` / `pane-cycle.prev` に向けてある。Herdr app にはペインを順に回るコマンドがなく、`pane.go:right/left` では上下分割のペインに移れないため。`<mod>.<command>` は画面に出ている mod にしか届かないので、使う layout に高さ 0px の `pane-cycle` ブロックを置いておく必要がある
+- `keys.json` — キーバインド。セクションは `global` / `terminal` / `layout:<name>` / `mod:<name>`、値はコマンド名（`herdr-app commands` で一覧）。ほぼアプリのデフォルトそのままだが、次のキーは `herdr-app/mods/` の自作 mod に向けてある（各 mod は `~/.config/herdr-app/mods/<name>` からディレクトリごと symlink）
+  - Cmd+] / Cmd+[ → `pane-cycle.next` / `pane-cycle.prev`。Herdr app にはペインを順に回るコマンドがなく、`pane.go:right/left` では上下分割のペインに移れないため
+  - Cmd+N → `new-space-in-home.open`。ホームディレクトリで新規スペースを開く。`space.new:<value>` は name しか埋められず、オブジェクト形式で folder を書くと絶対パスになってマシン依存になるため、mod 側で `home()` を渡している
+  - `<mod>.<command>` は画面に出ている mod にしか届かないので、使う layout に高さ 0px のブロックとしてこれらの mod を置いておく必要がある（置き忘れるとキーを押しても何も起きない）
+  - mod の symlink 先を移したときは、`touch -h` では追従しないので Herdr app を再起動する
 - `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。現状はアプリのデフォルトそのままのテンプレート。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
-- 自作 layout（`chrome-tab-groups`）とそれが使う mod（`custom-chrome` / `space-folders`）は、herdr.dev のギャラリーで共有するため別リポジトリ [masahosono/herdr-chrome-tab-groups](https://github.com/masahosono/herdr-chrome-tab-groups)（ローカルは `~/MyCode/herdr-chrome-tab-groups`）に移した。`~/.config/herdr-app/` からはそちらへファイル単位で symlink する（手順と開発メモはそのリポジトリの AGENTS.md）。この layout 用のキー割り当ては持たず、Cmd+N や Cmd+` は `global` の Herdr 標準の割り当てで動かしている。layout や mod を編集しても反映されないときは `touch -h` で symlink 側を触る
+- 自作 layout（`chrome-tab-groups`）とそれが使う mod（`custom-chrome` / `space-folders`）は、herdr.dev のギャラリーで共有するため別リポジトリ [masahosono/herdr-chrome-tab-groups](https://github.com/masahosono/herdr-chrome-tab-groups)（ローカルは `~/MyCode/herdr-chrome-tab-groups`）に移した。`~/.config/herdr-app/` からはそちらへファイル単位で symlink する（手順と開発メモはそのリポジトリの AGENTS.md）。この layout 用のキー割り当ては持たず、Cmd+` は `global` の Herdr 標準の割り当てで動かしている。layout や mod を編集しても反映されないときは `touch -h` で symlink 側を触る
 
 それ以外（`AGENTS.md`・`*.d.ts`・`frame/`・`view.json`・`shared.json`・`data/` など）はアプリが起動時・実行時に生成・上書きするため管理しない。
 
