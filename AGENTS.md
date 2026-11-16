@@ -36,7 +36,8 @@ ln -sf ~/dotfiles/herdr/config.toml ~/.config/herdr/config.toml
 mkdir -p ~/.config/herdr-app
 ln -sf ~/dotfiles/herdr-app/keys.json ~/.config/herdr-app/keys.json
 ln -sf ~/dotfiles/herdr-app/settings.json ~/.config/herdr-app/settings.json
-mkdir -p ~/.config/herdr-app/layouts
+mkdir -p ~/.config/herdr-app/layouts ~/.config/herdr-app/mods
+ln -sfn ~/dotfiles/herdr-app/mods/pane-cycle ~/.config/herdr-app/mods/pane-cycle
 # 自作 layout と mod は別リポジトリ (~/MyCode/herdr-chrome-tab-groups) の AGENTS.md の手順で symlink する
 # herdr.app (WezTerm を herdr 専用ターミナルとしてラップした app を /Applications に生成)
 bash ~/dotfiles/herdr/app/make.sh
@@ -154,7 +155,7 @@ herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動
 
 `herdr-app/` 以下の構成（`~/.config/herdr-app/` へファイル単位で symlink）:
 
-- `keys.json` — キーバインド。セクションは `global` / `terminal` / `layout:<name>` / `mod:<name>`、値はコマンド名（`herdr-app commands` で一覧）。現状はアプリのデフォルトそのままのテンプレート
+- `keys.json` — キーバインド。セクションは `global` / `terminal` / `layout:<name>` / `mod:<name>`、値はコマンド名（`herdr-app commands` で一覧）。ほぼアプリのデフォルトそのままだが、Cmd+] / Cmd+[ だけは自作 mod `pane-cycle`（`herdr-app/mods/pane-cycle/`。`~/.config/herdr-app/mods/pane-cycle` からディレクトリごと symlink）の `pane-cycle.next` / `pane-cycle.prev` に向けてある。Herdr app にはペインを順に回るコマンドがなく、`pane.go:right/left` では上下分割のペインに移れないため。`<mod>.<command>` は画面に出ている mod にしか届かないので、使う layout に高さ 0px の `pane-cycle` ブロックを置いておく必要がある
 - `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。現状はアプリのデフォルトそのままのテンプレート。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
 - 自作 layout（`chrome-tab-groups`）とそれが使う mod（`custom-chrome` / `space-folders`）は、herdr.dev のギャラリーで共有するため別リポジトリ [masahosono/herdr-chrome-tab-groups](https://github.com/masahosono/herdr-chrome-tab-groups)（ローカルは `~/MyCode/herdr-chrome-tab-groups`）に移した。`~/.config/herdr-app/` からはそちらへファイル単位で symlink する（手順と開発メモはそのリポジトリの AGENTS.md）。この layout 用のキー割り当ては持たず、Cmd+N や Cmd+` は `global` の Herdr 標準の割り当てで動かしている。layout や mod を編集しても反映されないときは `touch -h` で symlink 側を触る
 

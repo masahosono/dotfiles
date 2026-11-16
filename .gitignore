@@ -1,2 +1,6 @@
 # macOS
 .DS_Store
+
+# Herdr app が mod フォルダに自動生成する型定義・エディタ設定
+herdr-app/mods/*/gpui-kit.d.ts
+herdr-app/mods/*/jsconfig.json
