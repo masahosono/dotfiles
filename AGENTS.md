@@ -39,7 +39,8 @@ ln -sf ~/dotfiles/herdr-app/settings.json ~/.config/herdr-app/settings.json
 mkdir -p ~/.config/herdr-app/layouts ~/.config/herdr-app/mods
 ln -sfn ~/dotfiles/herdr-app/mods/pane-cycle ~/.config/herdr-app/mods/pane-cycle
 ln -sfn ~/dotfiles/herdr-app/mods/new-space-in-home ~/.config/herdr-app/mods/new-space-in-home
-# 自作 layout と mod は別リポジトリ (~/MyCode/herdr-chrome-tab-groups) の AGENTS.md の手順で symlink する
+# 自作 layout chrome-tab-groups は別リポジトリ (~/MyCode/herdr-chrome-tab-groups) の README の手順でコピーして入れ、
+# 入れた layout の work 列に pane-cycle / new-space-in-home の 0px ブロックを足す (下の「Herdr app 設定」参照)
 # herdr.app (WezTerm を herdr 専用ターミナルとしてラップした app を /Applications に生成)
 bash ~/dotfiles/herdr/app/make.sh
 # hunk (~/.config/hunk が存在しない場合は先に作成)
@@ -161,8 +162,12 @@ herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動
   - Cmd+N → `new-space-in-home.open`。ホームディレクトリで新規スペースを開く。`space.new:<value>` は name しか埋められず、オブジェクト形式で folder を書くと絶対パスになってマシン依存になるため、mod 側で `home()` を渡している
   - `<mod>.<command>` は画面に出ている mod にしか届かないので、使う layout に高さ 0px のブロックとしてこれらの mod を置いておく必要がある（置き忘れるとキーを押しても何も起きない）
   - mod の symlink 先を移したときは、`touch -h` では追従しないので Herdr app を再起動する
-- `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。現状はアプリのデフォルトそのままのテンプレート。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
-- 自作 layout（`chrome-tab-groups`）とそれが使う mod（`custom-chrome` / `space-folders`）は、herdr.dev のギャラリーで共有するため別リポジトリ [masahosono/herdr-chrome-tab-groups](https://github.com/masahosono/herdr-chrome-tab-groups)（ローカルは `~/MyCode/herdr-chrome-tab-groups`）に移した。`~/.config/herdr-app/` からはそちらへファイル単位で symlink する（手順と開発メモはそのリポジトリの AGENTS.md）。この layout 用のキー割り当ては持たず、Cmd+` は `global` の Herdr 標準の割り当てで動かしている。layout や mod を編集しても反映されないときは `touch -h` で symlink 側を触る
+  - mod ディレクトリごとの symlink だと mod 内の SVG が読み込まれない（herdr-chrome-tab-groups の RECIPE.md より）。今の 2 つは SVG を使わないのでディレクトリごとでよいが、SVG を使う mod を足すときはファイル単位で symlink する
+- `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
+- 自作 layout `chrome-tab-groups` とそれが使う mod `chrome-tab-groups`（一覧・上のバー・フッターを `props().view` で描き分ける 1 つの mod）は、herdr.dev のギャラリーで共有するため別リポジトリ [masahosono/herdr-chrome-tab-groups](https://github.com/masahosono/herdr-chrome-tab-groups)（ローカルは `~/MyCode/herdr-chrome-tab-groups`）で管理している。開発メモはそのリポジトリの AGENTS.md
+  - 普段使いの環境には README の手順で**コピーして**入れてある（`~/.config/herdr-app/layouts/chrome-tab-groups.json` と `mods/chrome-tab-groups/` は symlink ではなく実ファイル）
+  - 入れた layout の `work` 列の末尾に、上の `pane-cycle` / `new-space-in-home` を高さ 0px のブロックとして足してある。この 2 つは dotfiles 専用の mod なので、ギャラリー用のリポジトリ側の layout には入れない。リポジトリから layout を入れ直すと消えて Cmd+[ / Cmd+] / Cmd+N が効かなくなるので、入れ直したら足し直す。リポジトリの AGENTS.md の手順で layout を symlink して開発するときも、ブロックを足すとリポジトリのファイルを書き換えることになるので、コミットに混ぜない
+  - この layout 用のキー割り当ては持たず、Cmd+` は `global` の Herdr 標準の割り当てで動かしている
 
 それ以外（`AGENTS.md`・`*.d.ts`・`frame/`・`view.json`・`shared.json`・`data/` など）はアプリが起動時・実行時に生成・上書きするため管理しない。
 
