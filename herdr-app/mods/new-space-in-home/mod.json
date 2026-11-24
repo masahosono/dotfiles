@@ -1,1 +1,1 @@
-{ "place": "none", "title": "New Space in Home" }
+{ "place": "none", "title": "New Space in Home", "overlay": { "kind": "popup", "width": 1, "height": 1 } }

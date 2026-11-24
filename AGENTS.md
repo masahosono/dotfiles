@@ -37,9 +37,9 @@ mkdir -p ~/.config/herdr-app
 ln -sf ~/dotfiles/herdr-app/keys.json ~/.config/herdr-app/keys.json
 ln -sf ~/dotfiles/herdr-app/settings.json ~/.config/herdr-app/settings.json
 mkdir -p ~/.config/herdr-app/layouts ~/.config/herdr-app/mods
-ln -sfn ~/dotfiles/herdr-app/mods/pane-cycle ~/.config/herdr-app/mods/pane-cycle
+ln -sfn ~/dotfiles/herdr-app/mods/pane-cycle-next ~/.config/herdr-app/mods/pane-cycle-next
+ln -sfn ~/dotfiles/herdr-app/mods/pane-cycle-prev ~/.config/herdr-app/mods/pane-cycle-prev
 ln -sfn ~/dotfiles/herdr-app/mods/new-space-in-home ~/.config/herdr-app/mods/new-space-in-home
-# 使う layout に pane-cycle / new-space-in-home を 0px のブロックとして足す (下の「Herdr app 設定」参照)
 # herdr.app (WezTerm を herdr 専用ターミナルとしてラップした app を /Applications に生成)
 bash ~/dotfiles/herdr/app/make.sh
 # hunk (~/.config/hunk が存在しない場合は先に作成)
@@ -157,9 +157,9 @@ herdr.app は Dock / Spotlight から herdr 専用ターミナルを一発起動
 `herdr-app/` 以下の構成（`~/.config/herdr-app/` へファイル単位で symlink）:
 
 - `keys.json` — キーバインド。セクションは `global` / `terminal` / `layout:<name>` / `mod:<name>`、値はコマンド名（`herdr-app commands` で一覧）。ほぼアプリのデフォルトそのままだが、次のキーは `herdr-app/mods/` の自作 mod に向けてある（各 mod は `~/.config/herdr-app/mods/<name>` からディレクトリごと symlink）
-  - Cmd+] / Cmd+[ → `pane-cycle.next` / `pane-cycle.prev`。Herdr app にはペインを順に回るコマンドがなく、`pane.go:right/left` では上下分割のペインに移れないため
-  - Cmd+N → `new-space-in-home.open`。ホームディレクトリで新規スペースを開く。`space.new:<value>` は name しか埋められず、オブジェクト形式で folder を書くと絶対パスになってマシン依存になるため、mod 側で `home()` を渡している
-  - `<mod>.<command>` は画面に出ている mod にしか届かないので、使う layout の適当な列に `{ "id": "pane-cycle", "type": "block", "content": { "mod": "pane-cycle" }, "size": { "px": 0 } }` のような高さ 0px のブロックとしてこれらの mod を置いておく必要がある（置き忘れるとキーを押しても何も起きない）。layout は dotfiles 管理外なので、layout を作り直したり入れ直したりしたら足し直す
+  - Cmd+] / Cmd+[ → `mod.open:pane-cycle-next` / `mod.open:pane-cycle-prev`。Herdr app にはペインを順に回るコマンドがなく、`pane.go:right/left` では上下分割のペインに移れないため
+  - Cmd+N → `mod.open:new-space-in-home`。ホームディレクトリで新規スペースを開く。`space.new:<value>` は name しか埋められず、オブジェクト形式で folder を書くと絶対パスになってマシン依存になるため、mod 側で `home()` を渡している
+  - これらの mod は `mod.open` で 1px の popup overlay として一瞬だけ開き、`init` で自分を `closeOverlay` してから仕事をする使い捨て方式。以前は `<mod>.<command>` で常駐 mod に送っていたが、これは layout に置かれて画面に出ているコピーにしか届かず、インストールした layout ごとに 0px ブロックを足す必要があった（足し忘れるとエラー）。`mod.open` は layout に依存しないので、どの layout でもそのまま動く。`mod.open` は `name` しか受けないため、ペイン移動は向きごとに mod を分けている
   - mod の symlink 先を移したときは、`touch -h` では追従しないので Herdr app を再起動する
   - mod ディレクトリごとの symlink だと mod 内の SVG が読み込まれない。今の 2 つは SVG を使わないのでディレクトリごとでよいが、SVG を使う mod を足すときはファイル単位で symlink する
 - `settings.json` — ズーム・サウンド・テーマなど人に紐づく設定。ズームキーや Settings 画面の操作でアプリ自身が書き戻すが、symlink を保ったまま実体（dotfiles 側）に書き込まれることを確認済み
